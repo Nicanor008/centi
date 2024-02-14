@@ -2,25 +2,10 @@
 
 centi
 
-### Prerequisites
+<!-- Starting the backend dev env -->
 
-- [Docker (at least 1.10)](https://www.docker.com/)
-- [Docker-compose (at least 1.6)](https://docs.docker.com/compose/install/)
 
-## Getting Started
+<!-- starting the frontend dev env -->
 
-To get up and running on local, simply do the following:
 
-    $ cd centi
-    # build docker images
-    $ docker-compose build
-    $ docker-compose up
-
-## Deployment
-
-ssh to server
-
-    $ cd ~/centi
-    $ git pull origin develop
-    $ docker-compose -f docker-compose.dev.yml build
-    $ docker-compose -f docker-compose.dev.yml up -d
+<!-- starting the admin -->
