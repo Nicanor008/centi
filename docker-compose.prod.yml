@@ -1,0 +1,64 @@
+version: "3"
+
+volumes:
+  mongo_data: {}
+  mongo_backup: {}
+  node_logs: {}
+  media_data: {}
+  backend_node_module: {}
+
+networks:
+  app-network:
+    driver: bridge
+
+services:
+  backend:
+    restart: always
+    container_name: centi_node_prod
+    build:
+      context: .
+      dockerfile: compose/node/Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - backend_node_module:/home/app/centi/node_modules
+      - node_logs:/home/app/centi/logs
+      - media_data:/home/app/centi/uploads
+    depends_on:
+      - mongo
+      - redis
+    networks:
+      - app-network
+
+    # tty: true
+  mongo:
+    restart: always
+    image: mongo:4.2
+    container_name: centi_mongo_prod
+    env_file:
+      - .env
+    command: mongod --storageEngine wiredTiger
+    volumes:
+      - mongo_data:/data/db
+      - mongo_backup:/data/backup
+    networks:
+      - app-network
+
+  redis:
+    image: redis:6.2.13-alpine
+    container_name: centi_redis_local
+    networks:
+      - app-network
+
+  nginx:
+    restart: always
+    build: ./compose/nginx
+    container_name: centi_nginx_prod
+    depends_on:
+      -  backend
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - app-network
+

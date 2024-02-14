@@ -1,0 +1,74 @@
+version: "3"
+
+volumes:
+  mongo_data: {}
+  frontend: {}
+  backend_node_module: {}
+  frontend_node_module: {}
+
+networks:
+  app-network:
+    driver: bridge
+
+services:
+  backend:
+    restart: always
+    container_name: centi_node_local
+    build:
+      context: .
+      dockerfile: compose/node/Dockerfile_dev
+    # command: nodemon --inspect=0.0.0.0:9229 --nolazy app.js
+    ports:
+      - "3000:3000"
+      - "9229:9229"
+    env_file:
+      - .env
+    volumes:
+      - ./backend:/home/app/centi
+      - backend_node_module:/home/app/centi/node_modules
+      - frontend:/home/app/centi/src/client/build
+    depends_on:
+      - mongo
+      - redis
+    networks:
+      - app-network
+
+  frontend:
+    restart: always
+    container_name: centi_client_local
+    build:
+      context: .
+      dockerfile: compose/client/Dockerfile
+    ports:
+      - "3001:3000"
+    env_file:
+      - .env
+    volumes:
+      - ./frontend:/home/app/client
+      - frontend_node_module:/home/app/client/node_modules
+      - frontend:/home/app/client/build
+    depends_on:
+      - backend
+    networks:
+      - app-network
+    stdin_open: true
+
+  mongo:
+    image: mongo:4.2
+    container_name: centi_mongo_local
+    env_file:
+      - .env
+    command: mongod --port 27017 --storageEngine wiredTiger
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - app-network
+
+  redis:
+    image: redis:6.2.13-alpine
+    container_name: centi_redis_local
+    networks:
+      - app-network
+
