@@ -61,7 +61,7 @@ const router = express.Router();
 
 router.post(
   "/",
-  // AuthService.required,
+  AuthService.optional,
   celebrate({ body: createValidationSchema }),
   budgetController.createBudget
 );
@@ -141,7 +141,7 @@ router.get(
   "/",
   AuthService.optional,
   celebrate({ query: customPaginateValidateSchema }),
-  budgetController.findAll
+  budgetController.viewAllBudgets
 );
 
 /**
@@ -169,7 +169,7 @@ router.get(
  *      401:
  *        $ref: "#/responses/Unauthorized"
  */
-router.get("/:id", budgetController.findOne);
+router.get("/:budgetId", budgetController.findOneBudgetById);
 
 /**
  * @swagger

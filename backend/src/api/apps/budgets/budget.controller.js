@@ -1,20 +1,15 @@
-// import express from "express";
 import httpStatus from "http-status";
 import { handleResponse } from "../../../helpers";
 import { Controller } from "../../../helpers/common";
-// import { handleResponse as Response } from "../../helpers";
-// import Budget from "./budget.model";
 import budgetService from "./budget.service";
 
-// const router = express.Router();
-
-// Create a budget
 class BudgetController extends Controller {
-  constructor() {
-    super();
+  constructor(service) {
+    super(service);
     this.createBudget = this.createBudget.bind(this);
   }
 
+  // Create a budget
   async createBudget(req, res, next) {
     try {
       const data = req.body;
@@ -24,17 +19,28 @@ class BudgetController extends Controller {
       next(exception);
     }
   }
-}
 
-// View all budgets
-// router.get("/all", async (req, res) => {
-//   try {
-//     const allBudgets = await Budget.find();
-//     return handleResponse.success(res, allBudgets);
-//   } catch (error) {
-//     return Response.error(res, { message: error });
-//   }
-// });
+  // View all budgets
+  async viewAllBudgets(req, res, next) {
+    try {
+      let result = await budgetService.viewAllBudgets();
+
+      return handleResponse.success(res, result);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async findOneBudgetById(req, res, next) {
+    try {
+      const result = await budgetService.findOneBudgetById(req.params.budgetId);
+
+      return handleResponse.success(res, result);
+    } catch (e) {
+      next(e);
+    }
+  }
+}
 
 // // Get a budget by userId
 // router.get("/:userId", async (req, res) => {
