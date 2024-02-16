@@ -1,19 +1,19 @@
 import express from "express";
 import { celebrate } from "celebrate";
-import budgetController from "./budget.controller";
+import budgetItemsController from "./budgetItems.controller";
+import AuthService from "../../middlewares/auth";
 import {
   createValidationSchema,
   updateValidationSchema,
-  customPaginateValidateSchema
-} from "./budget.validation";
-import AuthService from "../../../middlewares/auth";
+  customPaginateValidateSchema,
+} from "./budgetItems.validation";
 
 const router = express.Router();
 /**
  * @swagger
  *
  * definitions:
- *   Budget:
+ *   BudgetItems:
  *     type: object
  *     required:
  *       - field1
@@ -24,19 +24,19 @@ const router = express.Router();
  *       field2:
  *         type: string
  *
- *   ArrayOfBudgets:
+ *   ArrayOfBudgetItems:
  *      type: array
  *      items:
- *        $ref: "#/definitions/Budget"
+ *        $ref: "#/definitions/BudgetItems"
  */
 
 /**
  * @swagger
  *
- * /budgets:
+ * /budgetItems:
  *   post:
- *     tags: [budgets]
- *     description: create a budget
+ *     tags: [budgetItems]
+ *     description: create a budgetItems
  *     security:
  *       - BearerAuth: []
  *     produces:
@@ -46,13 +46,13 @@ const router = express.Router();
  *         in: body
  *         required: true
  *         schema:
- *          $ref: "#/definitions/Budget"
+ *          $ref: "#/definitions/BudgetItems"
  *
  *     responses:
  *      200:
  *         description: OK
  *         schema:
- *           $ref: "#/definitions/Budget"
+ *           $ref: "#/definitions/BudgetItems"
  *      400:
  *        $ref: "#/responses/Error"
  *      401:
@@ -61,18 +61,17 @@ const router = express.Router();
 
 router.post(
   "/",
-  // AuthService.required,
-  celebrate({ body: createValidationSchema }),
-  budgetController.createBudget
+  [AuthService.required, celebrate({ body: createValidationSchema })],
+  budgetItemsController.create
 );
 
 /**
  * @swagger
  *
- * /budgets:
+ * /budgetItems:
  *   put:
- *     tags: [budgets]
- *     description: create a budget
+ *     tags: [budgetItems]
+ *     description: create a budgetItems
  *     security:
  *       - BearerAuth: []
  *     produces:
@@ -82,13 +81,13 @@ router.post(
  *         in: body
  *         required: true
  *         schema:
- *          $ref: "#/definitions/Budget"
+ *          $ref: "#/definitions/BudgetItems"
  *
  *     responses:
  *      200:
  *         description: OK
  *         schema:
- *           $ref: "#/definitions/Budget"
+ *           $ref: "#/definitions/BudgetItems"
  *      400:
  *        $ref: "#/responses/Error"
  *      401:
@@ -99,16 +98,16 @@ router.put(
   "/:id",
   [AuthService.required],
   celebrate({ body: updateValidationSchema }),
-  budgetController.update
+  budgetItemsController.update
 );
 
 /**
  * @swagger
  *
- * /budgets:
+ * /budgetItems:
  *   get:
- *     tags: [budgets]
- *     description: get all budgets
+ *     tags: [budgetItems]
+ *     description: get all budgetItems
  *     produces:
  *       - application/json
  *     parameters:
@@ -133,7 +132,7 @@ router.put(
  *                type: integer
  *                format: int32
  *              data:
- *                $ref: "#/definitions/ArrayOfBudgets"
+ *                $ref: "#/definitions/ArrayOfBudgetItems"
  *        401:
  *          $ref: "#/responses/Unauthorized"
  */
@@ -141,43 +140,43 @@ router.get(
   "/",
   AuthService.optional,
   celebrate({ query: customPaginateValidateSchema }),
-  budgetController.findAll
+  budgetItemsController.findAll
 );
 
 /**
  * @swagger
  *
- * /budgets/{id}:
+ * /budgetItems/{id}:
  *   get:
- *     tags: [budgets]
- *     description: get detail budget
+ *     tags: [budgetItems]
+ *     description: get detail budgetItems
  *     produces:
  *       - application/json
  *     parameters:
  *       - name: id
  *         in: path
- *         description: budget id
+ *         description: budgetItems id
  *         required: true
  *         type: string
  *     responses:
  *      200:
  *         description: OK
  *         schema:
- *           $ref: "#/definitions/Budget"
+ *           $ref: "#/definitions/BudgetItems"
  *      400:
  *        $ref: "#/responses/Error"
  *      401:
  *        $ref: "#/responses/Unauthorized"
  */
-router.get("/:id", budgetController.findOne);
+router.get("/:id", budgetItemsController.findOne);
 
 /**
  * @swagger
  *
- * /budgets/{id}:
+ * /budgetItems/{id}:
  *   delete:
- *     tags: [budgets]
- *     description: delete a budget
+ *     tags: [budgetItems]
+ *     description: delete a budgetItems
  *     security:
  *       - BearerAuth: []
  *     produces:
@@ -185,19 +184,20 @@ router.get("/:id", budgetController.findOne);
  *     parameters:
  *       - name: id
  *         in: path
- *         description: budgets id
+ *         description: budgetItems id
  *         required: true
  *         type: string
  *     responses:
  *      200:
  *         description: OK
  *         schema:
- *           $ref: "#/definitions/Budget"
+ *           $ref: "#/definitions/BudgetItems"
  *      400:
  *        $ref: "#/responses/Error"
  *      401:
  *        $ref: "#/responses/Unauthorized"
  */
-router.delete("/:id", AuthService.required, budgetController.remove);
+router.delete("/:id", AuthService.required, budgetItemsController.remove);
+
 
 export default router;
