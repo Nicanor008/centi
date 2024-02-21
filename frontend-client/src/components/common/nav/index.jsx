@@ -13,6 +13,7 @@ import {
   useColorModeValue,
   useBreakpointValue,
   useDisclosure,
+  Link,
 } from "@chakra-ui/react";
 import {
   HamburgerIcon,
@@ -52,15 +53,16 @@ export default function Navbar() {
             aria-label={"Toggle Navigation"}
           />
         </Flex>
-        {/* <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}> */}
         <Flex>
-          <Text
-            textAlign={useBreakpointValue({ base: "center", md: "left" })}
-            color="black"
-            fontWeight={700}
-          >
-            Centi
-          </Text>
+          <Link href="/" textDecor="none" _hover={{ textDecoration: "none" }}>
+            <Text
+              textAlign={useBreakpointValue({ base: "center", md: "left" })}
+              color="black"
+              fontWeight={700}
+            >
+              Centi
+            </Text>
+          </Link>
         </Flex>
         <Flex display={{ base: "none", md: "flex" }} ml={10}>
           <DesktopNav />
@@ -264,6 +266,11 @@ const NAV_ITEMS = [
   {
     label: "Budget",
     children: [
+      {
+        label: "Create a new Budget",
+        subLabel: "Track all your budget in one place",
+        href: "budget/dashboard",
+      },
       {
         label: "Explore Design Work",
         subLabel: "Trending Design to inspire you",
