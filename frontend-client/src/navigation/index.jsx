@@ -4,6 +4,7 @@ import {
   createRoutesFromElements,
 } from "react-router-dom";
 import Layout from "../components/common/Layout";
+import AuthLayout from "../components/common/Layout/AuthLayout";
 import { Homepage, BudgetDashboard } from "../Pages";
 
 export const routes = createRoutesFromElements(
@@ -23,7 +24,7 @@ export const routes = createRoutesFromElements(
       // }
     >
       <Route>
-        <Route element={<Layout />}>
+        <Route element={<AuthLayout />}>
           <Route path="dashboard" element={<BudgetDashboard />} />
 
           {/* <Route path="*" element={<PageNotFoundScreen />} /> */}
