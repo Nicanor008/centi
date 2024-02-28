@@ -1,19 +1,5 @@
-import {
-  Button,
-  Flex,
-  Stepper,
-  Step,
-  Box,
-  Text,
-  useSteps,
-  StepIndicator,
-  StepStatus,
-  StepTitle,
-  StepDescription,
-  StepIcon,
-  StepNumber,
-  StepSeparator,
-} from "@chakra-ui/react";
+import { Button, Flex, Text, useSteps } from "@chakra-ui/react";
+import MultistepCreateBudget from "./test";
 
 const steps = [
   { title: "Create Budget", description: "Contact Info" },
@@ -54,7 +40,7 @@ function CreateUserBudgets() {
         </Flex>
       </Flex>
       {/* view all budgets - content */}
-      <Stepper index={activeStep}>
+      {/* <Stepper index={activeStep}>
         {steps.map((step, index) => (
           <Step key={index}>
             <StepIndicator>
@@ -73,7 +59,8 @@ function CreateUserBudgets() {
             <StepSeparator />
           </Step>
         ))}
-      </Stepper>
+      </Stepper> */}
+      <MultistepCreateBudget />
     </Flex>
   );
 }
