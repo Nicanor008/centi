@@ -44,6 +44,7 @@ class Controller {
   async findOne(req, res, next) {
     try {
       const result = await this.service.findById(req.params.id);
+      console.log("...........resutl....", result);
       if (!result) {
         return Response.error(
           res,

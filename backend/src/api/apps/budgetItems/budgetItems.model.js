@@ -4,13 +4,52 @@ import mongooseUniqueValidator from "mongoose-unique-validator";
 
 const BudgetItemsSchema = new Schema(
   {
-    field: {
+    name: {
       type: String,
       required: true
     },
-    field2: {
+    description: {
       type: String,
+      required: false
+    },
+    plannedExpenses: {
+      type: Number,
+      required: false
+    },
+    actualExpenses: {
+      type: Number,
+      required: false
+    },
+    isRecurring: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    budgetId: {
+      type: Schema.Types.ObjectId,
+      ref: "Budget",
       required: true
+    },
+    // currencyId: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: "Currency",
+    //   required: true,
+    //   default: "USD" // TODO: update to USD id value
+    // },
+    // userId: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: "User",
+    //   required: true
+    // },
+    // financialGoal: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: "FinancialGoal",
+    //   required: false
+    // },
+    isActive: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
   { timestamps: true }

@@ -10,6 +10,7 @@ import {
   BudgetDashboard,
   ViewUserBudgets,
   CreateUserBudgets,
+  ViewUserBudgetItems,
 } from "../Pages";
 
 export const routes = createRoutesFromElements(
@@ -33,6 +34,7 @@ export const routes = createRoutesFromElements(
           <Route path="dashboard" element={<BudgetDashboard />} />
           <Route path="view" element={<ViewUserBudgets />} />
           <Route path="add/:currentStep" element={<CreateUserBudgets />} />
+          <Route path="items/:budgetId" element={<ViewUserBudgetItems />} />
 
           {/* <Route path="*" element={<PageNotFoundScreen />} /> */}
         </Route>

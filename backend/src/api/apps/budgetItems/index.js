@@ -1,11 +1,11 @@
 import express from "express";
 import { celebrate } from "celebrate";
 import budgetItemsController from "./budgetItems.controller";
-import AuthService from "../../middlewares/auth";
+import AuthService from "../../../middlewares/auth";
 import {
   createValidationSchema,
   updateValidationSchema,
-  customPaginateValidateSchema,
+  customPaginateValidateSchema
 } from "./budgetItems.validation";
 
 const router = express.Router();
@@ -61,8 +61,8 @@ const router = express.Router();
 
 router.post(
   "/",
-  [AuthService.required, celebrate({ body: createValidationSchema })],
-  budgetItemsController.create
+  [AuthService.optional, celebrate({ body: createValidationSchema })],
+  budgetItemsController.createBudgetItems
 );
 
 /**
@@ -199,5 +199,11 @@ router.get("/:id", budgetItemsController.findOne);
  */
 router.delete("/:id", AuthService.required, budgetItemsController.remove);
 
+// get all budget items within one budget
+router.get(
+  "/budget/:budgetId",
+  AuthService.optional,
+  budgetItemsController.getBudgetItemsForOneBudget
+);
 
 export default router;

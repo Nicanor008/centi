@@ -61,62 +61,57 @@ const BudgetForm = ({ methods }) => {
 };
 
 // Component for Budget Item Form
-const BudgetItemForm = ({ budget, methods }) => {
-  // const methods = useForm();
-  // const { handleSubmit } = methods;
-
-  // const onSubmit = async (data) => {
-  //   try {
-  //     // Include the budgetId in the budget item data
-  //     data.budgetId = budgetId;
-
-  //     // Send budget item data to the server using axios
-  //     await axios.post("/api/create-budget-item", data);
-
-  //     // Proceed to the next step
-  //     onNext();
-  //   } catch (error) {
-  //     console.error("Error creating budget item:", error);
-  //   }
-  // };
-
+const BudgetItemForm = ({ methods }) => {
   return (
     <>
-      <Input
-        placeholder="Budget Item Name"
-        bg={"gray.100"}
-        border="1px solid"
-        borderColor="gray.300"
-        color={"gray.500"}
-        _placeholder={{
-          color: "gray.500",
-        }}
-        {...methods.register("itemName")}
-        type="number"
-      />
-      <Input
-        placeholder="Budget Item Planned Expense"
-        bg={"gray.100"}
-        border="1px solid"
-        borderColor="gray.300"
-        color={"gray.500"}
-        _placeholder={{
-          color: "gray.500",
-        }}
-        {...methods.register("itemPlannedExpense")}
-        type="number"
-      />
-
-      {/* <label>Description:</label>
-      <input {...methods.register("description")} />
-
-      <label>Item Actual Expense:</label>
-      <input type="number" {...methods.register("itemActualExpense")} />
-
-      <label>Date:</label>
-      <input type="date" {...methods.register("date")} />
-
-      <button type="submit">Submit</button> */}
+      <VStack spacing={4}>
+        <Input
+          placeholder="Budget Item Name"
+          bg={"gray.100"}
+          border="1px solid"
+          borderColor="gray.300"
+          color={"gray.500"}
+          _placeholder={{
+            color: "gray.500",
+          }}
+          {...methods.register("name")}
+        />
+        <Input
+          placeholder="Budget Item Description"
+          bg={"gray.100"}
+          border="1px solid"
+          borderColor="gray.300"
+          color={"gray.500"}
+          _placeholder={{
+            color: "gray.500",
+          }}
+          {...methods.register("description")}
+        />
+        <Input
+          placeholder="Budget Spent Expense"
+          bg={"gray.100"}
+          border="1px solid"
+          borderColor="gray.300"
+          color={"gray.500"}
+          _placeholder={{
+            color: "gray.500",
+          }}
+          {...methods.register("actualExpenses")}
+          type="number"
+        />
+        {/* <Input
+          placeholder="Budget Item Planned Expense"
+          bg={"gray.100"}
+          border="1px solid"
+          borderColor="gray.300"
+          color={"gray.500"}
+          _placeholder={{
+            color: "gray.500",
+          }}
+          {...methods.register("plannedExpenses")}
+          type="number"
+        /> */}
+      </VStack>
     </>
   );
 };
@@ -131,9 +126,10 @@ const CreateBudget = () => {
     Number(currentStep) - 1 ?? 0
   );
   const { state } = useLocation();
+  console.log("........state.....", state);
   const [budget, setBudget] = React.useState(state?.budget ?? null);
 
-  const handleNext = async (data) => {
+  const handleNext = async () => {
     const payload = {
       ...getValues(),
       plannedExpenses: Number(getValues().plannedExpenses),
@@ -165,9 +161,34 @@ const CreateBudget = () => {
     reset();
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     // Perform any final actions here
-    console.log("Budget and budget items submitted successfully!");
+    console.log("Budget and budget items submitted successfully!", getValues());
+    const payload = {
+      ...getValues(),
+      plannedExpenses: Number(getValues().plannedExpenses),
+      actualExpenses: Number(getValues().actualExpenses),
+      budgetId: budget?._id,
+    };
+
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: "http://localhost:4005/api/v1/budget-items/",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: payload,
+    };
+
+    try {
+      await axios.request(config);
+      setTimeout(function () {
+        navigate(`/budget/items/${budget._id}`);
+      }, 2000);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const renderStepContent = () => {
@@ -219,23 +240,31 @@ const CreateBudget = () => {
           </Button>
         </Flex>
       </Flex>
+
+      {/* body */}
       <FormProvider {...methods}>
-        {/* <form onSubmit={handleSubmit(onSubmit)}> */}
         {renderStepContent()}
         <div>
           {activeStep > 0 && (
-            <button
-              type="button"
-              onClick={() => setActiveStep((prevStep) => prevStep - 1)}
+            <Button
+              fontFamily={"heading"}
+              mt={8}
+              bg="gray.400"
+              color={"white"}
+              onClick={() => navigate(-1)}
+              _hover={{
+                bg: "gray.400",
+                boxShadow: "xl",
+              }}
+              mr={4}
             >
               Back
-            </button>
+            </Button>
           )}
           {activeStep < 1 ? (
             <Button
               fontFamily={"heading"}
               mt={8}
-              w={"full"}
               bgGradient="linear(to-r, red.400,pink.400)"
               color={"white"}
               onClick={() => handleNext()}
@@ -248,10 +277,22 @@ const CreateBudget = () => {
               Next
             </Button>
           ) : (
-            <button type="submit">Submit</button>
+            <Button
+              fontFamily={"heading"}
+              mt={8}
+              bgGradient="linear(to-r, red.400,pink.400)"
+              color={"white"}
+              onClick={() => onSubmit()}
+              type="submit"
+              _hover={{
+                bgGradient: "linear(to-r, red.400,pink.400)",
+                boxShadow: "xl",
+              }}
+            >
+              Submit
+            </Button>
           )}
         </div>
-        {/* </form> */}
       </FormProvider>
     </Flex>
   );

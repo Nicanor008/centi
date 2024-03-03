@@ -1,14 +1,18 @@
 import Joi from "joi";
-import { schemas } from "../../helpers";
+import { schemas } from "../../../helpers";
 
 const { paginateValidationSchema, ObjectId } = schemas;
-
 
 export const customPaginateValidateSchema = paginateValidationSchema.keys();
 
 export const createValidationSchema = Joi.object({
-  field: Joi.string().required(),
-  field2: Joi.string().required()
+  name: Joi.string().required(),
+  description: Joi.string(),
+  plannedExpenses: Joi.number(),
+  actualExpenses: Joi.number(),
+  budgetId: Joi.string(),
+  isRecurring: Joi.bool(),
+  isActive: Joi.bool()
 });
 
 export const updateValidationSchema = Joi.object({

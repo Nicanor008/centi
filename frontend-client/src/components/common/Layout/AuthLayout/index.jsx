@@ -32,7 +32,7 @@ import { Outlet } from "react-router-dom";
 
 const LinkItems = [
   { name: "Dashboard", icon: FiHome, url: "dashboard" },
-  { name: "Budgets", icon: FiTrendingUp, url: "view" },
+  { name: "Budgets", icon: FiTrendingUp, url: "/budget/view" },
   { name: "Financial goals", icon: FiCompass, url: "#" },
   { name: "Templates", icon: FiStar, url: "#" },
   { name: "Settings", icon: FiSettings, url: "#" },
@@ -81,7 +81,7 @@ const NavItem = ({ icon, url, children, ...rest }) => {
         role="group"
         cursor="pointer"
         _hover={{
-          bg: "cyan.400",
+          bg: "red.300",
           color: "white",
         }}
         {...rest}

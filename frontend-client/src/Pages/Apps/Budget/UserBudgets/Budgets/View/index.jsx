@@ -97,7 +97,9 @@ function ViewUserBudgets() {
               <Tr
                 cursor="pointer"
                 key={idx}
-                onClick={() => navigate("/budget/add/2", { state: { budget } })}
+                onClick={() =>
+                  navigate(`/budget/items/${budget._id}`, { state: { budget } })
+                }
               >
                 <Td>{budget.name}</Td>
                 <Td>{budget?.description}</Td>
