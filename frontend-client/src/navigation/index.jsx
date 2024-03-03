@@ -32,7 +32,7 @@ export const routes = createRoutesFromElements(
         <Route element={<AuthLayout />}>
           <Route path="dashboard" element={<BudgetDashboard />} />
           <Route path="view" element={<ViewUserBudgets />} />
-          <Route path="add" element={<CreateUserBudgets />} />
+          <Route path="add/:currentStep" element={<CreateUserBudgets />} />
 
           {/* <Route path="*" element={<PageNotFoundScreen />} /> */}
         </Route>

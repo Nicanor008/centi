@@ -10,7 +10,7 @@ class BudgetService extends Service {
   }
 
   async viewAllBudgets() {
-    const response = await Budget.find();
+    const response = await Budget.find().sort({ createdAt: -1 });
     const result = {
       total: response.length,
       data: response
