@@ -119,7 +119,9 @@ function ViewUserBudgetItems() {
           </Button>
         </Flex>
       </Flex>
-
+      Total Expenses - KES. 5000 <br />
+      You still within your budget (budget.plannedIncome -
+      budgetItems.totalExpenses)
       <TableContainer bg="gray.200" my={4}>
         <Table variant="striped" colorScheme="red">
           <Thead>
