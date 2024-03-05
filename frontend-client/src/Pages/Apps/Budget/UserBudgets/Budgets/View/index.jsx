@@ -8,16 +8,25 @@ import {
   Tr,
   Th,
   Td,
-  TableCaption,
   TableContainer,
+  Box,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function ViewUserBudgets() {
   const navigate = useNavigate();
   const [budget, setBudget] = useState();
+
+  const cachedBudget = useMemo(() => {
+    if (!budget) return null;
+
+    return {
+      total: budget.total,
+      data: budget.data,
+    };
+  }, [budget]);
 
   useEffect(() => {
     let config = {
@@ -51,13 +60,27 @@ function ViewUserBudgets() {
         borderColor="gray.300"
         mb={[1, 4]}
       >
-        <Flex flexDir="column">
-          <Text fontWeight={600} fontSize={16}>
-            Budget Tracker
-          </Text>
-          <Text color="gray.500" fontSize={12} fontWeight={400}>
-            This is your budget history
-          </Text>
+        <Flex alignItems="center" gap={2}>
+          {cachedBudget?.data?.length ? (
+            <Text
+              bg="gray.300"
+              p="2px 8px"
+              borderRadius="full"
+              fontWeight="bold"
+            >
+              {cachedBudget?.data?.length}
+            </Text>
+          ) : (
+            <Box />
+          )}
+          <Flex flexDir="column">
+            <Text fontWeight={600} fontSize={16}>
+              Budget Tracker
+            </Text>
+            <Text color="gray.500" fontSize={12} fontWeight={400}>
+              This is your budget history
+            </Text>
+          </Flex>
         </Flex>
 
         <Flex mr={[0, 8]}>
@@ -72,20 +95,14 @@ function ViewUserBudgets() {
         </Flex>
       </Flex>
       {/* view all budgets - content */}
-      <Flex alignItems="center" gap={2}>
-        <Text bg="gray.300" p="2px 8px" borderRadius="full" fontWeight="bold">
-          {budget?.total}
-        </Text>{" "}
-        View All budgets Content
-      </Flex>
-
       <TableContainer bg="gray.200" my={4}>
         <Table variant="striped" colorScheme="red">
           <Thead>
             <Tr>
               <Th>Name</Th>
               <Th>Description</Th>
-              <Th>Planned Expenses</Th>
+              <Th>Total Money Spent</Th>
+              <Th>Total No. of Expenses</Th>
               <Th>Planned Income</Th>
               <Th>Active</Th>
               <Th>Recurring</Th>
@@ -93,7 +110,7 @@ function ViewUserBudgets() {
             </Tr>
           </Thead>
           <Tbody>
-            {budget?.data?.map((budget, idx) => (
+            {cachedBudget?.data?.map((budget, idx) => (
               <Tr
                 cursor="pointer"
                 key={idx}
@@ -104,6 +121,7 @@ function ViewUserBudgets() {
                 <Td>{budget.name}</Td>
                 <Td>{budget?.description}</Td>
                 <Td>KES {budget?.plannedExpenses}</Td>
+                <Td>{budget?.budgetItemsCount}</Td>
                 <Td>KES {budget?.plannedIncome}</Td>
                 <Td>{budget?.isActive ? "Yes" : "No"}</Td>
                 <Td>{budget?.isRecurring ? "Yes" : "No"}</Td>

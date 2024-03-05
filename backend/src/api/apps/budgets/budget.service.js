@@ -10,7 +10,30 @@ class BudgetService extends Service {
   }
 
   async viewAllBudgets() {
-    const response = await Budget.find().sort({ createdAt: -1 });
+    const response = await Budget.aggregate([
+      {
+        $lookup: {
+          from: "budgetitems", // the name of the BudgetItems collection
+          localField: "_id",
+          foreignField: "budgetId",
+          as: "budgetItems"
+        }
+      },
+      {
+        $addFields: {
+          budgetItemsCount: { $size: "$budgetItems" }
+        }
+      },
+      {
+        $project: {
+          budgetItems: 0 // exclude the array of budgetItems from the result
+        }
+      },
+      {
+        $sort: { createdAt: -1 }
+      }
+    ]);
+
     const result = {
       total: response.length,
       data: response

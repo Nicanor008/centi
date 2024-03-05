@@ -119,9 +119,18 @@ function ViewUserBudgetItems() {
           </Button>
         </Flex>
       </Flex>
-      Total Expenses - KES. 5000 <br />
-      You still within your budget (budget.plannedIncome -
-      budgetItems.totalExpenses)
+      <Flex my={3} justifyContent="space-between">
+        <Text>
+          Total Expenses - KES. <b>{budget?.plannedExpenses}</b>
+        </Text>
+        <Text>
+          Planned Income - KES. <b>{budget?.plannedIncome}</b>
+        </Text>
+        <Text>
+          Budget Started on -{" "}
+          <b>{new Date(budget?.createdAt).toDateString()}</b>
+        </Text>
+      </Flex>
       <TableContainer bg="gray.200" my={4}>
         <Table variant="striped" colorScheme="red">
           <Thead>
@@ -149,7 +158,7 @@ function ViewUserBudgetItems() {
                   <Td>KES {item?.actualExpenses}</Td>
                   <Td>{item?.isActive ? "Yes" : "No"}</Td>
                   <Td>{item?.isRecurring ? "Yes" : "No"}</Td>
-                  <Td>{new Date(item?.createdAt).toLocaleDateString()}</Td>
+                  <Td>{new Date(item?.createdAt).toDateString()}</Td>
                 </Tr>
               ))}
           </Tbody>
