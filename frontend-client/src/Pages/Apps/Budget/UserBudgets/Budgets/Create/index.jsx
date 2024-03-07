@@ -122,9 +122,7 @@ const CreateBudget = () => {
   const { currentStep } = useParams();
   const methods = useForm();
   const { handleSubmit, getValues, reset } = methods;
-  const [activeStep, setActiveStep] = React.useState(
-    Number(currentStep) - 1 ?? 0
-  );
+  const [activeStep, setActiveStep] = React.useState(Number(currentStep) - 1);
   const { state } = useLocation();
   console.log("........state.....", state);
   const [budget, setBudget] = React.useState(state?.budget ?? null);
@@ -132,8 +130,8 @@ const CreateBudget = () => {
   const handleNext = async () => {
     const payload = {
       ...getValues(),
-      plannedExpenses: Number(getValues().plannedExpenses),
-      plannedIncome: Number(getValues().plannedIncome),
+      plannedExpenses: Number(getValues()?.plannedExpenses) ?? 0,
+      plannedIncome: Number(getValues()?.plannedIncome) ?? 0,
     };
 
     let config = {
@@ -166,8 +164,10 @@ const CreateBudget = () => {
     console.log("Budget and budget items submitted successfully!", getValues());
     const payload = {
       ...getValues(),
-      plannedExpenses: Number(getValues().plannedExpenses),
-      actualExpenses: Number(getValues().actualExpenses),
+      actualExpenses: getValues()?.plannedExpenses
+        ? Number(getValues()?.plannedExpenses)
+        : 0,
+      plannedExpenses: Number(getValues()?.actualExpenses) ?? 0,
       budgetId: budget?._id,
     };
 

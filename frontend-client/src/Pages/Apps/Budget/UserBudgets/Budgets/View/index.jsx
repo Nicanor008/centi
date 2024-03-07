@@ -14,6 +14,7 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { FaEllipsisV } from "react-icons/fa";
 
 function ViewUserBudgets() {
   const navigate = useNavigate();
@@ -126,6 +127,9 @@ function ViewUserBudgets() {
                 <Td>{budget?.isActive ? "Yes" : "No"}</Td>
                 <Td>{budget?.isRecurring ? "Yes" : "No"}</Td>
                 <Td>{new Date(budget?.createdAt).toLocaleDateString()}</Td>
+                <Td>
+                  <FaEllipsisV />
+                </Td>
               </Tr>
             ))}
           </Tbody>

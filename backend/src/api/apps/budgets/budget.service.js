@@ -13,7 +13,7 @@ class BudgetService extends Service {
     const response = await Budget.aggregate([
       {
         $lookup: {
-          from: "budgetitems", // the name of the BudgetItems collection
+          from: "budgetitems",
           localField: "_id",
           foreignField: "budgetId",
           as: "budgetItems"
@@ -26,7 +26,7 @@ class BudgetService extends Service {
       },
       {
         $project: {
-          budgetItems: 0 // exclude the array of budgetItems from the result
+          budgetItems: 0
         }
       },
       {

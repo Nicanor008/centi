@@ -198,6 +198,6 @@ router.get("/:budgetId", budgetController.findOneBudgetById);
  *      401:
  *        $ref: "#/responses/Unauthorized"
  */
-router.delete("/:id", AuthService.required, budgetController.remove);
+router.delete("/:id", AuthService.optional, budgetController.remove);
 
 export default router;

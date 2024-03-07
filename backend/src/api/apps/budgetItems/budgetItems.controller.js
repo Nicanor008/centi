@@ -26,11 +26,20 @@ class BudgetItemsController extends Controller {
 
   // Get all budget items for one budget
   async getBudgetItemsForOneBudget(req, res, next) {
-    console.log("--------------GETS HERE...........");
     try {
       const result = await BudgetItemsService.getBudgetItemsForOneBudget(
         req.params.budgetId
       );
+      return Response.success(res, result, httpStatus.SUCCESS);
+    } catch (exception) {
+      next(exception);
+    }
+  }
+
+  // delete budget item
+  async deleteBudgetItem(req, res, next) {
+    try {
+      const result = await BudgetItemsService.deleteBudgetItem(req.params.id);
       return Response.success(res, result, httpStatus.SUCCESS);
     } catch (exception) {
       next(exception);

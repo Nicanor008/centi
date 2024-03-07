@@ -14,6 +14,16 @@ class BudgetItemsService extends Service {
       budgetId
     });
   }
+
+  async deleteBudgetItem(budgetItemId) {
+    const budgetItem = await BudgetItems.findById({ _id: budgetItemId });
+
+    if (!budgetItem) {
+      throw new Error("Budget item not found");
+    }
+
+    return await BudgetItems.findByIdAndDelete(budgetItemId);
+  }
 }
 
 export default new BudgetItemsService();

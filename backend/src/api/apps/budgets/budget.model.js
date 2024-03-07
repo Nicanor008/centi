@@ -28,27 +28,6 @@ const BudgetSchema = new Schema(
       type: Number,
       required: false
     },
-    // currencyId: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: "Currency",
-    //   required: true,
-    //   default: "USD" // TODO: update to USD id value
-    // },
-    // userId: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: "User",
-    //   required: true
-    // },
-    // financialGoal: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: "FinancialGoal",
-    //   required: false
-    // },
-    // category: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: "BudgetCategory",
-    //   required: false
-    // },
     isRecurring: {
       type: Boolean,
       required: false,

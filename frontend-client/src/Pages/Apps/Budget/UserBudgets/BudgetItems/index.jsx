@@ -8,19 +8,31 @@ import {
   Tr,
   Th,
   Td,
-  Center,
   TableContainer,
   Tbody,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  IconButton,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import { FaEdit, FaEllipsisV, FaTrash } from "react-icons/fa";
 
 function ViewUserBudgetItems() {
   const navigate = useNavigate();
   const [budget, setBudget] = useState();
   const [budgetItems, setBudgetItems] = useState();
   const { budgetId } = useParams();
+  const [dataUpdated, setDataUpdated] = useState(false);
+
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const handleEllipsisClick = (item) => {
+    setSelectedItem(item === selectedItem ? null : item);
+  };
 
   //   STEP 1: GET Budget
   useEffect(() => {
@@ -42,7 +54,7 @@ function ViewUserBudgetItems() {
     }
 
     makeRequest();
-  }, []);
+  }, [dataUpdated]);
 
   //   STEP 2: GET all budget items in a budget
   useEffect(() => {
@@ -65,7 +77,28 @@ function ViewUserBudgetItems() {
     }
 
     makeRequest();
-  }, []);
+  }, [dataUpdated]);
+
+  const deleteBudget = async (data) => {
+    try {
+      await axios.delete(`http://localhost:4005/api/v1/budget/${data?._id}`);
+      navigate("/budget/view");
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  };
+
+  const deleteBudgetItem = async (data) => {
+    try {
+      await axios.delete(
+        "http://localhost:4005/api/v1/budget-items/${data?._id}"
+      );
+      setDataUpdated(!dataUpdated);
+      setSelectedItem(null);
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  };
 
   return (
     <Flex flexDir="column">
@@ -104,7 +137,15 @@ function ViewUserBudgetItems() {
         <Flex mr={[0, 8]}>
           <Button mr={3}>Search</Button>
           <Button
-            bg="red.400"
+            border="1px solid"
+            borderColor="gray.400"
+            onClick={() => navigate("/budget/view")}
+          >
+            View All Budgets
+          </Button>
+          <Button
+            mx={3}
+            bg="green.300"
             color="white"
             onClick={() =>
               navigate("/budget/add/2", {
@@ -112,10 +153,20 @@ function ViewUserBudgetItems() {
               })
             }
             _hover={{
-              bg: "red.400",
+              bg: "green.300",
             }}
           >
             +
+          </Button>
+          <Button
+            bg="red.400"
+            color="white"
+            _hover={{
+              bg: "red.400",
+            }}
+            onClick={() => deleteBudget(budget)}
+          >
+            x
           </Button>
         </Flex>
       </Flex>
@@ -159,6 +210,30 @@ function ViewUserBudgetItems() {
                   <Td>{item?.isActive ? "Yes" : "No"}</Td>
                   <Td>{item?.isRecurring ? "Yes" : "No"}</Td>
                   <Td>{new Date(item?.createdAt).toDateString()}</Td>
+                  <Td>
+                    <Menu>
+                      <MenuButton
+                        as={IconButton}
+                        aria-label="Options"
+                        icon={<FaEllipsisV />}
+                        onClick={() => handleEllipsisClick(item)}
+                      />
+                      <MenuList>
+                        <MenuItem
+                          icon={<FaEdit />}
+                          onClick={() => setSelectedItem(null)}
+                        >
+                          Update
+                        </MenuItem>
+                        <MenuItem
+                          icon={<FaTrash />}
+                          onClick={() => deleteBudgetItem(item)}
+                        >
+                          Delete
+                        </MenuItem>
+                      </MenuList>
+                    </Menu>
+                  </Td>
                 </Tr>
               ))}
           </Tbody>
@@ -173,20 +248,33 @@ function ViewUserBudgetItems() {
           gap={4}
         >
           <Text>You haven't created an expense yet</Text>
-          <Button
-            bg="red.400"
-            color="white"
-            onClick={() =>
-              navigate("/budget/add/2", {
-                state: { budget: { ...budgetItems, _id: budgetId } },
-              })
-            }
-            _hover={{
-              bg: "red.400",
-            }}
-          >
-            Add Expense
-          </Button>
+          <Flex gap={3}>
+            <Button
+              bg="red.400"
+              color="white"
+              onClick={() => deleteBudget(budget)}
+              _hover={{
+                bg: "red.400",
+              }}
+            >
+              Delete Budget
+            </Button>
+
+            <Button
+              bg="green.400"
+              color="white"
+              onClick={() =>
+                navigate("/budget/add/2", {
+                  state: { budget: { ...budgetItems, _id: budgetId } },
+                })
+              }
+              _hover={{
+                bg: "green.400",
+              }}
+            >
+              Add Expense
+            </Button>
+          </Flex>
         </Flex>
       )}
     </Flex>
