@@ -6,7 +6,9 @@ class CategoryService extends Service {
     super(Category);
   }
   async create(data) {
-    return await Category.create(data);
+    return data.length > 0
+      ? await Category.insertMany(data)
+      : await Category.create(data);
   }
 
   // view category as per user

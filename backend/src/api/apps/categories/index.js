@@ -59,11 +59,7 @@ const router = express.Router();
  *        $ref: "#/responses/Unauthorized"
  */
 
-router.post(
-  "/",
-  [AuthService.optional, celebrate({ body: createValidationSchema })],
-  categoryController.create
-);
+router.post("/", [AuthService.optional], categoryController.create);
 
 /**
  * @swagger

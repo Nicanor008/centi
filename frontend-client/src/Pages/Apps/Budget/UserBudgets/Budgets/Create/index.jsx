@@ -15,7 +15,12 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import CreatableSelect from "react-select/creatable";
 
 // Component for Budget Form
-const BudgetForm = ({ methods, userCategories }) => {
+const BudgetForm = ({
+  methods,
+  userCategories,
+  selectedCategory,
+  handleSelectedCategory,
+}) => {
   return (
     <>
       <VStack spacing={4}>
@@ -64,6 +69,14 @@ const BudgetForm = ({ methods, userCategories }) => {
           }}
           {...methods.register("plannedExpenses")}
           type="number"
+        />
+        <CreatableSelect
+          isMulti
+          isCreatable
+          options={userCategories}
+          // styles={customStyles}
+          value={selectedCategory}
+          onChange={handleSelectedCategory}
         />
       </VStack>
     </>
@@ -168,9 +181,15 @@ const CreateBudget = () => {
     makeRequest();
   }, []);
 
-  const handleSelectedCategory = (selected) => {
+  const handleSelectedCategory = async (selected) => {
     setSelectedCategory(selected);
   };
+
+  const newCategoriesPayload = selectedCategory.map((item) => {
+    if (item?.__isNew__) {
+      return { name: item?.label };
+    }
+  });
 
   const handleNext = async () => {
     const payload = {
@@ -190,18 +209,25 @@ const CreateBudget = () => {
     };
 
     try {
+      // submit data
       const response = await axios.request(config);
       setBudget(response.data?.data);
+
+      // add category
+      await axios.post(
+        "http://localhost:4005/api/v1/category/",
+        newCategoriesPayload
+      );
+
+      // clean up
+      setSelectedCategory([]);
+      reset();
+
+      // go to the next form
       setActiveStep((prevStep) => prevStep + 1);
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
-    setBudget(null);
-    reset();
   };
 
   const onSubmit = async () => {
@@ -228,7 +254,17 @@ const CreateBudget = () => {
     };
 
     try {
+      // submit data
       await axios.request(config);
+
+      // add category
+      await axios.post(
+        "http://localhost:4005/api/v1/category/",
+        newCategoriesPayload
+      );
+
+      setSelectedCategory([]);
+      reset();
       setTimeout(function () {
         navigate(`/budget/items/${budget._id}`);
       }, 1000);

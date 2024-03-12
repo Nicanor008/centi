@@ -7,7 +7,7 @@ export const customPaginateValidateSchema = paginateValidationSchema.keys();
 
 export const createValidationSchema = Joi.object({
   name: Joi.string().required()
-});
+}).unknown(true);
 
 export const updateValidationSchema = Joi.object({
   name: Joi.string().optional()
