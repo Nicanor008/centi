@@ -9,12 +9,10 @@ import {
   VStack,
   HStack,
   Tag,
-  TagLeftIcon,
   TagLabel,
-  CloseButton,
-  Box,
 } from "@chakra-ui/react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import CreatableSelect from "react-select/creatable";
 
 // Component for Budget Form
 const BudgetForm = ({ methods }) => {
@@ -74,9 +72,8 @@ const BudgetForm = ({ methods }) => {
 
 // Component for Budget Item Form
 const BudgetItemForm = ({ methods }) => {
-  const [category, setCategory] = React.useState("");
-  const [filteredCategories, setFilteredCategories] = React.useState([]);
   const [userCategories, setUserCategories] = React.useState([]);
+  const [selectedOptions, setSelectedOptions] = React.useState([]);
 
   React.useEffect(() => {
     async function makeRequest() {
@@ -84,7 +81,13 @@ const BudgetItemForm = ({ methods }) => {
         const response = await axios.get(
           "http://localhost:4005/api/v1/category"
         );
-        setUserCategories(response.data.data);
+
+        const transformedData = response.data?.data?.map((item) => ({
+          value: item.name.toLowerCase(),
+          label: item.name,
+          ...item,
+        }));
+        setUserCategories(transformedData);
       } catch (error) {
         console.log(error);
       }
@@ -93,52 +96,10 @@ const BudgetItemForm = ({ methods }) => {
     makeRequest();
   }, []);
 
-  const handlecategoryChange = (e) => {
-    setCategory(e.target.value);
-
-    // Filter userCategories based on input
-    const filtered = userCategories.filter((cat) =>
-      cat?.name?.toLowerCase().includes(category?.toLowerCase())
-    );
-    setFilteredCategories(filtered);
+  const handleChange = (selected) => {
+    setSelectedOptions(selected);
   };
 
-  console.log(category, "...............CATEGORY........", filteredCategories);
-
-  const handlecategoryEnter = async (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-
-      // Add the entered tag to the category list
-      const currentCategory = methods.getValues("category") || [];
-      const newCategory = [...currentCategory, category.trim()];
-      methods.setValue("category", newCategory);
-
-      const payload = {
-        name: category,
-      };
-
-      let config = {
-        method: "post",
-        maxBodyLength: Infinity,
-        url: "http://localhost:4005/api/v1/category",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: payload,
-      };
-
-      try {
-        await axios.request(config);
-      } catch (error) {
-        console.log(error);
-      }
-
-      // Clear the tag input field
-      setCategory("");
-      setFilteredCategories([]);
-    }
-  };
   return (
     <>
       <VStack spacing={4}>
@@ -183,47 +144,14 @@ const BudgetItemForm = ({ methods }) => {
             </Tag>
           ))}
         </HStack>
-        <Input
-          placeholder="Enter category and press Enter"
-          value={category}
-          onChange={handlecategoryChange}
-          onKeyDown={handlecategoryEnter}
-          bg={"gray.100"}
-          border="1px solid"
-          borderColor="gray.300"
-          color={"gray.500"}
-          _placeholder={{
-            color: "gray.500",
-          }}
+        <CreatableSelect
+          isMulti
+          isCreatable
+          options={userCategories}
+          // styles={customStyles}
+          value={selectedOptions}
+          onChange={handleChange}
         />
-        {filteredCategories?.length > 0 && (
-          <Flex
-            flexDir="column"
-            gap={2}
-            w="100%"
-            bg="red.100"
-            p={4}
-            my={-4}
-            zIndex={1}
-            border="2px solid"
-            borderColor="blue.500"
-            borderRadius={8}
-          >
-            {filteredCategories?.map((category) => (
-              <Box px={2} key={category?._id} cursor="pointer">
-                {category?.name}
-              </Box>
-            ))}
-          </Flex>
-        )}
-
-        {/* <HStack spacing={4}>
-          {["sm", "md", "lg"].map((size) => (
-            <Tag size="lg" key={size} variant="subtle" colorScheme="cyan">
-              <TagLabel>Cyan</TagLabel>
-            </Tag>
-          ))}
-        </HStack> */}
       </VStack>
     </>
   );
