@@ -37,6 +37,10 @@ const BudgetSchema = new Schema(
       type: Boolean,
       required: false,
       default: true
+    },
+    category: {
+      type: Array,
+      required: false
     }
     // TODO: Add reminderMeOn: ["date1", "date2", "date3"]
   },

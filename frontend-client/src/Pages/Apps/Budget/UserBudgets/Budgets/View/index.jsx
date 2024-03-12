@@ -10,6 +10,7 @@ import {
   Td,
   TableContainer,
   Box,
+  Tag,
 } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -127,6 +128,7 @@ function ViewUserBudgets() {
               <Th>Total Money Spent</Th>
               <Th>Total No. of Expenses</Th>
               <Th>Planned Income</Th>
+              <Th>Category</Th>
               <Th>Active</Th>
               <Th>Recurring</Th>
               <Th>Date Created</Th>
@@ -146,6 +148,25 @@ function ViewUserBudgets() {
                 <Td>KES {budget?.plannedExpenses}</Td>
                 <Td>{budget?.budgetItemsCount}</Td>
                 <Td>KES {budget?.plannedIncome}</Td>
+                <Td
+                  minW={budget?.category?.length > 0 ? "200px" : "auto"}
+                  h={budget?.category?.length > 0 ? "80px" : "auto"}
+                  display="flex"
+                  flexWrap="wrap"
+                  overflow="scroll"
+                  alignItems="center"
+                  bg="inherit"
+                >
+                  {budget?.category?.map((category) => (
+                    <Tag
+                      mr={1}
+                      mb={budget?.category.length > 3 ? 1 : 0}
+                      key={category._id}
+                    >
+                      {category?.__isNew__ ? category?.label : category.name}
+                    </Tag>
+                  ))}
+                </Td>
                 <Td>{budget?.isActive ? "Yes" : "No"}</Td>
                 <Td>{budget?.isRecurring ? "Yes" : "No"}</Td>
                 <Td>{new Date(budget?.createdAt).toLocaleDateString()}</Td>

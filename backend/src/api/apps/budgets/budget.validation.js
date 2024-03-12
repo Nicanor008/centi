@@ -13,7 +13,8 @@ export const createValidationSchema = Joi.object({
   plannedIncome: Joi.number(),
   actualIncome: Joi.number(),
   isRecurring: Joi.bool(),
-  isActive: Joi.bool()
+  isActive: Joi.bool(),
+  category: Joi.array().optional()
 });
 
 export const updateValidationSchema = Joi.object({

@@ -185,15 +185,21 @@ const CreateBudget = () => {
     setSelectedCategory(selected);
   };
 
-  const newCategoriesPayload = selectedCategory.map((item) => {
+  const newCategoriesPayload = selectedCategory?.map((item) => {
     if (item?.__isNew__) {
       return { name: item?.label };
     }
+    return;
   });
+
+  const removedUndefinedInCategory = newCategoriesPayload.filter(
+    (item) => item !== undefined
+  );
 
   const handleNext = async () => {
     const payload = {
       ...getValues(),
+      category: selectedCategory,
       plannedExpenses: Number(getValues()?.plannedExpenses) ?? 0,
       plannedIncome: Number(getValues()?.plannedIncome) ?? 0,
     };
@@ -214,10 +220,11 @@ const CreateBudget = () => {
       setBudget(response.data?.data);
 
       // add category
-      await axios.post(
-        "http://localhost:4005/api/v1/category/",
-        newCategoriesPayload
-      );
+      removedUndefinedInCategory?.length > 0 &&
+        (await axios.post(
+          "http://localhost:4005/api/v1/category/",
+          removedUndefinedInCategory
+        ));
 
       // clean up
       setSelectedCategory([]);
@@ -232,7 +239,6 @@ const CreateBudget = () => {
 
   const onSubmit = async () => {
     // Perform any final actions here
-    console.log("Budget and budget items submitted successfully!", getValues());
     const payload = {
       ...getValues(),
       category: selectedCategory,
@@ -278,7 +284,12 @@ const CreateBudget = () => {
       case 0:
         return (
           <form onSubmit={handleSubmit(handleNext)}>
-            <BudgetForm methods={methods} userCategories={userCategories} />
+            <BudgetForm
+              methods={methods}
+              userCategories={userCategories}
+              setSelectedCategory={setSelectedCategory}
+              handleSelectedCategory={handleSelectedCategory}
+            />
           </form>
         );
       case 1:
