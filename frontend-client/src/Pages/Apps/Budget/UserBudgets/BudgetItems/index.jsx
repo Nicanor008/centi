@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { FaEdit, FaEllipsisV, FaTrash } from "react-icons/fa";
+import { BsFilterRight } from "react-icons/bs";
 
 function ViewUserBudgetItems() {
   const navigate = useNavigate();
@@ -134,7 +135,7 @@ function ViewUserBudgetItems() {
           </Flex>
         </Flex>
 
-        <Flex mr={[0, 8]}>
+        <Flex gap={2} alignItems="center">
           <Button mr={3}>Search</Button>
           <Button
             border="1px solid"
@@ -144,7 +145,6 @@ function ViewUserBudgetItems() {
             View All Budgets
           </Button>
           <Button
-            mx={3}
             bg="green.300"
             color="white"
             onClick={() =>
@@ -167,6 +167,14 @@ function ViewUserBudgetItems() {
             onClick={() => deleteBudget(budget)}
           >
             x
+          </Button>
+          <Button
+            border="1px solid"
+            borderColor="gray.400"
+            p={0}
+            _hover={{ borderColor: "gray.400" }}
+          >
+            <BsFilterRight cursor="pointer" />
           </Button>
         </Flex>
       </Flex>

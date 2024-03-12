@@ -85,7 +85,7 @@ function ViewUserBudgets() {
           </Flex>
         </Flex>
 
-        <Flex alignItems="center" gap={3}>
+        <Flex alignItems="center" gap={2}>
           <Button mr={3}>Search</Button>
           <Button
             bg="red.400"
@@ -94,9 +94,14 @@ function ViewUserBudgets() {
           >
             Create Budget
           </Button>
-          {/* <Button> */}
-          <BsFilterRight size={20} cursor="pointer" />
-          {/* </Button> */}
+          <Button
+            border="1px solid"
+            borderColor="gray.400"
+            p={0}
+            _hover={{ borderColor: "gray.400" }}
+          >
+            <BsFilterRight cursor="pointer" />
+          </Button>
         </Flex>
       </Flex>
       <Flex alignItems="center" justifyContent="space-between">
