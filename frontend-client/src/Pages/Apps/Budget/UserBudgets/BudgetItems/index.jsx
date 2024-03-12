@@ -15,6 +15,7 @@ import {
   MenuList,
   MenuItem,
   IconButton,
+  Tag,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -198,6 +199,7 @@ function ViewUserBudgetItems() {
               <Th>Description</Th>
               <Th>Expenses</Th>
               <Th>Planned Income</Th>
+              <Th>Category</Th>
               <Th>Active</Th>
               <Th>Recurring</Th>
               <Th>Date Created</Th>
@@ -215,6 +217,25 @@ function ViewUserBudgetItems() {
                   <Td>{item?.description}</Td>
                   <Td>KES {item?.plannedExpenses}</Td>
                   <Td>KES {item?.actualExpenses}</Td>
+                  <Td
+                    minW={item?.category?.length > 0 ? "200px" : "auto"}
+                    h={item?.category?.length > 0 ? "80px" : "auto"}
+                    display="flex"
+                    flexWrap="wrap"
+                    overflow="scroll"
+                    alignItems="center"
+                    bg="inherit"
+                  >
+                    {item?.category?.map((category) => (
+                      <Tag
+                        mr={1}
+                        mb={item?.category.length > 3 ? 1 : 0}
+                        key={category._id}
+                      >
+                        {category?.__isNew__ ? category?.label : category.name}
+                      </Tag>
+                    ))}
+                  </Td>
                   <Td>{item?.isActive ? "Yes" : "No"}</Td>
                   <Td>{item?.isRecurring ? "Yes" : "No"}</Td>
                   <Td>{new Date(item?.createdAt).toDateString()}</Td>

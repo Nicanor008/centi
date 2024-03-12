@@ -15,7 +15,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import CreatableSelect from "react-select/creatable";
 
 // Component for Budget Form
-const BudgetForm = ({ methods }) => {
+const BudgetForm = ({ methods, userCategories }) => {
   return (
     <>
       <VStack spacing={4}>
@@ -71,35 +71,12 @@ const BudgetForm = ({ methods }) => {
 };
 
 // Component for Budget Item Form
-const BudgetItemForm = ({ methods }) => {
-  const [userCategories, setUserCategories] = React.useState([]);
-  const [selectedOptions, setSelectedOptions] = React.useState([]);
-
-  React.useEffect(() => {
-    async function makeRequest() {
-      try {
-        const response = await axios.get(
-          "http://localhost:4005/api/v1/category"
-        );
-
-        const transformedData = response.data?.data?.map((item) => ({
-          value: item.name.toLowerCase(),
-          label: item.name,
-          ...item,
-        }));
-        setUserCategories(transformedData);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    makeRequest();
-  }, []);
-
-  const handleChange = (selected) => {
-    setSelectedOptions(selected);
-  };
-
+const BudgetItemForm = ({
+  methods,
+  userCategories,
+  selectedCategory,
+  handleSelectedCategory,
+}) => {
   return (
     <>
       <VStack spacing={4}>
@@ -149,8 +126,8 @@ const BudgetItemForm = ({ methods }) => {
           isCreatable
           options={userCategories}
           // styles={customStyles}
-          value={selectedOptions}
-          onChange={handleChange}
+          value={selectedCategory}
+          onChange={handleSelectedCategory}
         />
       </VStack>
     </>
@@ -166,6 +143,34 @@ const CreateBudget = () => {
   const [activeStep, setActiveStep] = React.useState(Number(currentStep) - 1);
   const { state } = useLocation();
   const [budget, setBudget] = React.useState(state?.budget ?? null);
+  const [selectedCategory, setSelectedCategory] = React.useState([]);
+
+  const [userCategories, setUserCategories] = React.useState([]);
+
+  React.useEffect(() => {
+    async function makeRequest() {
+      try {
+        const response = await axios.get(
+          "http://localhost:4005/api/v1/category"
+        );
+
+        const transformedData = response.data?.data?.map((item) => ({
+          value: item.name.toLowerCase(),
+          label: item.name,
+          ...item,
+        }));
+        setUserCategories(transformedData);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    makeRequest();
+  }, []);
+
+  const handleSelectedCategory = (selected) => {
+    setSelectedCategory(selected);
+  };
 
   const handleNext = async () => {
     const payload = {
@@ -204,6 +209,7 @@ const CreateBudget = () => {
     console.log("Budget and budget items submitted successfully!", getValues());
     const payload = {
       ...getValues(),
+      category: selectedCategory,
       actualExpenses: getValues()?.plannedExpenses
         ? Number(getValues()?.plannedExpenses)
         : 0,
@@ -225,7 +231,7 @@ const CreateBudget = () => {
       await axios.request(config);
       setTimeout(function () {
         navigate(`/budget/items/${budget._id}`);
-      }, 2000);
+      }, 1000);
     } catch (error) {
       console.log(error);
     }
@@ -236,13 +242,19 @@ const CreateBudget = () => {
       case 0:
         return (
           <form onSubmit={handleSubmit(handleNext)}>
-            <BudgetForm methods={methods} />
+            <BudgetForm methods={methods} userCategories={userCategories} />
           </form>
         );
       case 1:
         return (
           <form onSubmit={handleSubmit(onSubmit)}>
-            <BudgetItemForm budget={budget} methods={methods} />
+            <BudgetItemForm
+              budget={budget}
+              methods={methods}
+              userCategories={userCategories}
+              setSelectedCategory={setSelectedCategory}
+              handleSelectedCategory={handleSelectedCategory}
+            />
           </form>
         );
       default:

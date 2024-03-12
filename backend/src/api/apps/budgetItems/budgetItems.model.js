@@ -30,6 +30,10 @@ const BudgetItemsSchema = new Schema(
       ref: "Budget",
       required: true
     },
+    category: {
+      type: Array,
+      required: false
+    },
     // currencyId: {
     //   type: Schema.Types.ObjectId,
     //   ref: "Currency",
