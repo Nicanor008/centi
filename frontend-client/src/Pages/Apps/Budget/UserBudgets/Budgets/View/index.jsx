@@ -15,6 +15,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaEllipsisV } from "react-icons/fa";
+import { BsFilterRight } from "react-icons/bs";
 
 function ViewUserBudgets() {
   const navigate = useNavigate();
@@ -84,7 +85,7 @@ function ViewUserBudgets() {
           </Flex>
         </Flex>
 
-        <Flex mr={[0, 8]}>
+        <Flex alignItems="center" gap={3}>
           <Button mr={3}>Search</Button>
           <Button
             bg="red.400"
@@ -93,7 +94,23 @@ function ViewUserBudgets() {
           >
             Create Budget
           </Button>
+          {/* <Button> */}
+          <BsFilterRight size={20} cursor="pointer" />
+          {/* </Button> */}
         </Flex>
+      </Flex>
+      <Flex alignItems="center" justifyContent="space-between">
+        <Text>
+          Total spent from 15/02/2022 is <b>KES. 500, 000</b>
+        </Text>
+        <Button
+          border="1px solid"
+          borderColor="gray.200"
+          color="gray.500"
+          fontWeight={500}
+        >
+          View Budget analytics
+        </Button>
       </Flex>
       {/* view all budgets - content */}
       <TableContainer bg="gray.200" my={4}>

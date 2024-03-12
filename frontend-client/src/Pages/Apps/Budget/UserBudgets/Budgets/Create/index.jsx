@@ -1,7 +1,19 @@
 import React from "react";
 import axios from "axios";
 import { useForm, FormProvider } from "react-hook-form";
-import { Flex, Text, Button, Input, VStack } from "@chakra-ui/react";
+import {
+  Flex,
+  Text,
+  Button,
+  Input,
+  VStack,
+  HStack,
+  Tag,
+  TagLeftIcon,
+  TagLabel,
+  CloseButton,
+  Box,
+} from "@chakra-ui/react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 // Component for Budget Form
@@ -62,6 +74,71 @@ const BudgetForm = ({ methods }) => {
 
 // Component for Budget Item Form
 const BudgetItemForm = ({ methods }) => {
+  const [category, setCategory] = React.useState("");
+  const [filteredCategories, setFilteredCategories] = React.useState([]);
+  const [userCategories, setUserCategories] = React.useState([]);
+
+  React.useEffect(() => {
+    async function makeRequest() {
+      try {
+        const response = await axios.get(
+          "http://localhost:4005/api/v1/category"
+        );
+        setUserCategories(response.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    makeRequest();
+  }, []);
+
+  const handlecategoryChange = (e) => {
+    setCategory(e.target.value);
+
+    // Filter userCategories based on input
+    const filtered = userCategories.filter((cat) =>
+      cat?.name?.toLowerCase().includes(category?.toLowerCase())
+    );
+    setFilteredCategories(filtered);
+  };
+
+  console.log(category, "...............CATEGORY........", filteredCategories);
+
+  const handlecategoryEnter = async (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+
+      // Add the entered tag to the category list
+      const currentCategory = methods.getValues("category") || [];
+      const newCategory = [...currentCategory, category.trim()];
+      methods.setValue("category", newCategory);
+
+      const payload = {
+        name: category,
+      };
+
+      let config = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url: "http://localhost:4005/api/v1/category",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: payload,
+      };
+
+      try {
+        await axios.request(config);
+      } catch (error) {
+        console.log(error);
+      }
+
+      // Clear the tag input field
+      setCategory("");
+      setFilteredCategories([]);
+    }
+  };
   return (
     <>
       <VStack spacing={4}>
@@ -99,8 +176,18 @@ const BudgetItemForm = ({ methods }) => {
           {...methods.register("actualExpenses")}
           type="number"
         />
-        {/* <Input
-          placeholder="Budget Item Planned Expense"
+        <HStack spacing={4}>
+          {methods.getValues("category")?.map((tag, index) => (
+            <Tag size="lg" key={tag} variant="subtle" colorScheme="cyan">
+              <TagLabel>{tag}</TagLabel>
+            </Tag>
+          ))}
+        </HStack>
+        <Input
+          placeholder="Enter category and press Enter"
+          value={category}
+          onChange={handlecategoryChange}
+          onKeyDown={handlecategoryEnter}
           bg={"gray.100"}
           border="1px solid"
           borderColor="gray.300"
@@ -108,9 +195,35 @@ const BudgetItemForm = ({ methods }) => {
           _placeholder={{
             color: "gray.500",
           }}
-          {...methods.register("plannedExpenses")}
-          type="number"
-        /> */}
+        />
+        {filteredCategories?.length > 0 && (
+          <Flex
+            flexDir="column"
+            gap={2}
+            w="100%"
+            bg="red.100"
+            p={4}
+            my={-4}
+            zIndex={1}
+            border="2px solid"
+            borderColor="blue.500"
+            borderRadius={8}
+          >
+            {filteredCategories?.map((category) => (
+              <Box px={2} key={category?._id} cursor="pointer">
+                {category?.name}
+              </Box>
+            ))}
+          </Flex>
+        )}
+
+        {/* <HStack spacing={4}>
+          {["sm", "md", "lg"].map((size) => (
+            <Tag size="lg" key={size} variant="subtle" colorScheme="cyan">
+              <TagLabel>Cyan</TagLabel>
+            </Tag>
+          ))}
+        </HStack> */}
       </VStack>
     </>
   );
@@ -124,7 +237,6 @@ const CreateBudget = () => {
   const { handleSubmit, getValues, reset } = methods;
   const [activeStep, setActiveStep] = React.useState(Number(currentStep) - 1);
   const { state } = useLocation();
-  console.log("........state.....", state);
   const [budget, setBudget] = React.useState(state?.budget ?? null);
 
   const handleNext = async () => {
