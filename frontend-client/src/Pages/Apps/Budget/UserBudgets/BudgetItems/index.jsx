@@ -27,6 +27,7 @@ import axios from "axios";
 import { FaEdit, FaEllipsisV, FaTrash } from "react-icons/fa";
 import { BsFilterRight } from "react-icons/bs";
 import { MdClose } from "react-icons/md";
+import DataNotFound from "../../../../../components/ErrorPages/DataNotFound";
 
 function ViewUserBudgetItems() {
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ function ViewUserBudgetItems() {
   const [budgetItems, setBudgetItems] = useState({ filtered: false });
   const { budgetId } = useParams();
   const [dataUpdated, setDataUpdated] = useState(false);
+  const [manualRefresh, setManualRefresh] = useState(false);
 
   const [selectedItem, setSelectedItem] = useState(null);
   const [searchText, setSearchText] = useState("");
@@ -174,8 +176,10 @@ function ViewUserBudgetItems() {
           </Flex>
         </Flex>
 
+        {/* menu */}
         <Flex gap={2} alignItems="center">
-          {budgetItems?.data?.length > 0 && (
+          {(budgetItems?.data?.length === 0 && budgetItems?.search) ||
+          budgetItems?.data?.length > 0 ? (
             <Input
               placeholder="Search Budget ..."
               bg={"gray.100"}
@@ -189,6 +193,8 @@ function ViewUserBudgetItems() {
               onChange={(e) => handleSearchChange(e.target.value)}
               w="fit-content"
             />
+          ) : (
+            <></>
           )}
           <Button
             border="1px solid"
@@ -221,7 +227,8 @@ function ViewUserBudgetItems() {
           >
             x
           </Button>
-          {budgetItems?.data?.length > 0 && (
+          {(budgetItems?.data?.length === 0 && budgetItems?.filtered) ||
+          budgetItems?.data?.length > 0 ? (
             <Menu closeOnSelect={true}>
               <MenuButton
                 as={IconButton}
@@ -270,9 +277,12 @@ function ViewUserBudgetItems() {
                 </MenuOptionGroup>
               </MenuList>
             </Menu>
+          ) : (
+            <></>
           )}
         </Flex>
       </Flex>
+      {/* budget metadata/analytics */}
       <Flex my={3} justifyContent="space-between">
         <Text>
           Total Expenses - KES. <b>sum budget items expenses</b>
@@ -365,7 +375,9 @@ function ViewUserBudgetItems() {
           </Tbody>
         </Table>
       </TableContainer>
-      {budgetItems?.data?.length < 1 && !budgetItems?.filtered && (
+      {(budgetItems?.data?.length < 1 &&
+        (budgetItems?.filtered || budgetItems?.search)) ||
+      budgetItems?.data?.length < 1 ? (
         <Flex
           alignItems="center"
           justifyContent="center"
@@ -373,7 +385,7 @@ function ViewUserBudgetItems() {
           flexDir="column"
           gap={4}
         >
-          <Text>You haven't created an expense yet</Text>
+          <DataNotFound />
           <Flex gap={3}>
             <Button
               bg="red.400"
@@ -402,6 +414,8 @@ function ViewUserBudgetItems() {
             </Button>
           </Flex>
         </Flex>
+      ) : (
+        <></>
       )}
     </Flex>
   );
