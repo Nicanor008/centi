@@ -25,11 +25,17 @@ import axios from "axios";
 import { FaEllipsisV } from "react-icons/fa";
 import { BsFilterRight } from "react-icons/bs";
 import { MdClose } from "react-icons/md";
+import DatePicker, {
+  defaultDatePickerOptions,
+} from "../../../../../../components/DatePicker";
 
 function ViewUserBudgets() {
   const navigate = useNavigate();
   const [budget, setBudget] = useState({ filtered: false });
   const [manualRefresh, setManualRefresh] = useState(false);
+  const [datePickerValue, setDatePickerValue] = useState(
+    defaultDatePickerOptions[0]
+  );
 
   const cachedBudget = useMemo(() => {
     if (!budget) return null;
@@ -161,6 +167,10 @@ function ViewUserBudgets() {
                   No
                 </MenuItemOption>
               </MenuOptionGroup>
+              <DatePicker
+                value={datePickerValue}
+                onChange={(newValue) => setDatePickerValue(newValue)}
+              />
             </MenuList>
           </Menu>
         </Flex>
