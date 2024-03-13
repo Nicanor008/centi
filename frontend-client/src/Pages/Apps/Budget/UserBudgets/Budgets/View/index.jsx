@@ -139,19 +139,21 @@ function ViewUserBudgets() {
         </Flex>
 
         <Flex alignItems="center" gap={2}>
-          <Input
-            placeholder="Search Budget ..."
-            bg={"gray.100"}
-            border="1px solid"
-            borderColor="gray.300"
-            color={"gray.500"}
-            _placeholder={{
-              color: "gray.500",
-            }}
-            value={searchText}
-            onChange={(e) => handleSearchChange(e.target.value)}
-            w="fit-content"
-          />
+          {cachedBudget?.data?.length > 0 && (
+            <Input
+              placeholder="Search Budget ..."
+              bg={"gray.100"}
+              border="1px solid"
+              borderColor="gray.300"
+              color={"gray.500"}
+              _placeholder={{
+                color: "gray.500",
+              }}
+              value={searchText}
+              onChange={(e) => handleSearchChange(e.target.value)}
+              w="fit-content"
+            />
+          )}
           <Button
             bg="red.400"
             color="white"
@@ -159,54 +161,56 @@ function ViewUserBudgets() {
           >
             Create Budget
           </Button>
-          <Menu closeOnSelect={true}>
-            <MenuButton
-              as={IconButton}
-              aria-label="filter"
-              icon={
-                budget?.filtered ? (
-                  <MdClose onClick={() => setManualRefresh(true)} />
-                ) : (
-                  <BsFilterRight cursor="pointer" />
-                )
-              }
-            />
-            <MenuList>
-              <MenuOptionGroup title="Status" type="radio">
-                <MenuItemOption
-                  value="yes"
-                  onClick={() => handleFilterBudget({ isActive: true })}
-                >
-                  Active
-                </MenuItemOption>
-                <MenuItemOption
-                  value="no"
-                  onClick={() => handleFilterBudget({ isActive: false })}
-                >
-                  Inactive
-                </MenuItemOption>
-              </MenuOptionGroup>
-              <MenuDivider />
-              <MenuOptionGroup title="Recurring" type="radio">
-                <MenuItemOption
-                  value="yes"
-                  onClick={() => handleFilterBudget({ isRecurring: true })}
-                >
-                  Yes
-                </MenuItemOption>
-                <MenuItemOption
-                  value="no"
-                  onClick={() => handleFilterBudget({ isRecurring: false })}
-                >
-                  No
-                </MenuItemOption>
-              </MenuOptionGroup>
-              <DatePicker
-                value={datePickerValue}
-                onChange={(newValue) => setDatePickerValue(newValue)}
+          {cachedBudget?.data?.length > 0 && (
+            <Menu closeOnSelect={true}>
+              <MenuButton
+                as={IconButton}
+                aria-label="filter"
+                icon={
+                  budget?.filtered ? (
+                    <MdClose onClick={() => setManualRefresh(true)} />
+                  ) : (
+                    <BsFilterRight cursor="pointer" />
+                  )
+                }
               />
-            </MenuList>
-          </Menu>
+              <MenuList>
+                <MenuOptionGroup title="Status" type="radio">
+                  <MenuItemOption
+                    value="yes"
+                    onClick={() => handleFilterBudget({ isActive: true })}
+                  >
+                    Active
+                  </MenuItemOption>
+                  <MenuItemOption
+                    value="no"
+                    onClick={() => handleFilterBudget({ isActive: false })}
+                  >
+                    Inactive
+                  </MenuItemOption>
+                </MenuOptionGroup>
+                <MenuDivider />
+                <MenuOptionGroup title="Recurring" type="radio">
+                  <MenuItemOption
+                    value="yes"
+                    onClick={() => handleFilterBudget({ isRecurring: true })}
+                  >
+                    Yes
+                  </MenuItemOption>
+                  <MenuItemOption
+                    value="no"
+                    onClick={() => handleFilterBudget({ isRecurring: false })}
+                  >
+                    No
+                  </MenuItemOption>
+                </MenuOptionGroup>
+                <DatePicker
+                  value={datePickerValue}
+                  onChange={(newValue) => setDatePickerValue(newValue)}
+                />
+              </MenuList>
+            </Menu>
+          )}
         </Flex>
       </Flex>
       <Flex alignItems="center" justifyContent="space-between">

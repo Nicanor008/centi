@@ -175,19 +175,21 @@ function ViewUserBudgetItems() {
         </Flex>
 
         <Flex gap={2} alignItems="center">
-          <Input
-            placeholder="Search Budget ..."
-            bg={"gray.100"}
-            border="1px solid"
-            borderColor="gray.300"
-            color={"gray.500"}
-            _placeholder={{
-              color: "gray.500",
-            }}
-            value={searchText}
-            onChange={(e) => handleSearchChange(e.target.value)}
-            w="fit-content"
-          />
+          {budgetItems?.data?.length > 0 && (
+            <Input
+              placeholder="Search Budget ..."
+              bg={"gray.100"}
+              border="1px solid"
+              borderColor="gray.300"
+              color={"gray.500"}
+              _placeholder={{
+                color: "gray.500",
+              }}
+              value={searchText}
+              onChange={(e) => handleSearchChange(e.target.value)}
+              w="fit-content"
+            />
+          )}
           <Button
             border="1px solid"
             borderColor="gray.400"
@@ -219,52 +221,56 @@ function ViewUserBudgetItems() {
           >
             x
           </Button>
-          <Menu closeOnSelect={true}>
-            <MenuButton
-              as={IconButton}
-              aria-label="filter"
-              icon={
-                budgetItems?.filtered ? (
-                  <MdClose onClick={() => setManualRefresh(true)} />
-                ) : (
-                  <BsFilterRight cursor="pointer" />
-                )
-              }
-            />
-            <MenuList>
-              <MenuOptionGroup title="Status" type="radio">
-                <MenuItemOption
-                  value="yes"
-                  onClick={() => handleFilterBudgetItems({ isActive: true })}
-                >
-                  Active
-                </MenuItemOption>
-                <MenuItemOption
-                  value="no"
-                  onClick={() => handleFilterBudgetItems({ isActive: false })}
-                >
-                  Inactive
-                </MenuItemOption>
-              </MenuOptionGroup>
-              <MenuDivider />
-              <MenuOptionGroup title="Recurring" type="radio">
-                <MenuItemOption
-                  value="yes"
-                  onClick={() => handleFilterBudgetItems({ isRecurring: true })}
-                >
-                  Yes
-                </MenuItemOption>
-                <MenuItemOption
-                  value="no"
-                  onClick={() =>
-                    handleFilterBudgetItems({ isRecurring: false })
-                  }
-                >
-                  No
-                </MenuItemOption>
-              </MenuOptionGroup>
-            </MenuList>
-          </Menu>
+          {budgetItems?.data?.length > 0 && (
+            <Menu closeOnSelect={true}>
+              <MenuButton
+                as={IconButton}
+                aria-label="filter"
+                icon={
+                  budgetItems?.filtered ? (
+                    <MdClose onClick={() => setManualRefresh(true)} />
+                  ) : (
+                    <BsFilterRight cursor="pointer" />
+                  )
+                }
+              />
+              <MenuList>
+                <MenuOptionGroup title="Status" type="radio">
+                  <MenuItemOption
+                    value="yes"
+                    onClick={() => handleFilterBudgetItems({ isActive: true })}
+                  >
+                    Active
+                  </MenuItemOption>
+                  <MenuItemOption
+                    value="no"
+                    onClick={() => handleFilterBudgetItems({ isActive: false })}
+                  >
+                    Inactive
+                  </MenuItemOption>
+                </MenuOptionGroup>
+                <MenuDivider />
+                <MenuOptionGroup title="Recurring" type="radio">
+                  <MenuItemOption
+                    value="yes"
+                    onClick={() =>
+                      handleFilterBudgetItems({ isRecurring: true })
+                    }
+                  >
+                    Yes
+                  </MenuItemOption>
+                  <MenuItemOption
+                    value="no"
+                    onClick={() =>
+                      handleFilterBudgetItems({ isRecurring: false })
+                    }
+                  >
+                    No
+                  </MenuItemOption>
+                </MenuOptionGroup>
+              </MenuList>
+            </Menu>
+          )}
         </Flex>
       </Flex>
       <Flex my={3} justifyContent="space-between">
