@@ -29,6 +29,7 @@ import { MdClose } from "react-icons/md";
 import DatePicker, {
   defaultDatePickerOptions,
 } from "../../../../../../components/DatePicker";
+import DataNotFound from "../../../../../../components/ErrorPages/DataNotFound";
 
 function ViewUserBudgets() {
   const navigate = useNavigate();
@@ -286,6 +287,8 @@ function ViewUserBudgets() {
           </Tbody>
         </Table>
       </TableContainer>
+
+      {cachedBudget?.data?.length < 1 ? <DataNotFound /> : <></>}
     </Flex>
   );
 }
