@@ -11,16 +11,25 @@ import {
   TableContainer,
   Box,
   Tag,
+  Menu,
+  MenuButton,
+  MenuList,
+  IconButton,
+  MenuDivider,
+  MenuOptionGroup,
+  MenuItemOption,
 } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaEllipsisV } from "react-icons/fa";
 import { BsFilterRight } from "react-icons/bs";
+import { MdClose } from "react-icons/md";
 
 function ViewUserBudgets() {
   const navigate = useNavigate();
-  const [budget, setBudget] = useState();
+  const [budget, setBudget] = useState({ filtered: false });
+  const [manualRefresh, setManualRefresh] = useState(false);
 
   const cachedBudget = useMemo(() => {
     if (!budget) return null;
@@ -28,6 +37,7 @@ function ViewUserBudgets() {
     return {
       total: budget.total,
       data: budget.data,
+      filtered: false,
     };
   }, [budget]);
 
@@ -51,7 +61,21 @@ function ViewUserBudgets() {
     }
 
     makeRequest();
-  }, []);
+  }, [manualRefresh]);
+
+  const handleFilterBudget = (data) => {
+    const key = Object.keys(data)[0];
+    const value = Object.values(data)[0];
+
+    const filteredBudget = budget.data.filter((item) => item[key] === value);
+
+    setBudget({
+      data: filteredBudget,
+      total: filteredBudget.length,
+      filtered: true,
+    });
+  };
+
   return (
     <Flex flexDir="column">
       {/* header */}
@@ -95,14 +119,52 @@ function ViewUserBudgets() {
           >
             Create Budget
           </Button>
-          <Button
-            border="1px solid"
-            borderColor="gray.400"
-            p={0}
-            _hover={{ borderColor: "gray.400" }}
-          >
-            <BsFilterRight cursor="pointer" />
-          </Button>
+          <Menu closeOnSelect={true}>
+            <MenuButton
+              as={IconButton}
+              aria-label="filter"
+              icon={
+                budget?.filtered ? (
+                  <MdClose onClick={() => setManualRefresh(true)} />
+                ) : (
+                  <BsFilterRight cursor="pointer" />
+                )
+              }
+            />
+            <MenuList>
+              <>
+                <MenuOptionGroup title="Status" type="radio">
+                  <MenuItemOption
+                    value="yes"
+                    onClick={() => handleFilterBudget({ isActive: true })}
+                  >
+                    Active
+                  </MenuItemOption>
+                  <MenuItemOption
+                    value="no"
+                    onClick={() => handleFilterBudget({ isActive: false })}
+                  >
+                    Inactive
+                  </MenuItemOption>
+                </MenuOptionGroup>
+                <MenuDivider />
+                <MenuOptionGroup title="Recurring" type="radio">
+                  <MenuItemOption
+                    value="yes"
+                    onClick={() => handleFilterBudget({ isRecurring: true })}
+                  >
+                    Yes
+                  </MenuItemOption>
+                  <MenuItemOption
+                    value="no"
+                    onClick={() => handleFilterBudget({ isRecurring: false })}
+                  >
+                    No
+                  </MenuItemOption>
+                </MenuOptionGroup>
+              </>
+            </MenuList>
+          </Menu>
         </Flex>
       </Flex>
       <Flex alignItems="center" justifyContent="space-between">

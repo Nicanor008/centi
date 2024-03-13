@@ -181,7 +181,10 @@ function ViewUserBudgetItems() {
       </Flex>
       <Flex my={3} justifyContent="space-between">
         <Text>
-          Total Expenses - KES. <b>{budget?.plannedExpenses}</b>
+          Total Expenses - KES. <b>sum budget items expenses</b>
+        </Text>
+        <Text>
+          Total Planned Expenses - KES. <b>{budget?.plannedExpenses}</b>
         </Text>
         <Text>
           Planned Income - KES. <b>{budget?.plannedIncome}</b>
