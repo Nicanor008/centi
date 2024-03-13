@@ -19,6 +19,7 @@ import {
   MenuDivider,
   MenuOptionGroup,
   MenuItemOption,
+  Input,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -35,6 +36,7 @@ function ViewUserBudgetItems() {
   const [dataUpdated, setDataUpdated] = useState(false);
 
   const [selectedItem, setSelectedItem] = useState(null);
+  const [searchText, setSearchText] = useState("");
 
   const handleEllipsisClick = (item) => {
     setSelectedItem(item === selectedItem ? null : item);
@@ -119,7 +121,24 @@ function ViewUserBudgetItems() {
       console.log("Error: ", error);
     }
   };
-  console.log("-->>>>>>>>........", budgetItems);
+  const handleSearchChange = (text) => {
+    setSearchText(text);
+    if (text.trim() !== "") {
+      const lowerCaseSearch = text.toLowerCase();
+      const searchedBudgetData = budgetItems.data.filter(
+        (item) =>
+          item.name.toLowerCase().includes(lowerCaseSearch) ||
+          item.description.toLowerCase().includes(lowerCaseSearch)
+      );
+      setBudgetItems({
+        data: searchedBudgetData,
+        filtered: false,
+        search: true,
+      });
+    } else {
+      setManualRefresh(true);
+    }
+  };
 
   return (
     <Flex flexDir="column">
@@ -156,7 +175,19 @@ function ViewUserBudgetItems() {
         </Flex>
 
         <Flex gap={2} alignItems="center">
-          <Button mr={3}>Search</Button>
+          <Input
+            placeholder="Search Budget ..."
+            bg={"gray.100"}
+            border="1px solid"
+            borderColor="gray.300"
+            color={"gray.500"}
+            _placeholder={{
+              color: "gray.500",
+            }}
+            value={searchText}
+            onChange={(e) => handleSearchChange(e.target.value)}
+            w="fit-content"
+          />
           <Button
             border="1px solid"
             borderColor="gray.400"
