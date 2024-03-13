@@ -23,7 +23,7 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { FaEllipsisV } from "react-icons/fa";
+import { FaEllipsisV, FaSortAmountDown, FaSortAmountUp } from "react-icons/fa";
 import { BsFilterRight } from "react-icons/bs";
 import { MdClose } from "react-icons/md";
 import DatePicker, {
@@ -39,6 +39,8 @@ function ViewUserBudgets() {
     defaultDatePickerOptions[0]
   );
   const [searchText, setSearchText] = useState("");
+  const [sortBy, setSortBy] = useState(null);
+  const [sortOrder, setSortOrder] = useState("asc");
 
   const cachedBudget = useMemo(() => {
     if (!budget) return null;
@@ -104,6 +106,43 @@ function ViewUserBudgets() {
       setManualRefresh(true);
     }
   };
+
+  const handleSort = (column) => {
+    if (sortBy === column) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortBy(column);
+      setSortOrder("asc");
+    }
+
+    cachedBudget?.data?.sort((a, b) => {
+      const aValue = a[sortBy];
+      const bValue = b[sortBy];
+
+      if (typeof aValue === "string") {
+        return sortOrder === "asc"
+          ? aValue.localeCompare(bValue)
+          : bValue.localeCompare(aValue);
+      }
+
+      return sortOrder === "asc" ? aValue - bValue : bValue - aValue;
+    });
+  };
+
+  const ColumnHeaderCell = ({ name, column }) => (
+    <>
+      <Th onClick={() => handleSort(column)} cursor="pointer">
+        <Flex alignItems="center">
+          {name} &nbsp;
+          {sortBy === column && sortOrder === "asc" ? (
+            <FaSortAmountUp />
+          ) : (
+            <FaSortAmountDown />
+          )}
+        </Flex>
+      </Th>
+    </>
+  );
 
   return (
     <Flex flexDir="column">
@@ -232,15 +271,21 @@ function ViewUserBudgets() {
         <Table variant="striped" colorScheme="red">
           <Thead>
             <Tr>
-              <Th>Name</Th>
-              <Th>Description</Th>
-              <Th>Total Money Spent</Th>
-              <Th>Total No. of Expenses</Th>
-              <Th>Planned Income</Th>
+              <ColumnHeaderCell name="Name" column="name" />
+              <ColumnHeaderCell column="description" name="Description" />
+              <ColumnHeaderCell
+                name="Total Money Spent"
+                column="plannedExpenses"
+              />
+              <ColumnHeaderCell
+                column="budgetItemsCount"
+                name="Total No. of Expenses"
+              />
+              <ColumnHeaderCell column="plannedIncome" name="Planned Income" />
               <Th>Category</Th>
               <Th>Active</Th>
               <Th>Recurring</Th>
-              <Th>Date Created</Th>
+              <ColumnHeaderCell column="createdAt" name="Date Created" />
             </Tr>
           </Thead>
           <Tbody>
