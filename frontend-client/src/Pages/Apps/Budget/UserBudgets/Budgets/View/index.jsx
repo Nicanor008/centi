@@ -18,6 +18,7 @@ import {
   MenuDivider,
   MenuOptionGroup,
   MenuItemOption,
+  Input,
 } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -36,6 +37,7 @@ function ViewUserBudgets() {
   const [datePickerValue, setDatePickerValue] = useState(
     defaultDatePickerOptions[0]
   );
+  const [searchText, setSearchText] = useState("");
 
   const cachedBudget = useMemo(() => {
     if (!budget) return null;
@@ -82,6 +84,26 @@ function ViewUserBudgets() {
     });
   };
 
+  const handleSearchChange = (text) => {
+    setSearchText(text);
+    if (text.trim() !== "") {
+      const lowerCaseSearch = text.toLowerCase();
+      const searchedBudgetData = budget.data.filter(
+        (item) =>
+          item.name.toLowerCase().includes(lowerCaseSearch) ||
+          item.description.toLowerCase().includes(lowerCaseSearch)
+      );
+      setBudget({
+        data: searchedBudgetData,
+        total: searchedBudgetData.length,
+        filtered: false,
+        search: true,
+      });
+    } else {
+      setManualRefresh(true);
+    }
+  };
+
   return (
     <Flex flexDir="column">
       {/* header */}
@@ -117,7 +139,19 @@ function ViewUserBudgets() {
         </Flex>
 
         <Flex alignItems="center" gap={2}>
-          <Button mr={3}>Search</Button>
+          <Input
+            placeholder="Search Budget ..."
+            bg={"gray.100"}
+            border="1px solid"
+            borderColor="gray.300"
+            color={"gray.500"}
+            _placeholder={{
+              color: "gray.500",
+            }}
+            value={searchText}
+            onChange={(e) => handleSearchChange(e.target.value)}
+            w="fit-content"
+          />
           <Button
             bg="red.400"
             color="white"
