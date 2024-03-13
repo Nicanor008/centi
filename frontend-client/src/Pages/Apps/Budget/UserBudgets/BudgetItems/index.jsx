@@ -24,7 +24,13 @@ import {
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { FaEdit, FaEllipsisV, FaTrash } from "react-icons/fa";
+import {
+  FaEdit,
+  FaEllipsisV,
+  FaSortAmountDown,
+  FaSortAmountUp,
+  FaTrash,
+} from "react-icons/fa";
 import { BsFilterRight } from "react-icons/bs";
 import { MdClose } from "react-icons/md";
 import DataNotFound from "../../../../../components/ErrorPages/DataNotFound";
@@ -39,6 +45,9 @@ function ViewUserBudgetItems() {
 
   const [selectedItem, setSelectedItem] = useState(null);
   const [searchText, setSearchText] = useState("");
+
+  const [sortBy, setSortBy] = useState(null);
+  const [sortOrder, setSortOrder] = useState("asc");
 
   const handleEllipsisClick = (item) => {
     setSelectedItem(item === selectedItem ? null : item);
@@ -141,6 +150,43 @@ function ViewUserBudgetItems() {
       setManualRefresh(true);
     }
   };
+
+  const handleSort = (column) => {
+    if (sortBy === column) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortBy(column);
+      setSortOrder("asc");
+    }
+
+    budgetItems?.data?.sort((a, b) => {
+      const aValue = a[sortBy];
+      const bValue = b[sortBy];
+
+      if (typeof aValue === "string") {
+        return sortOrder === "asc"
+          ? aValue.localeCompare(bValue)
+          : bValue.localeCompare(aValue);
+      }
+
+      return sortOrder === "asc" ? aValue - bValue : bValue - aValue;
+    });
+  };
+
+  const ColumnHeaderCell = ({ name, column }) => (
+    <>
+      <Th onClick={() => handleSort(column)} cursor="pointer">
+        <Flex alignItems="center">
+          {name} &nbsp;
+          {sortBy === column && sortOrder === "asc" ? (
+            <FaSortAmountUp />
+          ) : (
+            <FaSortAmountDown />
+          )}
+        </Flex>
+      </Th>
+    </>
+  );
 
   return (
     <Flex flexDir="column">
@@ -302,14 +348,14 @@ function ViewUserBudgetItems() {
         <Table variant="striped" colorScheme="red">
           <Thead>
             <Tr>
-              <Th>Name</Th>
-              <Th>Description</Th>
-              <Th>Expenses</Th>
-              <Th>Planned Income</Th>
+              <ColumnHeaderCell name="Name" column="name" />
+              <ColumnHeaderCell name="Description" column="description" />
+              <ColumnHeaderCell name="Expenses" column="plannedExpenses" />
+              <ColumnHeaderCell name="Planned Income" column="actualExpenses" />
               <Th>Category</Th>
               <Th>Active</Th>
               <Th>Recurring</Th>
-              <Th>Date Created</Th>
+              <ColumnHeaderCell name="Date Created" column="createdAt" />
             </Tr>
           </Thead>
           <Tbody>
