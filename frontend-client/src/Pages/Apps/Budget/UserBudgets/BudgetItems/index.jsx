@@ -16,17 +16,21 @@ import {
   MenuItem,
   IconButton,
   Tag,
+  MenuDivider,
+  MenuOptionGroup,
+  MenuItemOption,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { FaEdit, FaEllipsisV, FaTrash } from "react-icons/fa";
 import { BsFilterRight } from "react-icons/bs";
+import { MdClose } from "react-icons/md";
 
 function ViewUserBudgetItems() {
   const navigate = useNavigate();
   const [budget, setBudget] = useState();
-  const [budgetItems, setBudgetItems] = useState();
+  const [budgetItems, setBudgetItems] = useState({ filtered: false });
   const { budgetId } = useParams();
   const [dataUpdated, setDataUpdated] = useState(false);
 
@@ -72,7 +76,7 @@ function ViewUserBudgetItems() {
     async function makeRequest() {
       try {
         const response = await axios.request(config);
-        setBudgetItems(response.data);
+        setBudgetItems({ data: response.data.data, filtered: false });
       } catch (error) {
         console.log("Error: ", error);
       }
@@ -80,6 +84,20 @@ function ViewUserBudgetItems() {
 
     makeRequest();
   }, [dataUpdated]);
+
+  const handleFilterBudgetItems = (data) => {
+    const key = Object.keys(data)[0];
+    const value = Object.values(data)[0];
+
+    const filteredBudget = budgetItems.data.filter(
+      (item) => item[key] === value
+    );
+
+    setBudgetItems({
+      data: filteredBudget,
+      filtered: true,
+    });
+  };
 
   const deleteBudget = async (data) => {
     try {
@@ -101,6 +119,7 @@ function ViewUserBudgetItems() {
       console.log("Error: ", error);
     }
   };
+  console.log("-->>>>>>>>........", budgetItems);
 
   return (
     <Flex flexDir="column">
@@ -169,14 +188,52 @@ function ViewUserBudgetItems() {
           >
             x
           </Button>
-          <Button
-            border="1px solid"
-            borderColor="gray.400"
-            p={0}
-            _hover={{ borderColor: "gray.400" }}
-          >
-            <BsFilterRight cursor="pointer" />
-          </Button>
+          <Menu closeOnSelect={true}>
+            <MenuButton
+              as={IconButton}
+              aria-label="filter"
+              icon={
+                budgetItems?.filtered ? (
+                  <MdClose onClick={() => setManualRefresh(true)} />
+                ) : (
+                  <BsFilterRight cursor="pointer" />
+                )
+              }
+            />
+            <MenuList>
+              <MenuOptionGroup title="Status" type="radio">
+                <MenuItemOption
+                  value="yes"
+                  onClick={() => handleFilterBudgetItems({ isActive: true })}
+                >
+                  Active
+                </MenuItemOption>
+                <MenuItemOption
+                  value="no"
+                  onClick={() => handleFilterBudgetItems({ isActive: false })}
+                >
+                  Inactive
+                </MenuItemOption>
+              </MenuOptionGroup>
+              <MenuDivider />
+              <MenuOptionGroup title="Recurring" type="radio">
+                <MenuItemOption
+                  value="yes"
+                  onClick={() => handleFilterBudgetItems({ isRecurring: true })}
+                >
+                  Yes
+                </MenuItemOption>
+                <MenuItemOption
+                  value="no"
+                  onClick={() =>
+                    handleFilterBudgetItems({ isRecurring: false })
+                  }
+                >
+                  No
+                </MenuItemOption>
+              </MenuOptionGroup>
+            </MenuList>
+          </Menu>
         </Flex>
       </Flex>
       <Flex my={3} justifyContent="space-between">
@@ -271,7 +328,7 @@ function ViewUserBudgetItems() {
           </Tbody>
         </Table>
       </TableContainer>
-      {budgetItems?.data?.length < 1 && (
+      {budgetItems?.data?.length < 1 && !budgetItems?.filtered && (
         <Flex
           alignItems="center"
           justifyContent="center"

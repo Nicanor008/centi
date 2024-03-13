@@ -132,37 +132,35 @@ function ViewUserBudgets() {
               }
             />
             <MenuList>
-              <>
-                <MenuOptionGroup title="Status" type="radio">
-                  <MenuItemOption
-                    value="yes"
-                    onClick={() => handleFilterBudget({ isActive: true })}
-                  >
-                    Active
-                  </MenuItemOption>
-                  <MenuItemOption
-                    value="no"
-                    onClick={() => handleFilterBudget({ isActive: false })}
-                  >
-                    Inactive
-                  </MenuItemOption>
-                </MenuOptionGroup>
-                <MenuDivider />
-                <MenuOptionGroup title="Recurring" type="radio">
-                  <MenuItemOption
-                    value="yes"
-                    onClick={() => handleFilterBudget({ isRecurring: true })}
-                  >
-                    Yes
-                  </MenuItemOption>
-                  <MenuItemOption
-                    value="no"
-                    onClick={() => handleFilterBudget({ isRecurring: false })}
-                  >
-                    No
-                  </MenuItemOption>
-                </MenuOptionGroup>
-              </>
+              <MenuOptionGroup title="Status" type="radio">
+                <MenuItemOption
+                  value="yes"
+                  onClick={() => handleFilterBudget({ isActive: true })}
+                >
+                  Active
+                </MenuItemOption>
+                <MenuItemOption
+                  value="no"
+                  onClick={() => handleFilterBudget({ isActive: false })}
+                >
+                  Inactive
+                </MenuItemOption>
+              </MenuOptionGroup>
+              <MenuDivider />
+              <MenuOptionGroup title="Recurring" type="radio">
+                <MenuItemOption
+                  value="yes"
+                  onClick={() => handleFilterBudget({ isRecurring: true })}
+                >
+                  Yes
+                </MenuItemOption>
+                <MenuItemOption
+                  value="no"
+                  onClick={() => handleFilterBudget({ isRecurring: false })}
+                >
+                  No
+                </MenuItemOption>
+              </MenuOptionGroup>
             </MenuList>
           </Menu>
         </Flex>
