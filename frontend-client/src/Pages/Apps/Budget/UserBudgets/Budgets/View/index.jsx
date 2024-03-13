@@ -30,6 +30,7 @@ import DatePicker, {
   defaultDatePickerOptions,
 } from "../../../../../../components/DatePicker";
 import DataNotFound from "../../../../../../components/ErrorPages/DataNotFound";
+import { formatNumberGroups } from "../../../../../../helpers/formatNumberGroups";
 
 function ViewUserBudgets() {
   const navigate = useNavigate();
@@ -255,7 +256,23 @@ function ViewUserBudgets() {
       </Flex>
       <Flex alignItems="center" justifyContent="space-between">
         <Text>
-          Total spent from 15/02/2022 is <b>KES. 500, 000</b>
+          Total spent from{" "}
+          <b>
+            {cachedBudget?.data?.length > 0 &&
+              new Date(
+                cachedBudget?.data[cachedBudget?.data?.length - 1]?.createdAt
+              ).toDateString()}
+          </b>{" "}
+          is{" "}
+          <b>
+            KES.{" "}
+            {formatNumberGroups(
+              cachedBudget?.data?.reduce(
+                (acc, item) => acc + item.plannedExpenses,
+                0
+              )
+            )}
+          </b>
         </Text>
         <Button
           border="1px solid"
