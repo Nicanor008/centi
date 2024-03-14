@@ -10,7 +10,7 @@ class BudgetService extends Service {
     return await Budget.create(data);
   }
 
-  async viewAllBudgets() {
+  async viewAllBudgets(sortBy) {
     const response = await Budget.aggregate([
       {
         $lookup: {
@@ -31,7 +31,7 @@ class BudgetService extends Service {
         }
       },
       {
-        $sort: { createdAt: -1 }
+        $sort: { createdAt: sortBy ?? -1 }
       }
     ]);
 
@@ -50,8 +50,7 @@ class BudgetService extends Service {
   }
 
   async budgetAnalytics() {
-    const budget = await this.viewAllBudgets();
-    console.log(budget.data.length, "...........>>>....");
+    const budget = await this.viewAllBudgets(1);
 
     const totalBudgetExpensesAmount = budget?.data?.reduce(
       (acc, item) => acc + item.plannedExpenses,
@@ -83,14 +82,36 @@ class BudgetService extends Service {
       },
       0
     );
-    console.log(budget.data.length, ".......<<<<<<<....");
+
+    // category counts
+    const categoryCount = {};
+
+    // Iterate over each budget item
+    budget?.data?.forEach(budgetItem => {
+      // Extract categories from the budget item
+      const categories = budgetItem?.category || [];
+
+      // Iterate over each category in the budget item
+      categories.forEach(category => {
+        const { label } = category;
+
+        // Increment the count for the category
+        if (categoryCount[label]) {
+          categoryCount[label]++;
+        } else {
+          categoryCount[label] = 1;
+        }
+      });
+    });
 
     const result = {
       totalNumberofBudget: budget.data.length,
       totalNumberofBudgetItems,
       totalBudgetExpensesAmount,
       totalPlannedExpensesThisMonth,
-      totalNumberofBudgetThisMonth: budgetItemsThisMonth.length
+      totalNumberofBudgetThisMonth: budgetItemsThisMonth.length,
+      categoryCount,
+      budget: budget.data
     };
     return result;
   }

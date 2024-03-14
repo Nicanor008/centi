@@ -1,8 +1,10 @@
-import { Button, Divider, Flex, Heading, Text } from "@chakra-ui/react";
+import { Button, Divider, Flex, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import QuickBudgetAnalyticsNav from "../../../../../components/Analytics/QuickBudgetAnalyticsNav";
+import NumberofBudgetItems from "./NumberofBudgetItems";
+import PlannedIncomeAndExpenseChart from "./PlannedIncomeAndExpenseChart";
 
 function BudgetDashboard() {
   const navigate = useNavigate();
@@ -22,8 +24,6 @@ function BudgetDashboard() {
 
     makeRequest();
   }, []);
-
-  console.log(analytics);
 
   return (
     <Flex flexDir="column">
@@ -52,35 +52,72 @@ function BudgetDashboard() {
       {/* body */}
       <Flex flexDir="column" my={(2, 8)}>
         {/* cards */}
-        <Flex justifyContent="space-between">
-          <QuickBudgetAnalyticsNav
-            title="Total Expenses"
-            amount={analytics?.totalBudgetExpensesAmount}
-          />
-          <QuickBudgetAnalyticsNav
-            title="Total Expenses(This month)"
-            amount={analytics?.totalPlannedExpensesThisMonth}
-          />
-          <QuickBudgetAnalyticsNav
-            title="Total No. Expenses"
-            amount={analytics?.totalNumberofBudgetItems}
-            hasCurrency={false}
-          />
-          <QuickBudgetAnalyticsNav
-            title="No. Expenses(This month)"
-            amount={analytics?.totalNumberofBudgetThisMonth}
-            hasCurrency={false}
-          />
-          <QuickBudgetAnalyticsNav
-            title="Total No. Budget"
-            amount={analytics?.totalNumberofBudget}
-            hasCurrency={false}
-          />
+        <Flex justifyContent="space-between" flexWrap="wrap">
+          {analytics?.totalBudgetExpensesAmount && (
+            <QuickBudgetAnalyticsNav
+              title="Expenses"
+              amount={analytics?.totalBudgetExpensesAmount}
+            />
+          )}
+          {analytics?.totalPlannedExpensesThisMonth && (
+            <QuickBudgetAnalyticsNav
+              title="Expenses(This month)"
+              amount={analytics?.totalPlannedExpensesThisMonth}
+            />
+          )}
+          {analytics?.totalNumberofBudgetItems && (
+            <QuickBudgetAnalyticsNav
+              title="No. Expenses"
+              amount={analytics?.totalNumberofBudgetItems}
+              hasCurrency={false}
+            />
+          )}
+          {analytics?.totalNumberofBudgetThisMonth && (
+            <QuickBudgetAnalyticsNav
+              title="No. Expenses(This month)"
+              amount={analytics?.totalNumberofBudgetThisMonth}
+              hasCurrency={false}
+            />
+          )}
+          {analytics?.totalNumberofBudget && (
+            <QuickBudgetAnalyticsNav
+              title="No. Budget"
+              amount={analytics?.totalNumberofBudget}
+              hasCurrency={false}
+            />
+          )}
+          {analytics?.categoryCount && (
+            <QuickBudgetAnalyticsNav
+              title="Categories"
+              amount={
+                analytics?.categoryCount &&
+                Object.keys(analytics?.categoryCount).length
+              }
+              hasCurrency={false}
+            />
+          )}
         </Flex>
 
         {/* charts */}
+        <Flex
+          py={(2, 8)}
+          gap={8}
+          justifyContent="space-evenly"
+          flexDir={["column", "row"]}
+        >
+          {/* expenses usage */}
+          <PlannedIncomeAndExpenseChart />
+
+          {/* expense and income fluctuation or something related */}
+          {/* <Flex></Flex> */}
+
+          {/* spending per month */}
+          <NumberofBudgetItems />
+        </Flex>
 
         {/* overview */}
+        {/* budget overview */}
+        {/* budget items overview */}
       </Flex>
     </Flex>
   );
