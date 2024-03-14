@@ -34,6 +34,8 @@ import {
 import { BsFilterRight } from "react-icons/bs";
 import { MdClose } from "react-icons/md";
 import DataNotFound from "../../../../../components/ErrorPages/DataNotFound";
+import { formatNumberGroups } from "../../../../../helpers/formatNumberGroups";
+import QuickBudgetAnalyticsNav from "../../../../../components/Analytics/QuickBudgetAnalyticsNav";
 
 function ViewUserBudgetItems() {
   const navigate = useNavigate();
@@ -329,20 +331,29 @@ function ViewUserBudgetItems() {
         </Flex>
       </Flex>
       {/* budget metadata/analytics */}
-      <Flex my={3} justifyContent="space-between">
-        <Text>
-          Total Expenses - KES. <b>sum budget items expenses</b>
-        </Text>
-        <Text>
-          Total Planned Expenses - KES. <b>{budget?.plannedExpenses}</b>
-        </Text>
-        <Text>
-          Planned Income - KES. <b>{budget?.plannedIncome}</b>
-        </Text>
-        <Text>
-          Budget Started on -{" "}
-          <b>{new Date(budget?.createdAt).toDateString()}</b>
-        </Text>
+      <Flex justifyContent="space-between" alignItems="center">
+        <Flex gap={4}>
+          <QuickBudgetAnalyticsNav
+            title="Total Expenses"
+            amount={budgetItems?.data?.reduce(
+              (acc, item) => acc + item.plannedExpenses,
+              0
+            )}
+          />
+          <QuickBudgetAnalyticsNav
+            title="Total Planned Expenses"
+            amount={budget?.plannedExpenses}
+          />
+        </Flex>
+        <Button
+          border="1px solid"
+          borderColor="gray.400"
+          color="gray.500"
+          fontWeight={500}
+          onClick={() => navigate("/budget/dashboard")}
+        >
+          Detailed analytics
+        </Button>
       </Flex>
       <TableContainer bg="gray.200" my={4}>
         <Table variant="striped" colorScheme="red">
@@ -368,8 +379,8 @@ function ViewUserBudgetItems() {
                 >
                   <Td>{item.name}</Td>
                   <Td>{item?.description}</Td>
-                  <Td>KES {item?.plannedExpenses}</Td>
-                  <Td>KES {item?.actualExpenses}</Td>
+                  <Td>KES {formatNumberGroups(item?.plannedExpenses)}</Td>
+                  <Td>KES {formatNumberGroups(item?.actualExpenses)}</Td>
                   <Td
                     minW={item?.category?.length > 0 ? "200px" : "auto"}
                     h={item?.category?.length > 0 ? "80px" : "auto"}

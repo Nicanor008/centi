@@ -200,4 +200,10 @@ router.get("/:budgetId", budgetController.findOneBudgetById);
  */
 router.delete("/:id", AuthService.optional, budgetController.remove);
 
+router.get(
+  "/dashboard/analytics/",
+  AuthService.optional,
+  budgetController.budgetAnalytics
+);
+
 export default router;

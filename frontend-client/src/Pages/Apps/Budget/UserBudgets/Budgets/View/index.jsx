@@ -276,9 +276,10 @@ function ViewUserBudgets() {
         </Text>
         <Button
           border="1px solid"
-          borderColor="gray.200"
+          borderColor="gray.400"
           color="gray.500"
           fontWeight={500}
+          onClick={() => navigate("/budget/dashboard")}
         >
           View Budget analytics
         </Button>
@@ -316,9 +317,9 @@ function ViewUserBudgets() {
               >
                 <Td>{budget.name}</Td>
                 <Td>{budget?.description}</Td>
-                <Td>KES {budget?.plannedExpenses}</Td>
-                <Td>{budget?.budgetItemsCount}</Td>
-                <Td>KES {budget?.plannedIncome}</Td>
+                <Td>KES {formatNumberGroups(budget?.plannedExpenses)}</Td>
+                <Td>{formatNumberGroups(budget?.budgetItemsCount)}</Td>
+                <Td>KES {formatNumberGroups(budget?.plannedIncome)}</Td>
                 <Td
                   minW={budget?.category?.length > 0 ? "200px" : "auto"}
                   h={budget?.category?.length > 0 ? "80px" : "auto"}

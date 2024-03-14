@@ -40,6 +40,16 @@ class BudgetController extends Controller {
       next(e);
     }
   }
+
+  async budgetAnalytics(req, res, next) {
+    try {
+      const result = await budgetService.budgetAnalytics();
+
+      return handleResponse.success(res, result);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 // // Get a budget by userId
