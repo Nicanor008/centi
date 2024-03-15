@@ -20,6 +20,7 @@ import {
   MenuOptionGroup,
   MenuItemOption,
   Input,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -27,6 +28,9 @@ import axios from "axios";
 import {
   FaEdit,
   FaEllipsisV,
+  FaEye,
+  FaPlus,
+  FaSearch,
   FaSortAmountDown,
   FaSortAmountUp,
   FaTrash,
@@ -50,6 +54,7 @@ function ViewUserBudgetItems() {
 
   const [sortBy, setSortBy] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
+  const [isLargerThan880] = useMediaQuery("(min-width: 880px)");
 
   const handleEllipsisClick = (item) => {
     setSelectedItem(item === selectedItem ? null : item);
@@ -196,10 +201,12 @@ function ViewUserBudgetItems() {
       <Flex
         py={4}
         justifyContent="space-between"
-        alignItems="center"
+        alignItems={["flex-start", "center"]}
         borderBottom="1px solid"
         borderColor="gray.300"
         mb={[1, 4]}
+        flexDir={["column", "row"]}
+        gap={[4, 0]}
       >
         <Flex alignItems="center" gap={2}>
           {budgetItems?.data?.length ? (
@@ -214,12 +221,20 @@ function ViewUserBudgetItems() {
           ) : (
             <Box />
           )}
-          <Flex flexDir="column">
+          <Flex flexDir="column" justifyContent="flex-start">
             <Text fontWeight={600} fontSize={16}>
-              {budget?.name}
+              {!isLargerThan880
+                ? `${budget?.name.substring(0, 30)} ${
+                    budget?.name.length > 30 ? " ..." : ""
+                  }`
+                : budget?.name}
             </Text>
             <Text color="gray.500" fontSize={12} fontWeight={400}>
-              {budget?.description}
+              {!isLargerThan880
+                ? `${budget?.description.substring(0, 50)} ${
+                    budget?.name.length > 30 ? " ..." : ""
+                  }`
+                : budget?.description}
             </Text>
           </Flex>
         </Flex>
@@ -228,19 +243,23 @@ function ViewUserBudgetItems() {
         <Flex gap={2} alignItems="center">
           {(budgetItems?.data?.length === 0 && budgetItems?.search) ||
           budgetItems?.data?.length > 0 ? (
-            <Input
-              placeholder="Search Budget ..."
-              bg={"gray.100"}
-              border="1px solid"
-              borderColor="gray.300"
-              color={"gray.500"}
-              _placeholder={{
-                color: "gray.500",
-              }}
-              value={searchText}
-              onChange={(e) => handleSearchChange(e.target.value)}
-              w="fit-content"
-            />
+            !isLargerThan880 ? (
+              <FaSearch />
+            ) : (
+              <Input
+                placeholder="Search Budget ..."
+                bg={"gray.100"}
+                border="1px solid"
+                borderColor="gray.300"
+                color={"gray.500"}
+                _placeholder={{
+                  color: "gray.500",
+                }}
+                value={searchText}
+                onChange={(e) => handleSearchChange(e.target.value)}
+                w="fit-content"
+              />
+            )
           ) : (
             <></>
           )}
@@ -249,7 +268,7 @@ function ViewUserBudgetItems() {
             borderColor="gray.400"
             onClick={() => navigate("/budget/view")}
           >
-            View All Budgets
+            {!isLargerThan880 ? <FaEye /> : "View All Budgets"}
           </Button>
           <Button
             bg="green.300"
@@ -346,15 +365,17 @@ function ViewUserBudgetItems() {
               amount={budget?.plannedExpenses}
             />
           </Flex>
-          <Button
-            border="1px solid"
-            borderColor="gray.400"
-            color="gray.500"
-            fontWeight={500}
-            onClick={() => navigate("/budget/dashboard")}
-          >
-            Detailed analytics
-          </Button>
+          {isLargerThan880 && (
+            <Button
+              border="1px solid"
+              borderColor="gray.400"
+              color="gray.500"
+              fontWeight={500}
+              onClick={() => navigate("/budget/dashboard")}
+            >
+              Detailed analytics
+            </Button>
+          )}
         </Flex>
       )}
       <TableContainer bg="gray.200" my={4}>
