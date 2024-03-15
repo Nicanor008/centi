@@ -254,36 +254,38 @@ function ViewUserBudgets() {
           )}
         </Flex>
       </Flex>
-      <Flex alignItems="center" justifyContent="space-between">
-        <Text>
-          Total spent from{" "}
-          <b>
-            {cachedBudget?.data?.length > 0 &&
-              new Date(
-                cachedBudget?.data[cachedBudget?.data?.length - 1]?.createdAt
-              ).toDateString()}
-          </b>{" "}
-          is{" "}
-          <b>
-            KES.{" "}
-            {formatNumberGroups(
-              cachedBudget?.data?.reduce(
-                (acc, item) => acc + item.plannedExpenses,
-                0
-              )
-            )}
-          </b>
-        </Text>
-        <Button
-          border="1px solid"
-          borderColor="gray.400"
-          color="gray.500"
-          fontWeight={500}
-          onClick={() => navigate("/budget/dashboard")}
-        >
-          View Budget analytics
-        </Button>
-      </Flex>
+      {cachedBudget?.data?.length > 0 && (
+        <Flex alignItems="center" justifyContent="space-between">
+          <Text>
+            Total spent from{" "}
+            <b>
+              {cachedBudget?.data?.length > 0 &&
+                new Date(
+                  cachedBudget?.data[cachedBudget?.data?.length - 1]?.createdAt
+                ).toDateString()}
+            </b>{" "}
+            is{" "}
+            <b>
+              KES.{" "}
+              {formatNumberGroups(
+                cachedBudget?.data?.reduce(
+                  (acc, item) => acc + item.plannedExpenses,
+                  0
+                )
+              )}
+            </b>
+          </Text>
+          <Button
+            border="1px solid"
+            borderColor="gray.400"
+            color="gray.500"
+            fontWeight={500}
+            onClick={() => navigate("/budget/dashboard")}
+          >
+            View Budget analytics
+          </Button>
+        </Flex>
+      )}
       {/* view all budgets - content */}
       <TableContainer bg="gray.200" my={4}>
         <Table variant="striped" colorScheme="red">

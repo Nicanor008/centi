@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import QuickBudgetAnalyticsNav from "../../../../../components/Analytics/QuickBudgetAnalyticsNav";
+import DataNotFound from "../../../../../components/ErrorPages/DataNotFound";
 import NumberofBudgetItems from "./NumberofBudgetItems";
 import PlannedIncomeAndExpenseChart from "./PlannedIncomeAndExpenseChart";
 
@@ -24,6 +25,8 @@ function BudgetDashboard() {
 
     makeRequest();
   }, []);
+
+  const hasBudgetItems = analytics?.budget?.length > 0;
 
   return (
     <Flex flexDir="column">
@@ -54,42 +57,44 @@ function BudgetDashboard() {
 
       {/* body */}
       <Flex flexDir="column" my={(2, 8)}>
+        {/* error */}
+        {!hasBudgetItems && <DataNotFound />}
         {/* cards */}
         <Flex justifyContent="space-between" flexWrap="wrap">
-          {analytics?.totalPlannedExpensesThisMonth && (
+          {hasBudgetItems && analytics?.totalPlannedExpensesThisMonth && (
             <QuickBudgetAnalyticsNav
               title="Expenses(This month)"
               amount={analytics?.totalPlannedExpensesThisMonth}
             />
           )}
-          {analytics?.totalBudgetExpensesAmount && (
+          {hasBudgetItems && analytics?.totalBudgetExpensesAmount && (
             <QuickBudgetAnalyticsNav
               title="Expenses"
               amount={analytics?.totalBudgetExpensesAmount}
             />
           )}
-          {analytics?.totalNumberofBudgetThisMonth && (
+          {hasBudgetItems && analytics?.totalNumberofBudgetThisMonth && (
             <QuickBudgetAnalyticsNav
               title="No. Expenses(This month)"
               amount={analytics?.totalNumberofBudgetThisMonth}
               hasCurrency={false}
             />
           )}
-          {analytics?.totalNumberofBudgetItems && (
+          {hasBudgetItems && analytics?.totalNumberofBudgetItems && (
             <QuickBudgetAnalyticsNav
               title="Total No. Expenses"
               amount={analytics?.totalNumberofBudgetItems}
               hasCurrency={false}
             />
           )}
-          {analytics?.totalNumberofBudget && (
+          {hasBudgetItems && analytics?.totalNumberofBudget && (
             <QuickBudgetAnalyticsNav
               title="Total No. Budget"
               amount={analytics?.totalNumberofBudget}
               hasCurrency={false}
             />
           )}
-          {analytics?.categoryCount && (
+          {hasBudgetItems && analytics?.categoryCount && (
             <QuickBudgetAnalyticsNav
               title="Categories"
               amount={
@@ -184,29 +189,30 @@ function BudgetDashboard() {
             </Flex>
           )}
 
-          <Flex
-            border="1px solid"
-            borderColor="gray.200"
-            bg="white"
-            flexDir="column"
-            p={6}
-            boxShadow="md"
-            borderRadius={8}
-            w={["98%", "48%"]}
-            ml={[2, 8]}
-          >
-            <Text
-              py={2}
-              bg="gray.50"
-              borderRadius={4}
-              fontWeight={800}
-              textAlign="center"
+          {analytics?.budget?.length > 0 && (
+            <Flex
+              border="1px solid"
+              borderColor="gray.200"
+              bg="white"
+              flexDir="column"
+              p={6}
+              boxShadow="md"
+              borderRadius={8}
+              w={["98%", "48%"]}
+              ml={[2, 8]}
             >
-              Your Financial goals
-            </Text>
-            {analytics?.budget?.slice(-30)?.map((budget) => (
-              <Flex key={budget._id} flexDir="column">
-                {/* <Flex justifyContent="space-between" py={2}>
+              <Text
+                py={2}
+                bg="gray.50"
+                borderRadius={4}
+                fontWeight={800}
+                textAlign="center"
+              >
+                Your Financial goals
+              </Text>
+              {analytics?.budget?.slice(-30)?.map((budget) => (
+                <Flex key={budget._id} flexDir="column">
+                  {/* <Flex justifyContent="space-between" py={2}>
                   <Text>
                     {budget.name.length > 40
                       ? budget.name.substring(0, 40) + "..."
@@ -217,9 +223,9 @@ function BudgetDashboard() {
                   </Text>
                 </Flex>
                 <Divider borderColor="gray.200" /> */}
-              </Flex>
-            ))}
-            {/* <Flex justifyContent="space-between" mt={4}>
+                </Flex>
+              ))}
+              {/* <Flex justifyContent="space-between" mt={4}>
               <Button
                 w="fit-content"
                 bg="none"
@@ -243,7 +249,8 @@ function BudgetDashboard() {
                 Add Financial Goals
               </Button>
             </Flex> */}
-          </Flex>
+            </Flex>
+          )}
         </Flex>
         {/* budget items overview */}
       </Flex>

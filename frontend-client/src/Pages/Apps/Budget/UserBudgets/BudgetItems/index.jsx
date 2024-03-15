@@ -331,30 +331,32 @@ function ViewUserBudgetItems() {
         </Flex>
       </Flex>
       {/* budget metadata/analytics */}
-      <Flex justifyContent="space-between" alignItems="center">
-        <Flex gap={4}>
-          <QuickBudgetAnalyticsNav
-            title="Total Expenses"
-            amount={budgetItems?.data?.reduce(
-              (acc, item) => acc + item.plannedExpenses,
-              0
-            )}
-          />
-          <QuickBudgetAnalyticsNav
-            title="Total Planned Expenses"
-            amount={budget?.plannedExpenses}
-          />
+      {budgetItems?.data?.length > 0 && (
+        <Flex justifyContent="space-between" alignItems="center">
+          <Flex gap={4}>
+            <QuickBudgetAnalyticsNav
+              title="Total Expenses"
+              amount={budgetItems?.data?.reduce(
+                (acc, item) => acc + item.plannedExpenses,
+                0
+              )}
+            />
+            <QuickBudgetAnalyticsNav
+              title="Total Planned Expenses"
+              amount={budget?.plannedExpenses}
+            />
+          </Flex>
+          <Button
+            border="1px solid"
+            borderColor="gray.400"
+            color="gray.500"
+            fontWeight={500}
+            onClick={() => navigate("/budget/dashboard")}
+          >
+            Detailed analytics
+          </Button>
         </Flex>
-        <Button
-          border="1px solid"
-          borderColor="gray.400"
-          color="gray.500"
-          fontWeight={500}
-          onClick={() => navigate("/budget/dashboard")}
-        >
-          Detailed analytics
-        </Button>
-      </Flex>
+      )}
       <TableContainer bg="gray.200" my={4}>
         <Table variant="striped" colorScheme="red">
           <Thead>
@@ -442,34 +444,34 @@ function ViewUserBudgetItems() {
           flexDir="column"
           gap={4}
         >
-          <DataNotFound />
-          <Flex gap={3}>
-            <Button
-              bg="red.400"
-              color="white"
-              onClick={() => deleteBudget(budget)}
-              _hover={{
-                bg: "red.400",
-              }}
-            >
-              Delete Budget
-            </Button>
-
-            <Button
-              bg="green.400"
-              color="white"
-              onClick={() =>
-                navigate("/budget/add/2", {
-                  state: { budget: { ...budgetItems, _id: budgetId } },
-                })
-              }
-              _hover={{
-                bg: "green.400",
-              }}
-            >
-              Add Expense
-            </Button>
-          </Flex>
+          <DataNotFound>
+            <Flex gap={3} mt={4}>
+              <Button
+                bg="green.400"
+                color="white"
+                onClick={() =>
+                  navigate("/budget/add/2", {
+                    state: { budget: { ...budgetItems, _id: budgetId } },
+                  })
+                }
+                _hover={{
+                  bg: "green.400",
+                }}
+              >
+                Add Expense
+              </Button>
+              <Button
+                bg="red.400"
+                color="white"
+                onClick={() => deleteBudget(budget)}
+                _hover={{
+                  bg: "red.400",
+                }}
+              >
+                Delete Budget
+              </Button>
+            </Flex>
+          </DataNotFound>
         </Flex>
       ) : (
         <></>
