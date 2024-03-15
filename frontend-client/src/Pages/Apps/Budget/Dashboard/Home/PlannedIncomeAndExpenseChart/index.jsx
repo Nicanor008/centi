@@ -70,8 +70,7 @@ const PlannedIncomeAndExpenseChart = () => {
       },
       grid: { display: false },
       title: {
-        display: true,
-        text: "Expenses Analytics",
+        display: false,
       },
     },
     scales: {
@@ -102,16 +101,23 @@ const PlannedIncomeAndExpenseChart = () => {
 
   return (
     <Flex>
-      <div style={{ width: "600px", height: "400px" }}>
-        {analytics?.budget?.length > 0 && (
+      {analytics?.budget?.length > 0 && (
+        <Flex
+          flexDir="column"
+          gap={6}
+          style={{ width: "600px", height: "400px" }}
+        >
+          <Text textAlign="center" fontWeight={600} fontSize={18}>
+            Expenses Analytics
+          </Text>
           <ReactChartJs
             type="bar"
             ref={chartRef}
             data={data}
             options={options}
           />
-        )}
-      </div>
+        </Flex>
+      )}
     </Flex>
   );
 };

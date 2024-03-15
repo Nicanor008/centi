@@ -79,16 +79,26 @@ const NumberofBudgetItems = () => {
 
   return (
     <Flex>
-      <div style={{ width: "600px", height: "400px" }}>
-        {analytics?.budget?.length > 0 && (
-          <ReactChartJs
-            type="line"
-            ref={chartRef}
-            data={data}
-            options={options}
-          />
-        )}
-      </div>
+      {analytics?.budget?.length > 0 && (
+        <Flex
+          flexDir="column"
+          gap={6}
+          style={{ width: "600px", height: "400px" }}
+        >
+          <Text textAlign="center" fontWeight={600} fontSize={18}>
+            The No. of Budget expenses
+          </Text>
+
+          {analytics?.budget?.length > 0 && (
+            <ReactChartJs
+              type="line"
+              ref={chartRef}
+              data={data}
+              options={options}
+            />
+          )}
+        </Flex>
+      )}
     </Flex>
   );
 };

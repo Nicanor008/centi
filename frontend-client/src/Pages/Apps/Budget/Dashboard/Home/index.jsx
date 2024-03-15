@@ -38,10 +38,13 @@ function BudgetDashboard() {
           </Text>
         </Flex>
         <Button
-          border="1px solid"
-          borderColor="gray.300"
+          w="fit-content"
+          bg="red.400"
+          color="white"
           onClick={() => navigate("/budget/add/1")}
-          fontWeight={400}
+          _hover={{
+            bg: "red.400",
+          }}
         >
           Add Budget
         </Button>
@@ -53,23 +56,16 @@ function BudgetDashboard() {
       <Flex flexDir="column" my={(2, 8)}>
         {/* cards */}
         <Flex justifyContent="space-between" flexWrap="wrap">
-          {analytics?.totalBudgetExpensesAmount && (
-            <QuickBudgetAnalyticsNav
-              title="Expenses"
-              amount={analytics?.totalBudgetExpensesAmount}
-            />
-          )}
           {analytics?.totalPlannedExpensesThisMonth && (
             <QuickBudgetAnalyticsNav
               title="Expenses(This month)"
               amount={analytics?.totalPlannedExpensesThisMonth}
             />
           )}
-          {analytics?.totalNumberofBudgetItems && (
+          {analytics?.totalBudgetExpensesAmount && (
             <QuickBudgetAnalyticsNav
-              title="No. Expenses"
-              amount={analytics?.totalNumberofBudgetItems}
-              hasCurrency={false}
+              title="Expenses"
+              amount={analytics?.totalBudgetExpensesAmount}
             />
           )}
           {analytics?.totalNumberofBudgetThisMonth && (
@@ -79,9 +75,16 @@ function BudgetDashboard() {
               hasCurrency={false}
             />
           )}
+          {analytics?.totalNumberofBudgetItems && (
+            <QuickBudgetAnalyticsNav
+              title="Total No. Expenses"
+              amount={analytics?.totalNumberofBudgetItems}
+              hasCurrency={false}
+            />
+          )}
           {analytics?.totalNumberofBudget && (
             <QuickBudgetAnalyticsNav
-              title="No. Budget"
+              title="Total No. Budget"
               amount={analytics?.totalNumberofBudget}
               hasCurrency={false}
             />
@@ -117,6 +120,131 @@ function BudgetDashboard() {
 
         {/* overview */}
         {/* budget overview */}
+        <Flex my={(3, 10)}>
+          {analytics?.budget?.length > 0 && (
+            <Flex
+              border="1px solid"
+              borderColor="gray.200"
+              bg="white"
+              flexDir="column"
+              p={6}
+              boxShadow="md"
+              borderRadius={8}
+              w={["98%", "48%"]}
+              ml={[2, 8]}
+            >
+              <Text
+                py={2}
+                bg="gray.50"
+                borderRadius={4}
+                fontWeight={800}
+                textAlign="center"
+              >
+                Recent Expenses
+              </Text>
+              {analytics?.budget?.slice(-30)?.map((budget) => (
+                <Flex key={budget._id} flexDir="column">
+                  <Flex justifyContent="space-between" py={2}>
+                    <Text>
+                      {budget.name.length > 40
+                        ? budget.name.substring(0, 40) + "..."
+                        : budget.name}
+                    </Text>
+                    <Text ml={(2, 6)}>
+                      {new Date(budget.createdAt).toDateString()}
+                    </Text>
+                  </Flex>
+                  <Divider borderColor="gray.200" />
+                </Flex>
+              ))}
+              <Flex justifyContent="space-between" mt={4}>
+                <Button
+                  w="fit-content"
+                  bg="none"
+                  border="1px solid"
+                  borderColor="blue.400"
+                  _hover={{
+                    bg: "none",
+                  }}
+                >
+                  View all Expenses
+                </Button>
+                <Button
+                  w="fit-content"
+                  bg="red.400"
+                  color="white"
+                  onClick={() => navigate("/budget/add/1")}
+                  _hover={{
+                    bg: "red.400",
+                  }}
+                >
+                  Add Expense
+                </Button>
+              </Flex>
+            </Flex>
+          )}
+
+          <Flex
+            border="1px solid"
+            borderColor="gray.200"
+            bg="white"
+            flexDir="column"
+            p={6}
+            boxShadow="md"
+            borderRadius={8}
+            w={["98%", "48%"]}
+            ml={[2, 8]}
+          >
+            <Text
+              py={2}
+              bg="gray.50"
+              borderRadius={4}
+              fontWeight={800}
+              textAlign="center"
+            >
+              Your Financial goals
+            </Text>
+            {analytics?.budget?.slice(-30)?.map((budget) => (
+              <Flex key={budget._id} flexDir="column">
+                {/* <Flex justifyContent="space-between" py={2}>
+                  <Text>
+                    {budget.name.length > 40
+                      ? budget.name.substring(0, 40) + "..."
+                      : budget.name}
+                  </Text>
+                  <Text ml={(2, 6)}>
+                    {new Date(budget.createdAt).toDateString()}
+                  </Text>
+                </Flex>
+                <Divider borderColor="gray.200" /> */}
+              </Flex>
+            ))}
+            {/* <Flex justifyContent="space-between" mt={4}>
+              <Button
+                w="fit-content"
+                bg="none"
+                border="1px solid"
+                borderColor="blue.400"
+                _hover={{
+                  bg: "none",
+                }}
+              >
+                View all Financial Goals
+              </Button>
+              <Button
+                w="fit-content"
+                bg="red.400"
+                color="white"
+                onClick={() => navigate("/budget/add/1")}
+                _hover={{
+                  bg: "red.400",
+                }}
+              >
+                Add Financial Goals
+              </Button>
+            </Flex> */}
+          </Flex>
+        </Flex>
         {/* budget items overview */}
       </Flex>
     </Flex>
