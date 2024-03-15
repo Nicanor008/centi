@@ -212,7 +212,7 @@ function ViewUserBudgets() {
             bg={!isLargerThan880 ? "none" : "red.400"}
             color={!isLargerThan880 ? "inherit" : "white"}
             onClick={() => navigate("/budget/add/1")}
-            p={!isLargerThan880 ? 0 : "inherit"}
+            px={!isLargerThan880 ? 0 : 4}
           >
             {!isLargerThan880 ? <FaPlus /> : "Create Budget"}
           </Button>

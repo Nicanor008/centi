@@ -60,7 +60,7 @@ function BudgetDashboard() {
         {/* error */}
         {!hasBudgetItems && <DataNotFound />}
         {/* cards */}
-        <Flex justifyContent="space-between" flexWrap="wrap">
+        <Flex justifyContent="space-between" flexWrap="wrap" gap={2}>
           {hasBudgetItems && analytics?.totalPlannedExpensesThisMonth && (
             <QuickBudgetAnalyticsNav
               title="Expenses(This month)"
@@ -75,14 +75,14 @@ function BudgetDashboard() {
           )}
           {hasBudgetItems && analytics?.totalNumberofBudgetThisMonth && (
             <QuickBudgetAnalyticsNav
-              title="No. Expenses(This month)"
+              title="Expenses(This month)"
               amount={analytics?.totalNumberofBudgetThisMonth}
               hasCurrency={false}
             />
           )}
           {hasBudgetItems && analytics?.totalNumberofBudgetItems && (
             <QuickBudgetAnalyticsNav
-              title="Total No. Expenses"
+              title="No. Expenses"
               amount={analytics?.totalNumberofBudgetItems}
               hasCurrency={false}
             />
@@ -109,7 +109,7 @@ function BudgetDashboard() {
         {/* charts */}
         <Flex
           py={(2, 8)}
-          gap={8}
+          gap={[20, 8]}
           justifyContent="space-evenly"
           flexDir={["column", "row"]}
         >
@@ -125,7 +125,7 @@ function BudgetDashboard() {
 
         {/* overview */}
         {/* budget overview */}
-        <Flex my={(3, 10)}>
+        <Flex my={(3, 10)} flexDir={["column", "row"]} gap={4}>
           {analytics?.budget?.length > 0 && (
             <Flex
               border="1px solid"
