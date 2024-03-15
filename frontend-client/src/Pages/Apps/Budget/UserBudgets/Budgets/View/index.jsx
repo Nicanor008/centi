@@ -19,11 +19,18 @@ import {
   MenuOptionGroup,
   MenuItemOption,
   Input,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { FaEllipsisV, FaSortAmountDown, FaSortAmountUp } from "react-icons/fa";
+import {
+  FaEllipsisV,
+  FaPlus,
+  FaSearch,
+  FaSortAmountDown,
+  FaSortAmountUp,
+} from "react-icons/fa";
 import { BsFilterRight } from "react-icons/bs";
 import { MdClose } from "react-icons/md";
 import DatePicker, {
@@ -42,6 +49,7 @@ function ViewUserBudgets() {
   const [searchText, setSearchText] = useState("");
   const [sortBy, setSortBy] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
+  const [isLargerThan880] = useMediaQuery("(min-width: 880px)");
 
   const cachedBudget = useMemo(() => {
     if (!budget) return null;
@@ -173,34 +181,40 @@ function ViewUserBudgets() {
             <Text fontWeight={600} fontSize={16}>
               Budget Tracker
             </Text>
-            <Text color="gray.500" fontSize={12} fontWeight={400}>
-              This is your budget history
-            </Text>
+            {isLargerThan880 && (
+              <Text color="gray.500" fontSize={12} fontWeight={400}>
+                This is your budget history
+              </Text>
+            )}
           </Flex>
         </Flex>
 
         <Flex alignItems="center" gap={2}>
-          {cachedBudget?.data?.length > 0 && (
-            <Input
-              placeholder="Search Budget ..."
-              bg={"gray.100"}
-              border="1px solid"
-              borderColor="gray.300"
-              color={"gray.500"}
-              _placeholder={{
-                color: "gray.500",
-              }}
-              value={searchText}
-              onChange={(e) => handleSearchChange(e.target.value)}
-              w="fit-content"
-            />
-          )}
+          {cachedBudget?.data?.length > 0 &&
+            (!isLargerThan880 ? (
+              <FaSearch />
+            ) : (
+              <Input
+                placeholder="Search Budget ..."
+                bg={"gray.100"}
+                border="1px solid"
+                borderColor="gray.300"
+                color={"gray.500"}
+                _placeholder={{
+                  color: "gray.500",
+                }}
+                value={searchText}
+                onChange={(e) => handleSearchChange(e.target.value)}
+                w="fit-content"
+              />
+            ))}
           <Button
-            bg="red.400"
-            color="white"
+            bg={!isLargerThan880 ? "none" : "red.400"}
+            color={!isLargerThan880 ? "inherit" : "white"}
             onClick={() => navigate("/budget/add/1")}
+            p={!isLargerThan880 ? 0 : "inherit"}
           >
-            Create Budget
+            {!isLargerThan880 ? <FaPlus /> : "Create Budget"}
           </Button>
           {cachedBudget?.data?.length > 0 && (
             <Menu closeOnSelect={true}>
@@ -275,15 +289,17 @@ function ViewUserBudgets() {
               )}
             </b>
           </Text>
-          <Button
-            border="1px solid"
-            borderColor="gray.400"
-            color="gray.500"
-            fontWeight={500}
-            onClick={() => navigate("/budget/dashboard")}
-          >
-            View Budget analytics
-          </Button>
+          {isLargerThan880 && (
+            <Button
+              border="1px solid"
+              borderColor="gray.400"
+              color="gray.500"
+              fontWeight={500}
+              onClick={() => navigate("/budget/dashboard")}
+            >
+              View Budget analytics
+            </Button>
+          )}
         </Flex>
       )}
       {/* view all budgets - content */}

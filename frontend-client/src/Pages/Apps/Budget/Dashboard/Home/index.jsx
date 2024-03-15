@@ -32,7 +32,7 @@ function BudgetDashboard() {
     <Flex flexDir="column">
       {/* header/title */}
       <Flex mb={2} justifyContent="space-between">
-        <Flex flexDir="column">
+        <Flex flexDir="column" w="fit-content">
           <Text fontWeight={600} fontSize={20}>
             Budget analytics
           </Text>
