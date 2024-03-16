@@ -34,6 +34,11 @@ const BudgetItemsSchema = new Schema(
       type: Array,
       required: false
     },
+    financialGoal: {
+      type: Schema.Types.ObjectId,
+      ref: "FinancialGoal",
+      required: false
+    },
     // currencyId: {
     //   type: Schema.Types.ObjectId,
     //   ref: "Currency",

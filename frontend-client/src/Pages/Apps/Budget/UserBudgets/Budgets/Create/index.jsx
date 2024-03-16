@@ -1,18 +1,10 @@
 import React from "react";
 import axios from "axios";
 import { useForm, FormProvider } from "react-hook-form";
-import {
-  Flex,
-  Text,
-  Button,
-  Input,
-  VStack,
-  HStack,
-  Tag,
-  TagLabel,
-} from "@chakra-ui/react";
+import { Flex, Text, Button, Input, VStack } from "@chakra-ui/react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import CreatableSelect from "react-select/creatable";
+import Select from "react-select";
 
 // Component for Budget Form
 const BudgetForm = ({
@@ -20,6 +12,8 @@ const BudgetForm = ({
   userCategories,
   selectedCategory,
   handleSelectedCategory,
+  financialGoals,
+  setSelectedFinancialGoal,
 }) => {
   return (
     <>
@@ -70,14 +64,23 @@ const BudgetForm = ({
           {...methods.register("plannedExpenses")}
           type="number"
         />
-        <CreatableSelect
-          isMulti
-          isCreatable
-          options={userCategories}
-          // styles={customStyles}
-          value={selectedCategory}
-          onChange={handleSelectedCategory}
-        />
+        <Flex gap={4} flexDir={["solumn", "row"]}>
+          <Select
+            isLoading={false}
+            isClearable={true}
+            isSearchable={false}
+            options={financialGoals}
+            onChange={(e) => setSelectedFinancialGoal(e.value)}
+          />
+          <CreatableSelect
+            isMulti
+            isCreatable
+            options={userCategories}
+            // styles={customStyles}
+            value={selectedCategory}
+            onChange={handleSelectedCategory}
+          />
+        </Flex>
       </VStack>
     </>
   );
@@ -89,6 +92,8 @@ const BudgetItemForm = ({
   userCategories,
   selectedCategory,
   handleSelectedCategory,
+  financialGoals,
+  setSelectedFinancialGoal,
 }) => {
   return (
     <>
@@ -127,13 +132,13 @@ const BudgetItemForm = ({
           {...methods.register("actualExpenses")}
           type="number"
         />
-        <HStack spacing={4}>
-          {methods.getValues("category")?.map((tag, index) => (
-            <Tag size="lg" key={tag} variant="subtle" colorScheme="cyan">
-              <TagLabel>{tag}</TagLabel>
-            </Tag>
-          ))}
-        </HStack>
+        <Select
+          isLoading={false}
+          isClearable={true}
+          isSearchable={false}
+          options={financialGoals}
+          onChange={(e) => setSelectedFinancialGoal(e.value)}
+        />
         <CreatableSelect
           isMulti
           isCreatable
@@ -157,6 +162,8 @@ const CreateBudget = () => {
   const { state } = useLocation();
   const [budget, setBudget] = React.useState(state?.budget ?? null);
   const [selectedCategory, setSelectedCategory] = React.useState([]);
+  const [financialGoals, setFinancialGoals] = React.useState([]);
+  const [selectedFinancialGoal, setSelectedFinancialGoal] = React.useState([]);
 
   const [userCategories, setUserCategories] = React.useState([]);
 
@@ -173,6 +180,27 @@ const CreateBudget = () => {
           ...item,
         }));
         setUserCategories(transformedData);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    makeRequest();
+  }, []);
+
+  // get all financial goals for this user
+  React.useEffect(() => {
+    async function makeRequest() {
+      try {
+        const response = await axios.get(
+          "http://localhost:4005/api/v1/financial-goals"
+        );
+
+        const updatedResponseData = response.data?.data?.data?.map((item) => {
+          return { ...item, label: item.name, value: item._id };
+        });
+
+        setFinancialGoals(updatedResponseData);
       } catch (error) {
         console.log(error);
       }
@@ -200,6 +228,7 @@ const CreateBudget = () => {
     const payload = {
       ...getValues(),
       category: selectedCategory,
+      financialGoal: selectedFinancialGoal,
       plannedExpenses: Number(getValues()?.plannedExpenses) ?? 0,
       plannedIncome: Number(getValues()?.plannedIncome) ?? 0,
     };
@@ -228,6 +257,7 @@ const CreateBudget = () => {
 
       // clean up
       setSelectedCategory([]);
+      setFinancialGoals([]);
       reset();
 
       // go to the next form
@@ -242,12 +272,14 @@ const CreateBudget = () => {
     const payload = {
       ...getValues(),
       category: selectedCategory,
+      financialGoal: selectedFinancialGoal,
       actualExpenses: getValues()?.plannedExpenses
         ? Number(getValues()?.plannedExpenses)
         : 0,
       plannedExpenses: Number(getValues()?.actualExpenses) ?? 0,
       budgetId: budget?._id,
     };
+    console.log(".......payload....", payload);
 
     let config = {
       method: "post",
@@ -289,6 +321,8 @@ const CreateBudget = () => {
               userCategories={userCategories}
               setSelectedCategory={setSelectedCategory}
               handleSelectedCategory={handleSelectedCategory}
+              financialGoals={financialGoals}
+              setSelectedFinancialGoal={setSelectedFinancialGoal}
             />
           </form>
         );
@@ -301,6 +335,8 @@ const CreateBudget = () => {
               userCategories={userCategories}
               setSelectedCategory={setSelectedCategory}
               handleSelectedCategory={handleSelectedCategory}
+              financialGoals={financialGoals}
+              setSelectedFinancialGoal={setSelectedFinancialGoal}
             />
           </form>
         );

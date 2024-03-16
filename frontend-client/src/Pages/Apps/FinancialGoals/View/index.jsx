@@ -84,41 +84,41 @@ function ViewUserFinancialGoals() {
 
   const handleSearchChange = (text) => {
     setSearchText(text);
-    // if (text.trim() !== "") {
-    //   const lowerCaseSearch = text.toLowerCase();
-    //   const searchedBudgetData = budget.data.filter(
-    //     (item) =>
-    //       item.name.toLowerCase().includes(lowerCaseSearch) ||
-    //       item.description.toLowerCase().includes(lowerCaseSearch)
-    //   );
-    //   setBudget({
-    //     data: searchedBudgetData,
-    //     total: searchedBudgetData.length,
-    //     filtered: false,
-    //     search: true,
-    //   });
-    // } else {
-    //   setManualRefresh(true);
-    // }
+    if (text.trim() !== "") {
+      const lowerCaseSearch = text.toLowerCase();
+      const searchedBudgetData = financialGoals.data.filter(
+        (item) =>
+          item.name.toLowerCase().includes(lowerCaseSearch) ||
+          item.description.toLowerCase().includes(lowerCaseSearch)
+      );
+      setFinancialGoals({
+        data: searchedBudgetData,
+        total: searchedBudgetData.length,
+        filtered: false,
+        search: true,
+      });
+    } else {
+      setManualRefresh(true);
+    }
   };
 
   const handleSort = (column) => {
-    // if (sortBy === column) {
-    //   setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    // } else {
-    //   setSortBy(column);
-    //   setSortOrder("asc");
-    // }
-    // cachedBudget?.data?.sort((a, b) => {
-    //   const aValue = a[sortBy];
-    //   const bValue = b[sortBy];
-    //   if (typeof aValue === "string") {
-    //     return sortOrder === "asc"
-    //       ? aValue.localeCompare(bValue)
-    //       : bValue.localeCompare(aValue);
-    //   }
-    //   return sortOrder === "asc" ? aValue - bValue : bValue - aValue;
-    // });
+    if (sortBy === column) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortBy(column);
+      setSortOrder("asc");
+    }
+    cachedGoals?.data?.sort((a, b) => {
+      const aValue = a[sortBy];
+      const bValue = b[sortBy];
+      if (typeof aValue === "string") {
+        return sortOrder === "asc"
+          ? aValue.localeCompare(bValue)
+          : bValue.localeCompare(aValue);
+      }
+      return sortOrder === "asc" ? aValue - bValue : bValue - aValue;
+    });
   };
 
   const ColumnHeaderCell = ({ name, column }) => (
@@ -199,56 +199,6 @@ function ViewUserFinancialGoals() {
           >
             {!isLargerThan880 ? <FaPlus /> : "Create a Financial Goal"}
           </Button>
-          {/* {cachedGoals?.data?.length > 0 && (
-            <Menu closeOnSelect={true}>
-              <MenuButton
-                as={IconButton}
-                aria-label="filter"
-                icon={
-                  budget?.filtered ? (
-                    <MdClose onClick={() => setManualRefresh(true)} />
-                  ) : (
-                    <BsFilterRight cursor="pointer" />
-                  )
-                }
-              />
-              <MenuList>
-                <MenuOptionGroup title="Status" type="radio">
-                  <MenuItemOption
-                    value="yes"
-                    onClick={() => handleFilterBudget({ isActive: true })}
-                  >
-                    Active
-                  </MenuItemOption>
-                  <MenuItemOption
-                    value="no"
-                    onClick={() => handleFilterBudget({ isActive: false })}
-                  >
-                    Inactive
-                  </MenuItemOption>
-                </MenuOptionGroup>
-                <MenuDivider />
-                <MenuOptionGroup title="Recurring" type="radio">
-                  <MenuItemOption
-                    value="yes"
-                    onClick={() => handleFilterBudget({ isRecurring: true })}
-                  >
-                    Yes
-                  </MenuItemOption>
-                  <MenuItemOption
-                    value="no"
-                    onClick={() => handleFilterBudget({ isRecurring: false })}
-                  >
-                    No
-                  </MenuItemOption>
-                </MenuOptionGroup>
-                <DatePicker
-                  value={datePickerValue}
-                  onChange={(newValue) => setDatePickerValue(newValue)}
-                />
-              </MenuList>
-            </Menu>
-          )} */}
         </Flex>
       </Flex>
 
@@ -269,7 +219,7 @@ function ViewUserFinancialGoals() {
             {financialGoals?.data?.map((goal, idx) => (
               <Tr
                 cursor="pointer"
-                key={idx}
+                key={goal._id}
                 // onClick={() =>
                 //   navigate(`/budget/items/${goal_id}`, { state: { goal} })
                 // }

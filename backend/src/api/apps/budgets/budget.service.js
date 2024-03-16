@@ -21,6 +21,14 @@ class BudgetService extends Service {
         }
       },
       {
+        $lookup: {
+          from: "financialGoals",
+          localField: "_id",
+          foreignField: "financialGoal",
+          as: "financialGoal"
+        }
+      },
+      {
         $addFields: {
           budgetItemsCount: { $size: "$budgetItems" }
         }
