@@ -11,20 +11,32 @@ import {
   ViewUserBudgets,
   CreateUserBudgets,
   ViewUserBudgetItems,
+  CreateFinancialGoal,
+  ViewUserFinancialGoals,
+  Login,
+  Signup,
+  ForgotPassword,
+  ResetPassword,
+  UserProfile,
 } from "../Pages";
-import CreateFinancialGoal from "../Pages/Apps/FinancialGoals/Create";
-import ViewUserFinancialGoals from "../Pages/Apps/FinancialGoals/View";
 
 export const routes = createRoutesFromElements(
   <Route>
     <Route path="/">
       <Route element={<Layout />}>
         <Route path="/" element={<Homepage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:email" element={<ResetPassword />} />
       </Route>
     </Route>
 
     <Route>
       <Route element={<AuthLayout />}>
+        <Route path="user">
+          <Route path="profile" element={<UserProfile />} />
+        </Route>
         <Route path="financial-goals">
           <Route path="" element={<ViewUserFinancialGoals />} />
           <Route path="add" element={<CreateFinancialGoal />} />
