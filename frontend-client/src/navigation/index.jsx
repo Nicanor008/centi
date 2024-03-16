@@ -12,6 +12,8 @@ import {
   CreateUserBudgets,
   ViewUserBudgetItems,
 } from "../Pages";
+import CreateFinancialGoal from "../Pages/Apps/FinancialGoals/Create";
+import ViewUserFinancialGoals from "../Pages/Apps/FinancialGoals/View";
 
 export const routes = createRoutesFromElements(
   <Route>
@@ -21,23 +23,19 @@ export const routes = createRoutesFromElements(
       </Route>
     </Route>
 
-    <Route
-      path="budget"
-      // element={
-      //   <RequireAuth>
-      //     <Outlet />
-      //   </RequireAuth>
-      // }
-    >
-      <Route>
-        <Route element={<AuthLayout />}>
+    <Route>
+      <Route element={<AuthLayout />}>
+        <Route path="financial-goals">
+          <Route path="" element={<ViewUserFinancialGoals />} />
+          <Route path="add" element={<CreateFinancialGoal />} />
+        </Route>
+        <Route path="budget">
           <Route path="dashboard" element={<BudgetDashboard />} />
           <Route path="view" element={<ViewUserBudgets />} />
           <Route path="add/:currentStep" element={<CreateUserBudgets />} />
           <Route path="items/:budgetId" element={<ViewUserBudgetItems />} />
-
-          {/* <Route path="*" element={<PageNotFoundScreen />} /> */}
         </Route>
+        {/* <Route path="*" element={<PageNotFoundScreen />} /> */}
       </Route>
     </Route>
   </Route>

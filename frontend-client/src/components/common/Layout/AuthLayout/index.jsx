@@ -33,7 +33,7 @@ import { Outlet } from "react-router-dom";
 const LinkItems = [
   { name: "Dashboard", icon: FiHome, url: "/budget/dashboard" },
   { name: "Budgets", icon: FiTrendingUp, url: "/budget/view" },
-  { name: "Financial goals", icon: FiCompass, url: "#" },
+  { name: "Financial goals", icon: FiCompass, url: "/financial-goals" },
   { name: "Templates", icon: FiStar, url: "#" },
   { name: "Settings", icon: FiSettings, url: "#" },
 ];
