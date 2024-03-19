@@ -5,6 +5,7 @@ import { Flex, Text, Button, Input, VStack } from "@chakra-ui/react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import CreatableSelect from "react-select/creatable";
 import Select from "react-select";
+import { getUserToken } from "../../../../../../helpers/getToken";
 
 // Component for Budget Form
 const BudgetForm = ({
@@ -166,6 +167,7 @@ const CreateBudget = () => {
   const [selectedFinancialGoal, setSelectedFinancialGoal] = React.useState([]);
 
   const [userCategories, setUserCategories] = React.useState([]);
+  const userToken = getUserToken();
 
   React.useEffect(() => {
     async function makeRequest() {

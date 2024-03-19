@@ -4,12 +4,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import QuickBudgetAnalyticsNav from "../../../../../components/Analytics/QuickBudgetAnalyticsNav";
 import DataNotFound from "../../../../../components/ErrorPages/DataNotFound";
+import { getUserToken } from "../../../../../helpers/getToken";
 import NumberofBudgetItems from "./NumberofBudgetItems";
 import PlannedIncomeAndExpenseChart from "./PlannedIncomeAndExpenseChart";
 
 function BudgetDashboard() {
   const navigate = useNavigate();
   const [analytics, setAnalytics] = useState();
+  const userToken = getUserToken();
 
   useEffect(() => {
     async function makeRequest() {

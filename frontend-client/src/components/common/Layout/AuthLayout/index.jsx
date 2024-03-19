@@ -23,20 +23,18 @@ import {
   FiHome,
   FiTrendingUp,
   FiCompass,
-  FiStar,
-  FiSettings,
   FiMenu,
   FiBell,
   FiChevronDown,
 } from "react-icons/fi";
-import { Outlet, useNavigate, Navigate, useLocation } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 
 const LinkItems = [
   { name: "Dashboard", icon: FiHome, url: "/budget/dashboard" },
   { name: "Budgets", icon: FiTrendingUp, url: "/budget/view" },
   { name: "Financial goals", icon: FiCompass, url: "/financial-goals" },
-  { name: "Templates", icon: FiStar, url: "#" },
-  { name: "Settings", icon: FiSettings, url: "#" },
+  // { name: "Templates", icon: FiStar, url: "#" },
+  // { name: "Settings", icon: FiSettings, url: "#" },
 ];
 
 const SidebarContent = ({ onClose, ...rest }) => {
@@ -103,7 +101,7 @@ const NavItem = ({ icon, url, children, ...rest }) => {
   );
 };
 
-const MobileNav = ({ onOpen, ...rest }) => {
+const MobileNav = ({ onOpen, user, ...rest }) => {
   const navigate = useNavigate();
   const logoutHandler = () => {
     localStorage.clear();
@@ -166,9 +164,11 @@ const MobileNav = ({ onOpen, ...rest }) => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">Justina Clark</Text>
+                  <Text fontSize="sm">
+                    {user?.firstName} {user?.lastName}
+                  </Text>
                   <Text fontSize="xs" color="gray.600">
-                    Admin
+                    {user?.role}
                   </Text>
                 </VStack>
                 <Box display={{ base: "none", md: "flex" }}>
@@ -183,8 +183,8 @@ const MobileNav = ({ onOpen, ...rest }) => {
               <MenuItem as="a" href="/user/profile">
                 Profile
               </MenuItem>
-              <MenuItem>Settings</MenuItem>
-              <MenuItem>Billing</MenuItem>
+              {/* <MenuItem>Settings</MenuItem>
+              <MenuItem>Billing</MenuItem> */}
               <MenuDivider />
               <MenuItem onClick={logoutHandler}>Sign out</MenuItem>
             </MenuList>
@@ -197,8 +197,8 @@ const MobileNav = ({ onOpen, ...rest }) => {
 
 const AuthLayout = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const user = localStorage.getItem("user");
-  const location = useLocation();
+  const getUser = localStorage.getItem("user");
+  const user = JSON.parse(getUser);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -226,7 +226,7 @@ const AuthLayout = () => {
         </DrawerContent>
       </Drawer>
       {/* mobilenav */}
-      <MobileNav onOpen={onOpen} />
+      <MobileNav onOpen={onOpen} user={user?.user} />
       <Box ml={{ base: 0, md: 60 }} p="4">
         <Outlet />
       </Box>

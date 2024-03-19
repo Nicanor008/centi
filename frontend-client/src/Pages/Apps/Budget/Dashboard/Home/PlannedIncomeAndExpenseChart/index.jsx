@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 import { Chart as ReactChartJs } from "react-chartjs-2";
 import "chart.js/auto";
 import { getMonthName } from "../../../../../../helpers/getMonths";
+import { getUserToken } from "../../../../../../helpers/getToken";
 
 const PlannedIncomeAndExpenseChart = () => {
   const [analytics, setAnalytics] = useState();
+  const userToken = getUserToken();
 
   useEffect(() => {
     async function makeRequest() {

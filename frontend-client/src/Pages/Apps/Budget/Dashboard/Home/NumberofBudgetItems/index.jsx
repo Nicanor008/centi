@@ -3,9 +3,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Chart as ReactChartJs } from "react-chartjs-2";
 import "chart.js/auto";
+import { getUserToken } from "../../../../../../helpers/getToken";
 
 const NumberofBudgetItems = () => {
   const [analytics, setAnalytics] = useState();
+  const userToken = getUserToken();
 
   useEffect(() => {
     async function makeRequest() {
