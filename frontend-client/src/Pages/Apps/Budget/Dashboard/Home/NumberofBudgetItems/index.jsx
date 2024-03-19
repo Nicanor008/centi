@@ -1,9 +1,8 @@
-import { Button, Divider, Flex, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Chart as ReactChartJs } from "react-chartjs-2";
 import "chart.js/auto";
-import { getMonthName } from "../../../../../../helpers/getMonths";
 
 const NumberofBudgetItems = () => {
   const [analytics, setAnalytics] = useState();
@@ -13,7 +12,7 @@ const NumberofBudgetItems = () => {
   useEffect(() => {
     return () => {
       if (chartRef.current) {
-        chartRef.current.chartInstance.destroy();
+        chartRef.current?.chartInstance?.destroy();
       }
     };
   }, []);

@@ -26,11 +26,8 @@ export default function Login() {
         "http://localhost:4005/api/v1/auth/login",
         data
       );
-      console.log(".....", response.data.data);
       localStorage.setItem("user", JSON.stringify(response.data.data));
-      setTimeout(() => {
-        navigate("/budget/dashboard");
-      }, 1500);
+      navigate("/budget/dashboard");
     } catch (error) {
       console.error("Error:", error); // Handle error
     }

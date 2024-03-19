@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import QuickBudgetAnalyticsNav from "../../../../../components/Analytics/QuickBudgetAnalyticsNav";
 import DataNotFound from "../../../../../components/ErrorPages/DataNotFound";
-// import NumberofBudgetItems from "./NumberofBudgetItems";
-// import PlannedIncomeAndExpenseChart from "./PlannedIncomeAndExpenseChart";
+import NumberofBudgetItems from "./NumberofBudgetItems";
+import PlannedIncomeAndExpenseChart from "./PlannedIncomeAndExpenseChart";
 
 function BudgetDashboard() {
   const navigate = useNavigate();
@@ -107,20 +107,21 @@ function BudgetDashboard() {
         </Flex>
 
         {/* charts */}
-        {/* <Flex
+        <Flex
           py={(2, 8)}
           gap={[20, 8]}
           justifyContent="space-evenly"
           flexDir={["column", "row"]}
         >
           <PlannedIncomeAndExpenseChart />
+          {/* 
 
           expense and income fluctuation or something related
           <Flex></Flex>
-
-          spending per month
+*/}
+          {/* spending per month */}
           <NumberofBudgetItems />
-        </Flex> */}
+        </Flex>
 
         {/* overview */}
         {/* budget overview */}

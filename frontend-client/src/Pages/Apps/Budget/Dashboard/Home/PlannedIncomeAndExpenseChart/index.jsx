@@ -1,4 +1,4 @@
-import { Button, Divider, Flex, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Chart as ReactChartJs } from "react-chartjs-2";
@@ -13,7 +13,7 @@ const PlannedIncomeAndExpenseChart = () => {
   useEffect(() => {
     return () => {
       if (chartRef.current) {
-        chartRef.current.chartInstance.destroy();
+        chartRef.current?.chartInstance?.destroy();
       }
     };
   }, []);

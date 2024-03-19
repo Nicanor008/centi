@@ -28,7 +28,7 @@ import {
   FiBell,
   FiChevronDown,
 } from "react-icons/fi";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, Navigate } from "react-router-dom";
 
 const LinkItems = [
   { name: "Dashboard", icon: FiHome, url: "/budget/dashboard" },
@@ -106,7 +106,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
   const navigate = useNavigate();
   const logoutHandler = () => {
     localStorage.clear();
-    navigate("/login");
+    navigate("/login", { replace: true });
   };
 
   return (
