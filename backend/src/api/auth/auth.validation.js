@@ -2,7 +2,8 @@ import Joi from "joi";
 
 // password and confirmPassword must contain the same value
 export const signupValidationSchema = Joi.object({
-  fullName: Joi.string().optional(),
+  firstName: Joi.string().required(),
+  lastName: Joi.string().optional(),
   email: Joi.string()
     .email()
     .lowercase()
@@ -38,7 +39,6 @@ export const requestOtpLoginValidationSchema = Joi.object({
     .email()
     .required()
 });
-
 
 export const logoutValidationSchema = Joi.object({
   token: Joi.string().optional()

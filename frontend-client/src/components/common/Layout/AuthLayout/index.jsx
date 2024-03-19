@@ -28,7 +28,7 @@ import {
   FiBell,
   FiChevronDown,
 } from "react-icons/fi";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 const LinkItems = [
   { name: "Dashboard", icon: FiHome, url: "/budget/dashboard" },
@@ -103,6 +103,12 @@ const NavItem = ({ icon, url, children, ...rest }) => {
 };
 
 const MobileNav = ({ onOpen, ...rest }) => {
+  const navigate = useNavigate();
+  const logoutHandler = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
+
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -179,7 +185,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
               <MenuItem>Settings</MenuItem>
               <MenuItem>Billing</MenuItem>
               <MenuDivider />
-              <MenuItem>Sign out</MenuItem>
+              <MenuItem onClick={logoutHandler}>Sign out</MenuItem>
             </MenuList>
           </Menu>
         </Flex>

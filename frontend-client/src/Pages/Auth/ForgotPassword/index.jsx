@@ -22,7 +22,11 @@ export default function ForgotPassword() {
         p={6}
         my={12}
       >
-        <Heading lineHeight={1.1} fontSize={{ base: "2xl", md: "3xl" }}>
+        <Heading
+          lineHeight={1.1}
+          fontSize={{ base: "2xl", md: "3xl" }}
+          fontFamily="inherit"
+        >
           Forgot your password?
         </Heading>
         <Text fontSize={{ base: "sm", sm: "md" }}>

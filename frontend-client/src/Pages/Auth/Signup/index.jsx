@@ -25,7 +25,10 @@ export default function Signup() {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post("/api/signup", data);
+      const response = await axios.post(
+        "http://localhost:4005/api/v1/auth/signup",
+        data
+      );
       console.log(response.data); // Handle success response
     } catch (error) {
       console.error("Error:", error); // Handle error
@@ -36,7 +39,7 @@ export default function Signup() {
     <Flex align={"center"} justify={"center"}>
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Stack align={"center"}>
-          <Heading fontSize={"4xl"} textAlign={"center"}>
+          <Heading fontSize={"4xl"} textAlign={"center"} fontFamily="inherit">
             Sign up
           </Heading>
           <Text fontSize={"lg"} color={"gray.600"}>
