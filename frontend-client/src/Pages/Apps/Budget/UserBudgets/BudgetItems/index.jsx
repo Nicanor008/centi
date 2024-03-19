@@ -66,7 +66,7 @@ function ViewUserBudgetItems() {
   useEffect(() => {
     let config = {
       method: "get",
-      url: `http://localhost:4005/api/v1/budget/${budgetId}/`,
+      url: `https://centi-6k7v.onrender.com/api/v1/budget/${budgetId}/`,
       headers: {
         Authorization: `Bearer ${userToken}`,
         "Content-Type": "application/json",
@@ -90,7 +90,7 @@ function ViewUserBudgetItems() {
     let config = {
       method: "get",
       maxBodyLength: Infinity,
-      url: `http://localhost:4005/api/v1/budget-items/budget/${budgetId}`,
+      url: `https://centi-6k7v.onrender.com/api/v1/budget-items/budget/${budgetId}`,
       headers: {
         Authorization: `Bearer ${userToken}`,
         "Content-Type": "application/json",
@@ -125,9 +125,12 @@ function ViewUserBudgetItems() {
 
   const deleteBudget = async (data) => {
     try {
-      await axios.delete(`http://localhost:4005/api/v1/budget/${data?._id}`, {
-        headers: { Authorization: `Bearer ${userToken}` },
-      });
+      await axios.delete(
+        `https://centi-6k7v.onrender.com/api/v1/budget/${data?._id}`,
+        {
+          headers: { Authorization: `Bearer ${userToken}` },
+        }
+      );
       navigate("/budget/view");
     } catch (error) {
       console.log("Error: ", error);
@@ -137,7 +140,7 @@ function ViewUserBudgetItems() {
   const deleteBudgetItem = async (data) => {
     try {
       await axios.delete(
-        "http://localhost:4005/api/v1/budget-items/${data?._id}",
+        "https://centi-6k7v.onrender.com/api/v1/budget-items/${data?._id}",
         { headers: { Authorization: `Bearer ${userToken}` } }
       );
       setDataUpdated(!dataUpdated);

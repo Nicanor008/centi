@@ -13,7 +13,7 @@ const NumberofBudgetItems = () => {
     async function makeRequest() {
       try {
         const response = await axios.get(
-          "http://localhost:4005/api/v1/budget/dashboard/analytics",
+          "https://centi-6k7v.onrender.com/api/v1/budget/dashboard/analytics",
           { headers: { Authorization: `Bearer ${userToken}` } }
         );
         setAnalytics(response.data.data);

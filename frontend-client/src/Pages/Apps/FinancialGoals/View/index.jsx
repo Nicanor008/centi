@@ -51,7 +51,7 @@ function ViewUserFinancialGoals() {
     let config = {
       method: "get",
       maxBodyLength: Infinity,
-      url: "http://localhost:4005/api/v1/financial-goals/",
+      url: "https://centi-6k7v.onrender.com/api/v1/financial-goals/",
       headers: {
         "Content-Type": "application/json",
       },

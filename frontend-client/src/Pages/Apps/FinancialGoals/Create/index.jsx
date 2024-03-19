@@ -18,7 +18,7 @@ const CreateFinancialGoal = () => {
     async function makeRequest() {
       try {
         const response = await axios.get(
-          "http://localhost:4005/api/v1/category"
+          "https://centi-6k7v.onrender.com/api/v1/category"
         );
 
         const transformedData = response.data?.data?.map((item) => ({
@@ -59,7 +59,7 @@ const CreateFinancialGoal = () => {
 
     let config = {
       method: "post",
-      url: "http://localhost:4005/api/v1/financial-goals/",
+      url: "https://centi-6k7v.onrender.com/api/v1/financial-goals/",
       headers: {
         "Content-Type": "application/json",
       },
@@ -73,7 +73,7 @@ const CreateFinancialGoal = () => {
       // add category
       removedUndefinedInCategory?.length > 0 &&
         (await axios.post(
-          "http://localhost:4005/api/v1/category/",
+          "https://centi-6k7v.onrender.com/api/v1/category/",
           removedUndefinedInCategory
         ));
 

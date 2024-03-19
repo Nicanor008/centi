@@ -26,7 +26,6 @@ services:
       - media_data:/home/app/centi/uploads
     depends_on:
       - mongo
-      - redis
     networks:
       - app-network
 
@@ -41,12 +40,6 @@ services:
     volumes:
       - mongo_data:/data/db
       - mongo_backup:/data/backup
-    networks:
-      - app-network
-
-  redis:
-    image: redis:6.2.13-alpine
-    container_name: centi_redis_local
     networks:
       - app-network
 

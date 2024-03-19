@@ -68,7 +68,7 @@ function ViewUserBudgets() {
     let config = {
       method: "get",
       maxBodyLength: Infinity,
-      url: "http://localhost:4005/api/v1/budget/",
+      url: "https://centi-6k7v.onrender.com/api/v1/budget/",
       headers: {
         Authorization: `Bearer ${userToken}`,
         "Content-Type": "application/json",
