@@ -171,7 +171,8 @@ const CreateBudget = () => {
     async function makeRequest() {
       try {
         const response = await axios.get(
-          "http://localhost:4005/api/v1/category"
+          "http://localhost:4005/api/v1/category",
+          { headers: { Authorization: `Bearer ${userToken}` } }
         );
 
         const transformedData = response.data?.data?.map((item) => ({
@@ -193,7 +194,8 @@ const CreateBudget = () => {
     async function makeRequest() {
       try {
         const response = await axios.get(
-          "http://localhost:4005/api/v1/financial-goals"
+          "http://localhost:4005/api/v1/financial-goals",
+          { headers: { Authorization: `Bearer ${userToken}` } }
         );
 
         const updatedResponseData = response.data?.data?.data?.map((item) => {
@@ -238,6 +240,7 @@ const CreateBudget = () => {
       maxBodyLength: Infinity,
       url: "http://localhost:4005/api/v1/budget/",
       headers: {
+        Authorization: `Bearer ${userToken}`,
         "Content-Type": "application/json",
       },
       data: payload,
@@ -252,6 +255,7 @@ const CreateBudget = () => {
       removedUndefinedInCategory?.length > 0 &&
         (await axios.post(
           "http://localhost:4005/api/v1/category/",
+          { headers: { Authorization: `Bearer ${userToken}` } },
           removedUndefinedInCategory
         ));
 
@@ -279,13 +283,13 @@ const CreateBudget = () => {
       plannedExpenses: Number(getValues()?.actualExpenses) ?? 0,
       budgetId: budget?._id,
     };
-    console.log(".......payload....", payload);
 
     let config = {
       method: "post",
       maxBodyLength: Infinity,
       url: "http://localhost:4005/api/v1/budget-items/",
       headers: {
+        Authorization: `Bearer ${userToken}`,
         "Content-Type": "application/json",
       },
       data: payload,
@@ -298,6 +302,7 @@ const CreateBudget = () => {
       // add category
       await axios.post(
         "http://localhost:4005/api/v1/category/",
+        { headers: { Authorization: `Bearer ${userToken}` } },
         newCategoriesPayload
       );
 

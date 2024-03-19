@@ -13,12 +13,31 @@ import {
   Text,
   useColorModeValue,
   Link,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { useEffect } from "react";
 
 export default function Login() {
-  const { register, handleSubmit } = useForm();
+  const { state } = useLocation();
+  const { register, handleSubmit } = useForm({
+    defaultValues: {
+      email: state?.success ? state.data?.email : "",
+    },
+  });
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+
+  // check user
+  const user = localStorage.getItem("user");
+  useEffect(() => {
+    if (user) {
+      return navigate("/budget/dashboard", { replace: true });
+    }
+  }, []);
 
   const onSubmit = async (data) => {
     try {
@@ -41,7 +60,7 @@ export default function Login() {
             Sign in to your account
           </Heading>
           <Text fontSize={"lg"} color={"gray.600"}>
-            to enjoy all of our cool <Text color={"blue.400"}>features</Text> ✌️
+            to enjoy all of our cool️ features
           </Text>
         </Stack>
         <Box
@@ -54,11 +73,30 @@ export default function Login() {
             <form onSubmit={handleSubmit(onSubmit)}>
               <FormControl id="email">
                 <FormLabel>Email address</FormLabel>
-                <Input {...register("email")} type="email" />
+                <Input
+                  {...register("email")}
+                  type="email"
+                  placeholder="john.doe@example.com"
+                />
               </FormControl>
               <FormControl id="password">
                 <FormLabel>Password</FormLabel>
-                <Input {...register("password")} type="password" />
+                <InputGroup>
+                  <Input
+                    {...register("password")}
+                    type={showPassword ? "text" : "password"}
+                  />
+                  <InputRightElement h={"full"}>
+                    <Button
+                      variant={"ghost"}
+                      onClick={() =>
+                        setShowPassword((showPassword) => !showPassword)
+                      }
+                    >
+                      {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
               </FormControl>
               <Stack spacing={2} mt={2}>
                 <Stack
@@ -67,17 +105,16 @@ export default function Login() {
                   justify={"space-between"}
                 >
                   <Checkbox>Remember me</Checkbox>
-                  {/* <Checkbox {...register("remember")}>Remember me</Checkbox> */}
                   <Link href="/forgot-password" color={"blue.400"}>
                     Forgot password?
                   </Link>
                 </Stack>
                 <Button
                   type="submit"
-                  bg={"blue.400"}
+                  bg={"red.400"}
                   color={"white"}
                   _hover={{
-                    bg: "blue.500",
+                    bg: "red.500",
                   }}
                 >
                   Sign in

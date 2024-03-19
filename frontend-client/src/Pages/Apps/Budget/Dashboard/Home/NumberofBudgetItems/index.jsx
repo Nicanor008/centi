@@ -1,27 +1,18 @@
 import { Flex, Text } from "@chakra-ui/react";
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Chart as ReactChartJs } from "react-chartjs-2";
 import "chart.js/auto";
 
 const NumberofBudgetItems = () => {
   const [analytics, setAnalytics] = useState();
 
-  const chartRef = useRef(null);
-
-  useEffect(() => {
-    return () => {
-      if (chartRef.current) {
-        chartRef.current?.chartInstance?.destroy();
-      }
-    };
-  }, []);
-
   useEffect(() => {
     async function makeRequest() {
       try {
         const response = await axios.get(
-          "http://localhost:4005/api/v1/budget/dashboard/analytics"
+          "http://localhost:4005/api/v1/budget/dashboard/analytics",
+          { headers: { Authorization: `Bearer ${userToken}` } }
         );
         setAnalytics(response.data.data);
       } catch (error) {
@@ -89,12 +80,7 @@ const NumberofBudgetItems = () => {
           </Text>
 
           {analytics?.budget?.length > 0 && (
-            <ReactChartJs
-              type="line"
-              ref={chartRef}
-              data={data}
-              options={options}
-            />
+            <ReactChartJs type="line" data={data} options={options} />
           )}
         </Flex>
       )}

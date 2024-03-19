@@ -18,6 +18,7 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
+import { useEffect } from "react";
 import {
   FiHome,
   FiTrendingUp,
@@ -28,7 +29,7 @@ import {
   FiBell,
   FiChevronDown,
 } from "react-icons/fi";
-import { Outlet, useNavigate, Navigate } from "react-router-dom";
+import { Outlet, useNavigate, Navigate, useLocation } from "react-router-dom";
 
 const LinkItems = [
   { name: "Dashboard", icon: FiHome, url: "/budget/dashboard" },
@@ -196,6 +197,15 @@ const MobileNav = ({ onOpen, ...rest }) => {
 
 const AuthLayout = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const user = localStorage.getItem("user");
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user || user === undefined) {
+      return navigate("/login", { replace: true });
+    }
+  }, []);
 
   return (
     <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")} w="100vw">

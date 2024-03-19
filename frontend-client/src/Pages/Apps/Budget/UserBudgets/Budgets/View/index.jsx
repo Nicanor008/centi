@@ -38,6 +38,7 @@ import DatePicker, {
 } from "../../../../../../components/DatePicker";
 import DataNotFound from "../../../../../../components/ErrorPages/DataNotFound";
 import { formatNumberGroups } from "../../../../../../helpers/formatNumberGroups";
+import { getUserToken } from "../../../../../../helpers/getToken";
 
 function ViewUserBudgets() {
   const navigate = useNavigate();
@@ -50,6 +51,8 @@ function ViewUserBudgets() {
   const [sortBy, setSortBy] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
   const [isLargerThan880] = useMediaQuery("(min-width: 880px)");
+
+  const userToken = getUserToken();
 
   const cachedBudget = useMemo(() => {
     if (!budget) return null;
@@ -67,6 +70,7 @@ function ViewUserBudgets() {
       maxBodyLength: Infinity,
       url: "http://localhost:4005/api/v1/budget/",
       headers: {
+        Authorization: `Bearer ${userToken}`,
         "Content-Type": "application/json",
       },
     };

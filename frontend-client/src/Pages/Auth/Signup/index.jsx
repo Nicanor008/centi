@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Flex,
   Box,
@@ -18,10 +18,20 @@ import {
   Link,
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
   const { register, handleSubmit } = useForm();
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+
+  // check user
+  const user = localStorage.getItem("user");
+  useEffect(() => {
+    if (user) {
+      return navigate("/budget/dashboard", { replace: true });
+    }
+  }, []);
 
   const onSubmit = async (data) => {
     try {
@@ -29,7 +39,7 @@ export default function Signup() {
         "http://localhost:4005/api/v1/auth/signup",
         data
       );
-      console.log(response.data); // Handle success response
+      navigate("/login", { state: response.data });
     } catch (error) {
       console.error("Error:", error); // Handle error
     }
@@ -52,25 +62,37 @@ export default function Signup() {
           boxShadow={"lg"}
           p={8}
         >
-          <Stack spacing={4}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Stack spacing={2}>
               <HStack>
                 <Box>
                   <FormControl id="firstName" isRequired>
                     <FormLabel>First Name</FormLabel>
-                    <Input {...register("firstName")} type="text" />
+                    <Input
+                      {...register("firstName")}
+                      type="text"
+                      placeholder="John"
+                    />
                   </FormControl>
                 </Box>
                 <Box>
                   <FormControl id="lastName">
                     <FormLabel>Last Name</FormLabel>
-                    <Input {...register("lastName")} type="text" />
+                    <Input
+                      {...register("lastName")}
+                      type="text"
+                      placeholder="Doe"
+                    />
                   </FormControl>
                 </Box>
               </HStack>
               <FormControl id="email" isRequired>
                 <FormLabel>Email address</FormLabel>
-                <Input {...register("email")} type="email" />
+                <Input
+                  {...register("email")}
+                  type="email"
+                  placeholder="john.doe@example.com"
+                />
               </FormControl>
               <FormControl id="password" isRequired>
                 <FormLabel>Password</FormLabel>
@@ -78,6 +100,7 @@ export default function Signup() {
                   <Input
                     {...register("password")}
                     type={showPassword ? "text" : "password"}
+                    placeholder="*****************"
                   />
                   <InputRightElement h={"full"}>
                     <Button
@@ -105,16 +128,16 @@ export default function Signup() {
                   Sign up
                 </Button>
               </Stack>
-            </form>
-            <Stack pt={6}>
-              <Text align={"center"}>
-                Already a user?{" "}
-                <Link href="/login" color={"blue.400"}>
-                  Login
-                </Link>
-              </Text>
+              <Stack pt={6}>
+                <Text align={"center"}>
+                  Already a user?{" "}
+                  <Link href="/login" color={"blue.400"}>
+                    Login
+                  </Link>
+                </Text>
+              </Stack>
             </Stack>
-          </Stack>
+          </form>
         </Box>
       </Stack>
     </Flex>

@@ -15,7 +15,8 @@ function BudgetDashboard() {
     async function makeRequest() {
       try {
         const response = await axios.get(
-          "http://localhost:4005/api/v1/budget/dashboard/analytics"
+          "http://localhost:4005/api/v1/budget/dashboard/analytics",
+          { headers: { Authorization: `Bearer ${userToken}` } }
         );
         setAnalytics(response.data.data);
       } catch (error) {

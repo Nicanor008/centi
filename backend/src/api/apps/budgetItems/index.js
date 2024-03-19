@@ -61,7 +61,7 @@ const router = express.Router();
 
 router.post(
   "/",
-  [AuthService.optional, celebrate({ body: createValidationSchema })],
+  [AuthService.required, celebrate({ body: createValidationSchema })],
   budgetItemsController.createBudgetItems
 );
 
@@ -138,7 +138,7 @@ router.put(
  */
 router.get(
   "/",
-  AuthService.optional,
+  AuthService.required,
   celebrate({ query: customPaginateValidateSchema }),
   budgetItemsController.findAll
 );
@@ -199,14 +199,14 @@ router.get("/:id", budgetItemsController.findOne);
  */
 router.delete(
   "/:id",
-  AuthService.optional,
+  AuthService.required,
   budgetItemsController.deleteBudgetItem
 );
 
 // get all budget items within one budget
 router.get(
   "/budget/:budgetId",
-  AuthService.optional,
+  AuthService.required,
   budgetItemsController.getBudgetItemsForOneBudget
 );
 

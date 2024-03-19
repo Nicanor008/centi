@@ -29,7 +29,6 @@ import {
   FaEdit,
   FaEllipsisV,
   FaEye,
-  FaPlus,
   FaSearch,
   FaSortAmountDown,
   FaSortAmountUp,
@@ -40,6 +39,7 @@ import { MdClose } from "react-icons/md";
 import DataNotFound from "../../../../../components/ErrorPages/DataNotFound";
 import { formatNumberGroups } from "../../../../../helpers/formatNumberGroups";
 import QuickBudgetAnalyticsNav from "../../../../../components/Analytics/QuickBudgetAnalyticsNav";
+import { getUserToken } from "../../../../../helpers/getToken";
 
 function ViewUserBudgetItems() {
   const navigate = useNavigate();
@@ -60,12 +60,15 @@ function ViewUserBudgetItems() {
     setSelectedItem(item === selectedItem ? null : item);
   };
 
+  const userToken = getUserToken();
+
   //   STEP 1: GET Budget
   useEffect(() => {
     let config = {
       method: "get",
       url: `http://localhost:4005/api/v1/budget/${budgetId}/`,
       headers: {
+        Authorization: `Bearer ${userToken}`,
         "Content-Type": "application/json",
       },
     };
@@ -89,6 +92,7 @@ function ViewUserBudgetItems() {
       maxBodyLength: Infinity,
       url: `http://localhost:4005/api/v1/budget-items/budget/${budgetId}`,
       headers: {
+        Authorization: `Bearer ${userToken}`,
         "Content-Type": "application/json",
       },
     };
@@ -121,7 +125,9 @@ function ViewUserBudgetItems() {
 
   const deleteBudget = async (data) => {
     try {
-      await axios.delete(`http://localhost:4005/api/v1/budget/${data?._id}`);
+      await axios.delete(`http://localhost:4005/api/v1/budget/${data?._id}`, {
+        headers: { Authorization: `Bearer ${userToken}` },
+      });
       navigate("/budget/view");
     } catch (error) {
       console.log("Error: ", error);
@@ -131,7 +137,8 @@ function ViewUserBudgetItems() {
   const deleteBudgetItem = async (data) => {
     try {
       await axios.delete(
-        "http://localhost:4005/api/v1/budget-items/${data?._id}"
+        "http://localhost:4005/api/v1/budget-items/${data?._id}",
+        { headers: { Authorization: `Bearer ${userToken}` } }
       );
       setDataUpdated(!dataUpdated);
       setSelectedItem(null);

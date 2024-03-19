@@ -1,6 +1,6 @@
 import { Flex, Text } from "@chakra-ui/react";
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Chart as ReactChartJs } from "react-chartjs-2";
 import "chart.js/auto";
 import { getMonthName } from "../../../../../../helpers/getMonths";
@@ -8,21 +8,12 @@ import { getMonthName } from "../../../../../../helpers/getMonths";
 const PlannedIncomeAndExpenseChart = () => {
   const [analytics, setAnalytics] = useState();
 
-  const chartRef = useRef(null);
-
-  useEffect(() => {
-    return () => {
-      if (chartRef.current) {
-        chartRef.current?.chartInstance?.destroy();
-      }
-    };
-  }, []);
-
   useEffect(() => {
     async function makeRequest() {
       try {
         const response = await axios.get(
-          "http://localhost:4005/api/v1/budget/dashboard/analytics"
+          "http://localhost:4005/api/v1/budget/dashboard/analytics",
+          { headers: { Authorization: `Bearer ${userToken}` } }
         );
         setAnalytics(response.data.data);
       } catch (error) {
@@ -110,12 +101,7 @@ const PlannedIncomeAndExpenseChart = () => {
           <Text textAlign="center" fontWeight={600} fontSize={18}>
             Expenses Analytics
           </Text>
-          <ReactChartJs
-            type="bar"
-            ref={chartRef}
-            data={data}
-            options={options}
-          />
+          <ReactChartJs type="bar" data={data} options={options} />
         </Flex>
       )}
     </Flex>

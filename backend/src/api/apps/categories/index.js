@@ -59,7 +59,7 @@ const router = express.Router();
  *        $ref: "#/responses/Unauthorized"
  */
 
-router.post("/", [AuthService.optional], categoryController.create);
+router.post("/", [AuthService.required], categoryController.create);
 
 /**
  * @swagger
@@ -92,7 +92,7 @@ router.post("/", [AuthService.optional], categoryController.create);
 
 router.put(
   "/:id",
-  [AuthService.optional],
+  [AuthService.required],
   celebrate({ body: updateValidationSchema }),
   categoryController.update
 );
@@ -134,7 +134,7 @@ router.put(
  */
 router.get(
   "/",
-  AuthService.optional,
+  AuthService.required,
   celebrate({ query: customPaginateValidateSchema }),
   categoryController.viewAllCategoriesPerUser
 );
@@ -193,6 +193,6 @@ router.get("/:id", categoryController.findOne);
  *      401:
  *        $ref: "#/responses/Unauthorized"
  */
-router.delete("/:id", AuthService.optional, categoryController.remove);
+router.delete("/:id", AuthService.required, categoryController.remove);
 
 export default router;
