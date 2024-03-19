@@ -8,7 +8,7 @@
     "test": "NODE_ENV=test mocha --require @babel/register --exit ./src/api/**/*.test.js",
     "start": "NODE_ENV=development DEBUG=app:* nodemon --exec babel-node src/server.js",
     "debug": "nodemon --inspect-brk=0.0.0.0:9229 --nolazy --exec babel-node src/server.js",
-    "build": "yarn && yarn clean && babel src --copy-files --out-dir dist --ignore src/client",
+    "build": "npm install && npm run clean && babel src --copy-files --out-dir dist",
     "heroku-postbuild": "cd client && npm install && npm run build",
     "serve": "NODE_ENV=production node dist/server.js",
     "clean": "rimraf dist",
@@ -16,9 +16,9 @@
     "lint:fix": "eslint './src/**/*.{js,jsx}' --fix",
     "db": "babel-node src/db_seed"
   },
-  "author": "Uyen Do",
+  "author": "Nicanor Korir",
   "license": "ISC",
-  "homepage": "https://bitbucket.org/minhuyen/centi#readme",
+  "homepage": "https://github.com/nicanor008#readme",
   "dependencies": {
     "@godaddy/terminus": "^4.12.0",
     "api-query-params": "^5.4.0",
