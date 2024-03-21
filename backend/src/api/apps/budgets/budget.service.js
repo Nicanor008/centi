@@ -61,8 +61,8 @@ class BudgetService extends Service {
     } else throw new Error("Budget not found!");
   }
 
-  async budgetAnalytics() {
-    const budget = await this.viewAllBudgets({ sortBy: 1 });
+  async budgetAnalytics(user) {
+    const budget = await this.viewAllBudgets({ user, sortBy: 1 });
 
     const totalBudgetExpensesAmount = budget?.data?.reduce(
       (acc, item) => acc + item.plannedExpenses,

@@ -43,7 +43,7 @@ class BudgetController extends Controller {
 
   async budgetAnalytics(req, res, next) {
     try {
-      const result = await budgetService.budgetAnalytics();
+      const result = await budgetService.budgetAnalytics(req.user);
 
       return handleResponse.success(res, result);
     } catch (e) {
