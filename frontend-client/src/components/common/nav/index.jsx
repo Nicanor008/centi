@@ -267,18 +267,23 @@ const NAV_ITEMS = [
     label: "Budget",
     children: [
       {
-        label: "Create a new Budget",
+        label: "Manage my Budget",
         subLabel: "Track all your budget in one place",
         href: "budget/dashboard",
       },
       {
-        label: "Explore Design Work",
-        subLabel: "Trending Design to inspire you",
+        label: "Learn the magic of budgeting",
+        subLabel: "Just like magic, things will happen to you",
         href: "#",
       },
       {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
+        label: "Tips & Resources",
+        subLabel: "Things you need in your finger tips ",
+        href: "#",
+      },
+      {
+        label: "Community & Support",
+        subLabel: "Together we can achieve all we want in life",
         href: "#",
       },
     ],

@@ -11,6 +11,7 @@ import {
   IconButton,
   createIcon,
   useColorModeValue,
+  Link,
 } from "@chakra-ui/react";
 
 export default function Hero() {
@@ -27,10 +28,12 @@ export default function Hero() {
             lineHeight={1.1}
             fontWeight={600}
             fontSize={{ base: "3xl", sm: "4xl", lg: "6xl" }}
+            fontFamily="inherit"
           >
             <Text
               as={"span"}
               position={"relative"}
+              fontFamily="inherit"
               _after={{
                 content: "''",
                 width: "full",
@@ -58,17 +61,19 @@ export default function Hero() {
             spacing={{ base: 4, sm: 6 }}
             direction={{ base: "column", sm: "row" }}
           >
-            <Button
-              rounded={"full"}
-              size={"lg"}
-              fontWeight={"normal"}
-              px={6}
-              colorScheme={"red"}
-              bg={"red.400"}
-              _hover={{ bg: "red.500" }}
-            >
-              Get started
-            </Button>
+            <Link href="/login">
+              <Button
+                rounded={"full"}
+                size={"lg"}
+                fontWeight={"normal"}
+                px={6}
+                colorScheme={"red"}
+                bg={"red.400"}
+                _hover={{ bg: "red.500" }}
+              >
+                Get started
+              </Button>
+            </Link>
             <Button
               rounded={"full"}
               size={"lg"}

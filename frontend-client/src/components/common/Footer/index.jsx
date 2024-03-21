@@ -73,14 +73,16 @@ export default function Footer() {
       color={useColorModeValue("gray.700", "gray.200")}
       mt="80px"
     >
-      <Container as={Stack} maxW={"7xl"} py={10}>
+      <Container as={Stack} maxW="100%" py={10}>
         <SimpleGrid
           templateColumns={{ sm: "1fr 1fr", md: "2fr 1fr 1fr 2fr" }}
           spacing={8}
         >
           <Stack spacing={6}>
             <Box>
-              <Heading as="h4">Centi</Heading>
+              <Heading as="h4" fontFamily="inherit">
+                Centi
+              </Heading>
             </Box>
             <Text fontSize={"sm"}>© 2024 Centi. All rights reserved</Text>
             <Stack direction={"row"} spacing={6}>
