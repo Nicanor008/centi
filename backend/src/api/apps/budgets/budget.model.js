@@ -46,6 +46,11 @@ const BudgetSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "FinancialGoal",
       required: false
+    },
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true
     }
     // TODO: Add reminderMeOn: ["date1", "date2", "date3"]
   },

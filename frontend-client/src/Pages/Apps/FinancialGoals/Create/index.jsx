@@ -4,21 +4,23 @@ import { useForm, FormProvider } from "react-hook-form";
 import { Flex, Text, Button, Input, VStack } from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import CreatableSelect from "react-select/creatable";
+import { getUserToken } from "../../../../helpers/getToken";
 
 const CreateFinancialGoal = () => {
   const navigate = useNavigate();
   const methods = useForm();
   const { getValues, reset } = methods;
-  const { state } = useLocation();
   const [selectedCategory, setSelectedCategory] = React.useState([]);
 
   const [userCategories, setUserCategories] = React.useState([]);
+  const userToken = getUserToken();
 
   React.useEffect(() => {
     async function makeRequest() {
       try {
         const response = await axios.get(
-          "https://centi-6k7v.onrender.com/api/v1/category"
+          "http://localhost:4005/api/v1/category",
+          { headers: { Authorization: `Bearer ${userToken}` } }
         );
 
         const transformedData = response.data?.data?.map((item) => ({
@@ -59,9 +61,10 @@ const CreateFinancialGoal = () => {
 
     let config = {
       method: "post",
-      url: "https://centi-6k7v.onrender.com/api/v1/financial-goals/",
+      url: "http://localhost:4005/api/v1/financial-goals/",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${userToken}`,
       },
       data: payload,
     };
@@ -73,7 +76,8 @@ const CreateFinancialGoal = () => {
       // add category
       removedUndefinedInCategory?.length > 0 &&
         (await axios.post(
-          "https://centi-6k7v.onrender.com/api/v1/category/",
+          "http://localhost:4005/api/v1/category/",
+          { headers: { Authorization: `Bearer ${userToken}` } },
           removedUndefinedInCategory
         ));
 

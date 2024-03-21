@@ -28,6 +28,11 @@ const FinancialGoalsSchema = new Schema(
     to: {
       type: String,
       required: false
+    },
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true
     }
   },
   { timestamps: true }

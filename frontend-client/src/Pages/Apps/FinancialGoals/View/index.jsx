@@ -19,7 +19,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
-  FaEllipsisV,
   FaPlus,
   FaSearch,
   FaSortAmountDown,
@@ -27,6 +26,7 @@ import {
 } from "react-icons/fa";
 import { formatNumberGroups } from "../../../../helpers/formatNumberGroups";
 import DataNotFound from "../../../../components/ErrorPages/DataNotFound";
+import { getUserToken } from "../../../../helpers/getToken";
 
 function ViewUserFinancialGoals() {
   const navigate = useNavigate();
@@ -36,6 +36,7 @@ function ViewUserFinancialGoals() {
   const [sortBy, setSortBy] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
   const [isLargerThan880] = useMediaQuery("(min-width: 880px)");
+  const userToken = getUserToken();
 
   const cachedGoals = useMemo(() => {
     if (!financialGoals) return null;
@@ -51,9 +52,10 @@ function ViewUserFinancialGoals() {
     let config = {
       method: "get",
       maxBodyLength: Infinity,
-      url: "https://centi-6k7v.onrender.com/api/v1/financial-goals/",
+      url: "http://localhost:4005/api/v1/financial-goals/",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${userToken}`,
       },
     };
 
@@ -68,19 +70,6 @@ function ViewUserFinancialGoals() {
 
     makeRequest();
   }, [manualRefresh]);
-
-  const handleFilterBudget = (data) => {
-    const key = Object.keys(data)[0];
-    const value = Object.values(data)[0];
-
-    const filteredBudget = budget.data.filter((item) => item[key] === value);
-
-    setBudget({
-      data: filteredBudget,
-      total: filteredBudget.length,
-      filtered: true,
-    });
-  };
 
   const handleSearchChange = (text) => {
     setSearchText(text);

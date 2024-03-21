@@ -10,7 +10,7 @@ class FinancialGoalsController extends Controller {
 
   async create(req, res, next) {
     try {
-      const data = req.body;
+      const data = { ...req.body, userId: req.user._id };
       const result = await financialGoalsService.create(data);
       return Response.success(res, result, httpStatus.CREATED);
     } catch (exception) {
@@ -20,7 +20,9 @@ class FinancialGoalsController extends Controller {
 
   async viewAllGoals(req, res, next) {
     try {
-      let result = await financialGoalsService.viewAllGoals();
+      let result = await financialGoalsService.viewAllGoals({
+        userId: req.user._id
+      });
 
       return Response.success(res, result);
     } catch (e) {
@@ -30,7 +32,10 @@ class FinancialGoalsController extends Controller {
 
   async findOneById(req, res, next) {
     try {
-      const result = await financialGoalsService.findOneById(req.params.id);
+      const result = await financialGoalsService.findOneById({
+        id: req.params.id,
+        userId: req.user._id
+      });
 
       return Response.success(res, result);
     } catch (e) {

@@ -16,7 +16,7 @@ class BudgetItemsController extends Controller {
   // Create a budget
   async createBudgetItems(req, res, next) {
     try {
-      const data = req.body;
+      const data = { ...req.body, userId: req.user._id };
       const result = await BudgetItemsService.createBudgetItems(data);
       return Response.success(res, result, httpStatus.CREATED);
     } catch (exception) {
@@ -28,7 +28,8 @@ class BudgetItemsController extends Controller {
   async getBudgetItemsForOneBudget(req, res, next) {
     try {
       const result = await BudgetItemsService.getBudgetItemsForOneBudget(
-        req.params.budgetId
+        req.params.budgetId,
+        req.user._id
       );
       return Response.success(res, result, httpStatus.SUCCESS);
     } catch (exception) {
@@ -39,7 +40,10 @@ class BudgetItemsController extends Controller {
   // delete budget item
   async deleteBudgetItem(req, res, next) {
     try {
-      const result = await BudgetItemsService.deleteBudgetItem(req.params.id);
+      const result = await BudgetItemsService.deleteBudgetItem(
+        req.params.id,
+        req.user?._id
+      );
       return Response.success(res, result, httpStatus.SUCCESS);
     } catch (exception) {
       next(exception);

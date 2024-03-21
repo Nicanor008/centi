@@ -20,7 +20,6 @@ export default class AuthService {
       "jwt",
       { session: false },
       (err, user, info) => {
-        console.log("=======info==========", info);
         if (err) {
           return next(err);
         }

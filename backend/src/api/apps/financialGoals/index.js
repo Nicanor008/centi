@@ -61,7 +61,8 @@ const router = express.Router();
 
 router.post(
   "/",
-  [AuthService.optional, celebrate({ body: createValidationSchema })],
+  AuthService.required,
+  celebrate({ body: createValidationSchema }),
   financialGoalsController.create
 );
 
@@ -138,7 +139,7 @@ router.put(
  */
 router.get(
   "/",
-  AuthService.optional,
+  AuthService.required,
   celebrate({ query: customPaginateValidateSchema }),
   financialGoalsController.viewAllGoals
 );
@@ -168,7 +169,7 @@ router.get(
  *      401:
  *        $ref: "#/responses/Unauthorized"
  */
-router.get("/:id", financialGoalsController.findOneById);
+router.get("/:id", AuthService.required, financialGoalsController.findOneById);
 
 /**
  * @swagger

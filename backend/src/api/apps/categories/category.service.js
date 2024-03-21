@@ -12,8 +12,8 @@ class CategoryService extends Service {
   }
 
   // view category as per user
-  async viewAllCategoriesPerUser() {
-    return await Category.find();
+  async viewAllCategoriesPerUser(userId) {
+    return await Category.find({ userId });
   }
 }
 

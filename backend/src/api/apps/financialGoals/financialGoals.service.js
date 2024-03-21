@@ -10,8 +10,11 @@ class FinancialGoalsService extends Service {
     return await FinancialGoals.create(data);
   }
 
-  async viewAllGoals(sortBy) {
+  async viewAllGoals({ userId, sortBy }) {
     const response = await FinancialGoals.aggregate([
+      {
+        $match: { userId }
+      },
       {
         $sort: { createdAt: sortBy ?? -1 }
       }
@@ -24,8 +27,8 @@ class FinancialGoalsService extends Service {
     return result;
   }
 
-  async findOneById(id) {
-    const response = await FinancialGoals.findById({ _id: id });
+  async findOneById({ id, userId }) {
+    const response = await FinancialGoals.findOne({ _id: id, userId });
     if (response) {
       return response;
     } else throw new Error("Financial Goal not found!");

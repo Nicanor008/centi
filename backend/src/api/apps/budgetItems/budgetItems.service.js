@@ -10,14 +10,16 @@ class BudgetItemsService extends Service {
     return await BudgetItems.create(data);
   }
 
-  async getBudgetItemsForOneBudget(budgetId) {
+  async getBudgetItemsForOneBudget(budgetId, userId) {
     return await BudgetItems.find({
-      budgetId
+      budgetId,
+      userId
     });
     // const tt = await BudgetItems.aggregate([
     //   {
     //     $match: {
-    //       budgetId: ObjectId(budgetId)
+    //       budgetId: ObjectId(budgetId),
+    //       userId: user?._id
     //     }
     //   },
     //   {
@@ -65,8 +67,11 @@ class BudgetItemsService extends Service {
     // return response;
   }
 
-  async deleteBudgetItem(budgetItemId) {
-    const budgetItem = await BudgetItems.findById({ _id: budgetItemId });
+  async deleteBudgetItem(budgetItemId, userId) {
+    const budgetItem = await BudgetItems.findById({
+      _id: budgetItemId,
+      userId
+    });
 
     if (!budgetItem) {
       throw new Error("Budget item not found");

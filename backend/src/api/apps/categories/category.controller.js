@@ -9,7 +9,7 @@ class CategoryController extends Controller {
   }
   async create(req, res, next) {
     try {
-      const data = req.body;
+      const data = { ...req.body, userId: req.user?._id };
       const result = await categoryService.create(data);
       return Response.success(res, result, httpStatus.CREATED);
     } catch (exception) {
@@ -18,8 +18,11 @@ class CategoryController extends Controller {
   }
 
   async viewAllCategoriesPerUser(req, res, next) {
+    console.log("viewAllCategoriesPerUser..........", req);
     try {
-      const result = await categoryService.viewAllCategoriesPerUser();
+      const result = await categoryService.viewAllCategoriesPerUser(
+        req.user?._id
+      );
       return Response.success(res, result, httpStatus.SUCCESS);
     } catch (exception) {
       next(exception);

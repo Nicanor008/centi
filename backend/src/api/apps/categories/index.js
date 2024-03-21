@@ -3,7 +3,6 @@ import { celebrate } from "celebrate";
 import categoryController from "./category.controller";
 import AuthService from "../../../middlewares/auth";
 import {
-  createValidationSchema,
   updateValidationSchema,
   customPaginateValidateSchema
 } from "./category.validation";
@@ -59,7 +58,7 @@ const router = express.Router();
  *        $ref: "#/responses/Unauthorized"
  */
 
-router.post("/", [AuthService.required], categoryController.create);
+router.post("/", AuthService.required, categoryController.create);
 
 /**
  * @swagger
@@ -92,8 +91,7 @@ router.post("/", [AuthService.required], categoryController.create);
 
 router.put(
   "/:id",
-  [AuthService.required],
-  celebrate({ body: updateValidationSchema }),
+  [AuthService.required, celebrate({ body: updateValidationSchema })],
   categoryController.update
 );
 
@@ -132,6 +130,13 @@ router.put(
  *        401:
  *          $ref: "#/responses/Unauthorized"
  */
+// router.get(
+//   "/",
+//   AuthService.required,
+//   celebrate({ query: customPaginateValidateSchema }),
+//   categoryController.viewAllCategoriesPerUser
+// );
+
 router.get(
   "/",
   AuthService.required,
@@ -164,7 +169,7 @@ router.get(
  *      401:
  *        $ref: "#/responses/Unauthorized"
  */
-router.get("/:id", categoryController.findOne);
+router.get("/:id", AuthService.required, categoryController.findOne);
 
 /**
  * @swagger

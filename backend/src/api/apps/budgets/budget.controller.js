@@ -12,7 +12,7 @@ class BudgetController extends Controller {
   // Create a budget
   async createBudget(req, res, next) {
     try {
-      const data = req.body;
+      const data = { ...req.body, userId: req.user?._id };
       const result = await budgetService.createBudget(data);
       return handleResponse.success(res, result, httpStatus.CREATED);
     } catch (exception) {
@@ -23,7 +23,7 @@ class BudgetController extends Controller {
   // View all budgets
   async viewAllBudgets(req, res, next) {
     try {
-      let result = await budgetService.viewAllBudgets();
+      let result = await budgetService.viewAllBudgets({ user: req?.user });
 
       return handleResponse.success(res, result);
     } catch (e) {

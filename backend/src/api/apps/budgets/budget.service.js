@@ -1,3 +1,4 @@
+import { isValidObjectId } from "mongoose";
 import { Service } from "../../../helpers/common";
 import Budget from "./budget.model";
 
@@ -10,8 +11,11 @@ class BudgetService extends Service {
     return await Budget.create(data);
   }
 
-  async viewAllBudgets(sortBy) {
+  async viewAllBudgets({ user, sortBy }) {
     const response = await Budget.aggregate([
+      {
+        $match: { userId: user?._id }
+      },
       {
         $lookup: {
           from: "budgetitems",
@@ -58,7 +62,7 @@ class BudgetService extends Service {
   }
 
   async budgetAnalytics() {
-    const budget = await this.viewAllBudgets(1);
+    const budget = await this.viewAllBudgets({ sortBy: 1 });
 
     const totalBudgetExpensesAmount = budget?.data?.reduce(
       (acc, item) => acc + item.plannedExpenses,

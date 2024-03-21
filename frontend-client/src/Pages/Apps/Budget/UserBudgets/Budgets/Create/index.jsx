@@ -173,7 +173,7 @@ const CreateBudget = () => {
     async function makeRequest() {
       try {
         const response = await axios.get(
-          "https://centi-6k7v.onrender.com/api/v1/category",
+          "http://localhost:4005/api/v1/category",
           { headers: { Authorization: `Bearer ${userToken}` } }
         );
 
@@ -196,7 +196,7 @@ const CreateBudget = () => {
     async function makeRequest() {
       try {
         const response = await axios.get(
-          "https://centi-6k7v.onrender.com/api/v1/financial-goals",
+          "http://localhost:4005/api/v1/financial-goals",
           { headers: { Authorization: `Bearer ${userToken}` } }
         );
 
@@ -240,7 +240,7 @@ const CreateBudget = () => {
     let config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: "https://centi-6k7v.onrender.com/api/v1/budget/",
+      url: "http://localhost:4005/api/v1/budget/",
       headers: {
         Authorization: `Bearer ${userToken}`,
         "Content-Type": "application/json",
@@ -256,7 +256,7 @@ const CreateBudget = () => {
       // add category
       removedUndefinedInCategory?.length > 0 &&
         (await axios.post(
-          "https://centi-6k7v.onrender.com/api/v1/category/",
+          "http://localhost:4005/api/v1/category/",
           { headers: { Authorization: `Bearer ${userToken}` } },
           removedUndefinedInCategory
         ));
@@ -289,7 +289,7 @@ const CreateBudget = () => {
     let config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: "https://centi-6k7v.onrender.com/api/v1/budget-items/",
+      url: "http://localhost:4005/api/v1/budget-items/",
       headers: {
         Authorization: `Bearer ${userToken}`,
         "Content-Type": "application/json",
@@ -303,7 +303,7 @@ const CreateBudget = () => {
 
       // add category
       await axios.post(
-        "https://centi-6k7v.onrender.com/api/v1/category/",
+        "http://localhost:4005/api/v1/category/",
         { headers: { Authorization: `Bearer ${userToken}` } },
         newCategoriesPayload
       );
