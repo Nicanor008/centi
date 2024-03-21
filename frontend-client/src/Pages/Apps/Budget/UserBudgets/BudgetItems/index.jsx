@@ -420,11 +420,11 @@ function ViewUserBudgetItems() {
                     alignItems="center"
                     bg="inherit"
                   >
-                    {item?.category?.map((category) => (
+                    {item?.category?.map((category, idx) => (
                       <Tag
                         mr={1}
                         mb={item?.category.length > 3 ? 1 : 0}
-                        key={category._id}
+                        key={category._id + idx}
                       >
                         {category?.__isNew__ ? category?.label : category.name}
                       </Tag>

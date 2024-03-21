@@ -1,7 +1,16 @@
 import React from "react";
 import axios from "axios";
 import { useForm, FormProvider } from "react-hook-form";
-import { Flex, Text, Button, Input, VStack } from "@chakra-ui/react";
+import {
+  Flex,
+  Text,
+  Button,
+  Input,
+  VStack,
+  useMediaQuery,
+  FormControl,
+  FormLabel,
+} from "@chakra-ui/react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import CreatableSelect from "react-select/creatable";
 import Select from "react-select";
@@ -18,69 +27,77 @@ const BudgetForm = ({
 }) => {
   return (
     <>
-      <VStack spacing={4}>
-        <Input
-          placeholder="Budget Name"
-          bg={"gray.100"}
-          border="1px solid"
-          borderColor="gray.300"
-          color={"gray.500"}
-          _placeholder={{
-            color: "gray.500",
-          }}
-          {...methods.register("name")}
-        />
-        <Input
-          placeholder="Budget Description"
-          bg={"gray.100"}
-          border="1px solid"
-          borderColor="gray.300"
-          color={"gray.500"}
-          _placeholder={{
-            color: "gray.500",
-          }}
-          {...methods.register("description")}
-        />
-        <Input
-          placeholder="Budget Planned Income"
-          bg={"gray.100"}
-          border="1px solid"
-          borderColor="gray.300"
-          color={"gray.500"}
-          _placeholder={{
-            color: "gray.500",
-          }}
-          {...methods.register("plannedIncome")}
-          type="number"
-        />
-        <Input
-          placeholder="Budget Planned Expenses"
-          bg={"gray.100"}
-          border="1px solid"
-          borderColor="gray.300"
-          color={"gray.500"}
-          _placeholder={{
-            color: "gray.500",
-          }}
-          {...methods.register("plannedExpenses")}
-          type="number"
-        />
-        <Flex gap={4} flexDir={["solumn", "row"]}>
-          <Select
-            isLoading={false}
-            isClearable={true}
-            isSearchable={false}
-            options={financialGoals}
-            onChange={(e) => setSelectedFinancialGoal(e.value)}
-          />
-          <CreatableSelect
-            isMulti
-            isCreatable
-            options={userCategories}
-            // styles={customStyles}
-            value={selectedCategory}
-            onChange={handleSelectedCategory}
-          />
+      <VStack spacing={4} alignItems="left">
+        <Flex gap={4} flexDir={["column", "row"]}>
+          <FormControl id="name">
+            <FormLabel htmlFor="name">Name</FormLabel>
+            <Input
+              placeholder="Budget Name"
+              bg="white"
+              {...methods.register("name")}
+            />
+          </FormControl>
+          <FormControl id="description">
+            <FormLabel htmlFor="description">
+              Planned Income for this budget
+            </FormLabel>
+            <Input
+              placeholder="Budget Description"
+              bg="white"
+              {...methods.register("description")}
+            />
+          </FormControl>
+        </Flex>
+        <Flex gap={4} flexDir={["column", "row"]}>
+          <FormControl id="plannedIncome">
+            <FormLabel htmlFor="plannedIncome">
+              Planned Income for this budget
+            </FormLabel>
+            <Input
+              placeholder="Budget Planned Income"
+              bg="white"
+              _placeholder={{
+                color: "gray.500",
+              }}
+              {...methods.register("plannedIncome")}
+              type="number"
+            />
+          </FormControl>
+          <FormControl id="plannedExpenses">
+            <FormLabel htmlFor="plannedExpenses">Expense</FormLabel>
+            <Input
+              placeholder="Budget Planned Expenses"
+              bg={"white"}
+              _placeholder={{
+                color: "gray.500",
+              }}
+              {...methods.register("plannedExpenses")}
+              type="number"
+            />
+          </FormControl>
+        </Flex>
+        <Flex gap={4} flexDir={["column", "row"]}>
+          <FormControl>
+            <FormLabel>Financial Goal</FormLabel>
+            <Select
+              isLoading={false}
+              isClearable={true}
+              isSearchable={false}
+              options={financialGoals}
+              onChange={(e) => setSelectedFinancialGoal(e.value)}
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Category</FormLabel>
+            <CreatableSelect
+              isMulti
+              isCreatable
+              options={userCategories}
+              // styles={customStyles}
+              value={selectedCategory}
+              onChange={handleSelectedCategory}
+            />
+          </FormControl>
         </Flex>
       </VStack>
     </>
@@ -98,56 +115,64 @@ const BudgetItemForm = ({
 }) => {
   return (
     <>
-      <VStack spacing={4}>
-        <Input
-          placeholder="Budget Item Name"
-          bg={"gray.100"}
-          border="1px solid"
-          borderColor="gray.300"
-          color={"gray.500"}
-          _placeholder={{
-            color: "gray.500",
-          }}
-          {...methods.register("name")}
-        />
-        <Input
-          placeholder="Budget Item Description"
-          bg={"gray.100"}
-          border="1px solid"
-          borderColor="gray.300"
-          color={"gray.500"}
-          _placeholder={{
-            color: "gray.500",
-          }}
-          {...methods.register("description")}
-        />
-        <Input
-          placeholder="Budget Spent Expense"
-          bg={"gray.100"}
-          border="1px solid"
-          borderColor="gray.300"
-          color={"gray.500"}
-          _placeholder={{
-            color: "gray.500",
-          }}
-          {...methods.register("actualExpenses")}
-          type="number"
-        />
-        <Select
-          isLoading={false}
-          isClearable={true}
-          isSearchable={false}
-          options={financialGoals}
-          onChange={(e) => setSelectedFinancialGoal(e.value)}
-        />
-        <CreatableSelect
-          isMulti
-          isCreatable
-          options={userCategories}
-          // styles={customStyles}
-          value={selectedCategory}
-          onChange={handleSelectedCategory}
-        />
+      <VStack spacing={4} alignItems="left">
+        <FormControl id="description">
+          <FormLabel htmlFor="description">Name</FormLabel>
+          <Input
+            placeholder="Budget Item Name"
+            bg="white"
+            {...methods.register("name")}
+          />
+        </FormControl>
+
+        <Flex gap={4} flexDir={["solumn", "row"]}>
+          <FormControl id="description">
+            <FormLabel htmlFor="description">
+              Planned Income for this budget
+            </FormLabel>
+            <Input
+              placeholder="Budget Item Description"
+              bg="white"
+              {...methods.register("description")}
+            />
+          </FormControl>
+          <FormControl id="description">
+            <FormLabel htmlFor="description">
+              Planned Income for this budget
+            </FormLabel>
+            <Input
+              placeholder="Budget Spent Expense"
+              bg="white"
+              {...methods.register("actualExpenses")}
+              type="number"
+            />
+          </FormControl>
+        </Flex>
+        <Flex gap={4} flexDir={["solumn", "row"]}>
+          <FormControl id="description">
+            <FormLabel htmlFor="description">
+              Planned Income for this budget
+            </FormLabel>
+            <Select
+              isLoading={false}
+              isClearable={true}
+              isSearchable={false}
+              options={financialGoals}
+              onChange={(e) => setSelectedFinancialGoal(e.value)}
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Category</FormLabel>
+            <CreatableSelect
+              isMulti
+              isCreatable
+              options={userCategories}
+              // styles={customStyles}
+              value={selectedCategory}
+              onChange={handleSelectedCategory}
+            />
+          </FormControl>
+        </Flex>
       </VStack>
     </>
   );
@@ -168,6 +193,7 @@ const CreateBudget = () => {
 
   const [userCategories, setUserCategories] = React.useState([]);
   const userToken = getUserToken();
+  const [isLargerThan880] = useMediaQuery("(min-width: 880px)");
 
   React.useEffect(() => {
     async function makeRequest() {
@@ -373,6 +399,19 @@ const CreateBudget = () => {
         </Flex>
 
         <Flex mr={[0, 8]}>
+          {/* TODO: this should be a modal/dialog */}
+          {isLargerThan880 && (
+            <Button
+              border="1px solid"
+              borderColor="gray.400"
+              onClick={() => navigate("/financial-goals/add")}
+              mr={2}
+              color="gray.700"
+              fontWeight={400}
+            >
+              Create Financial Goal
+            </Button>
+          )}
           <Button
             bg="red.400"
             color="white"
@@ -405,7 +444,6 @@ const CreateBudget = () => {
           )}
           {activeStep < 1 ? (
             <Button
-              fontFamily={"heading"}
               mt={8}
               bgGradient="linear(to-r, red.400,pink.400)"
               color={"white"}
@@ -420,8 +458,7 @@ const CreateBudget = () => {
             </Button>
           ) : (
             <Button
-              fontFamily={"heading"}
-              mt={8}
+              mt={(2, 8)}
               bgGradient="linear(to-r, red.400,pink.400)"
               color={"white"}
               onClick={() => onSubmit()}
