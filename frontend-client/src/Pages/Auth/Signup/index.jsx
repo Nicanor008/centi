@@ -36,7 +36,7 @@ export default function Signup() {
   const onSubmit = async (data) => {
     try {
       const response = await axios.post(
-        "http://localhost:4005/api/v1/auth/signup",
+        "https://centi-6k7v.onrender.com/api/v1/auth/signup",
         data
       );
       navigate("/login", { state: response.data });

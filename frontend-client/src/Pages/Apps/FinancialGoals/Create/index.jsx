@@ -27,7 +27,7 @@ const CreateFinancialGoal = () => {
     async function makeRequest() {
       try {
         const response = await axios.get(
-          "http://localhost:4005/api/v1/category",
+          "https://centi-6k7v.onrender.com/api/v1/category",
           { headers: { Authorization: `Bearer ${userToken}` } }
         );
 
@@ -69,7 +69,7 @@ const CreateFinancialGoal = () => {
 
     let config = {
       method: "post",
-      url: "http://localhost:4005/api/v1/financial-goals/",
+      url: "https://centi-6k7v.onrender.com/api/v1/financial-goals/",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${userToken}`,
@@ -84,9 +84,9 @@ const CreateFinancialGoal = () => {
       // add category
       removedUndefinedInCategory?.length > 0 &&
         (await axios.post(
-          "http://localhost:4005/api/v1/category/",
-          { headers: { Authorization: `Bearer ${userToken}` } },
-          removedUndefinedInCategory
+          "https://centi-6k7v.onrender.com/api/v1/category/",
+          removedUndefinedInCategory,
+          { headers: { Authorization: `Bearer ${userToken}` } }
         ));
 
       setSelectedCategory([]);

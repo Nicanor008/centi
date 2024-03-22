@@ -11,16 +11,33 @@ import PlannedIncomeAndExpenseChart from "./PlannedIncomeAndExpenseChart";
 function BudgetDashboard() {
   const navigate = useNavigate();
   const [analytics, setAnalytics] = useState();
+  const [financialGoals, setFinancialGoals] = useState();
   const userToken = getUserToken();
 
   useEffect(() => {
     async function makeRequest() {
       try {
         const response = await axios.get(
-          "http://localhost:4005/api/v1/budget/dashboard/analytics",
+          "https://centi-6k7v.onrender.com/api/v1/budget/dashboard/analytics",
           { headers: { Authorization: `Bearer ${userToken}` } }
         );
         setAnalytics(response.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    makeRequest();
+  }, []);
+
+  useEffect(() => {
+    async function makeRequest() {
+      try {
+        const response = await axios.get(
+          "https://centi-6k7v.onrender.com/api/v1/financial-goals/",
+          { headers: { Authorization: `Bearer ${userToken}` } }
+        );
+        setFinancialGoals(response.data.data);
       } catch (error) {
         console.log(error);
       }
@@ -64,49 +81,37 @@ function BudgetDashboard() {
         {!hasBudgetItems && <DataNotFound />}
         {/* cards */}
         <Flex justifyContent="space-between" flexWrap="wrap" gap={2}>
-          {hasBudgetItems && analytics?.totalPlannedExpensesThisMonth && (
-            <QuickBudgetAnalyticsNav
-              title="Expenses(This month)"
-              amount={analytics?.totalPlannedExpensesThisMonth}
-            />
-          )}
-          {hasBudgetItems && analytics?.totalBudgetExpensesAmount && (
-            <QuickBudgetAnalyticsNav
-              title="Expenses"
-              amount={analytics?.totalBudgetExpensesAmount}
-            />
-          )}
-          {hasBudgetItems && analytics?.totalNumberofBudgetThisMonth && (
-            <QuickBudgetAnalyticsNav
-              title="Expenses(This month)"
-              amount={analytics?.totalNumberofBudgetThisMonth}
-              hasCurrency={false}
-            />
-          )}
-          {hasBudgetItems && analytics?.totalNumberofBudgetItems && (
-            <QuickBudgetAnalyticsNav
-              title="No. Expenses"
-              amount={analytics?.totalNumberofBudgetItems}
-              hasCurrency={false}
-            />
-          )}
-          {hasBudgetItems && analytics?.totalNumberofBudget && (
-            <QuickBudgetAnalyticsNav
-              title="Total No. Budget"
-              amount={analytics?.totalNumberofBudget}
-              hasCurrency={false}
-            />
-          )}
-          {hasBudgetItems && analytics?.categoryCount && (
-            <QuickBudgetAnalyticsNav
-              title="Categories"
-              amount={
-                analytics?.categoryCount &&
-                Object.keys(analytics?.categoryCount).length
-              }
-              hasCurrency={false}
-            />
-          )}
+          <QuickBudgetAnalyticsNav
+            title="Expenses(This month)"
+            amount={analytics?.totalPlannedExpensesThisMonth}
+          />
+          <QuickBudgetAnalyticsNav
+            title="Expenses"
+            amount={analytics?.totalBudgetExpensesAmount}
+          />
+          <QuickBudgetAnalyticsNav
+            title="Expenses(This month)"
+            amount={analytics?.totalNumberofBudgetThisMonth}
+            hasCurrency={false}
+          />
+          <QuickBudgetAnalyticsNav
+            title="No. Expenses"
+            amount={analytics?.totalNumberofBudgetItems}
+            hasCurrency={false}
+          />
+          <QuickBudgetAnalyticsNav
+            title="Total No. Budget"
+            amount={analytics?.totalNumberofBudget}
+            hasCurrency={false}
+          />
+          <QuickBudgetAnalyticsNav
+            title="Categories"
+            amount={
+              analytics?.categoryCount &&
+              Object.keys(analytics?.categoryCount).length
+            }
+            hasCurrency={false}
+          />
         </Flex>
 
         {/* charts */}
@@ -116,14 +121,13 @@ function BudgetDashboard() {
           justifyContent="space-evenly"
           flexDir={["column", "row"]}
         >
-          <PlannedIncomeAndExpenseChart />
-          {/* 
+          {hasBudgetItems && analytics?.totalNumberofBudgetItems > 0 && (
+            <PlannedIncomeAndExpenseChart />
+          )}
 
-          expense and income fluctuation or something related
-          <Flex></Flex>
-*/}
-          {/* spending per month */}
-          <NumberofBudgetItems />
+          {hasBudgetItems && analytics?.totalNumberofBudgetItems > 0 && (
+            <NumberofBudgetItems />
+          )}
         </Flex>
 
         {/* overview */}
@@ -192,7 +196,7 @@ function BudgetDashboard() {
             </Flex>
           )}
 
-          {analytics?.budget?.length > 0 && (
+          {financialGoals?.total > 0 && (
             <Flex
               border="1px solid"
               borderColor="gray.200"
@@ -213,45 +217,46 @@ function BudgetDashboard() {
               >
                 Your Financial goals
               </Text>
-              {analytics?.budget?.slice(-30)?.map((budget) => (
-                <Flex key={budget._id} flexDir="column">
-                  {/* <Flex justifyContent="space-between" py={2}>
-                  <Text>
-                    {budget.name.length > 40
-                      ? budget.name.substring(0, 40) + "..."
-                      : budget.name}
-                  </Text>
-                  <Text ml={(2, 6)}>
-                    {new Date(budget.createdAt).toDateString()}
-                  </Text>
-                </Flex>
-                <Divider borderColor="gray.200" /> */}
+              {financialGoals.data.slice(-30)?.map((goal) => (
+                <Flex key={goal._id} flexDir="column">
+                  <Flex justifyContent="space-between" py={2}>
+                    <Text>
+                      {goal.name.length > 40
+                        ? goal.name.substring(0, 40) + "..."
+                        : goal.name}
+                    </Text>
+                    <Text ml={(2, 6)}>
+                      {new Date(goal.createdAt).toDateString()}
+                    </Text>
+                  </Flex>
+                  <Divider borderColor="gray.200" />
                 </Flex>
               ))}
-              {/* <Flex justifyContent="space-between" mt={4}>
-              <Button
-                w="fit-content"
-                bg="none"
-                border="1px solid"
-                borderColor="blue.400"
-                _hover={{
-                  bg: "none",
-                }}
-              >
-                View all Financial Goals
-              </Button>
-              <Button
-                w="fit-content"
-                bg="red.400"
-                color="white"
-                onClick={() => navigate("/budget/add/1")}
-                _hover={{
-                  bg: "red.400",
-                }}
-              >
-                Add Financial Goals
-              </Button>
-            </Flex> */}
+              <Flex justifyContent="space-between" mt={4}>
+                <Button
+                  w="fit-content"
+                  bg="none"
+                  border="1px solid"
+                  borderColor="blue.400"
+                  _hover={{
+                    bg: "none",
+                  }}
+                  onClick={() => navigate("/financial-goals")}
+                >
+                  View all Financial Goals
+                </Button>
+                <Button
+                  w="fit-content"
+                  bg="red.400"
+                  color="white"
+                  onClick={() => navigate("/financial-goals/add")}
+                  _hover={{
+                    bg: "red.400",
+                  }}
+                >
+                  Add Financial Goals
+                </Button>
+              </Flex>
             </Flex>
           )}
         </Flex>

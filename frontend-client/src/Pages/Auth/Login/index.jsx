@@ -42,7 +42,7 @@ export default function Login() {
   const onSubmit = async (data) => {
     try {
       const response = await axios.post(
-        "http://localhost:4005/api/v1/auth/login",
+        "https://centi-6k7v.onrender.com/api/v1/auth/login",
         data
       );
       localStorage.setItem("user", JSON.stringify(response.data.data));

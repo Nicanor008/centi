@@ -68,7 +68,7 @@ function ViewUserBudgets() {
     let config = {
       method: "get",
       maxBodyLength: Infinity,
-      url: "http://localhost:4005/api/v1/budget/",
+      url: "https://centi-6k7v.onrender.com/api/v1/budget/",
       headers: {
         Authorization: `Bearer ${userToken}`,
         "Content-Type": "application/json",
@@ -313,9 +313,10 @@ function ViewUserBudgets() {
             <Tr>
               <ColumnHeaderCell name="Name" column="name" />
               <ColumnHeaderCell column="description" name="Description" />
+              <ColumnHeaderCell name="Money Planned" column="plannedExpenses" />
               <ColumnHeaderCell
-                name="Total Money Spent"
-                column="plannedExpenses"
+                name="Money Spent"
+                column="totalSpentExpenses"
               />
               <ColumnHeaderCell
                 column="budgetItemsCount"
@@ -340,6 +341,7 @@ function ViewUserBudgets() {
                 <Td>{budget.name}</Td>
                 <Td>{budget?.description}</Td>
                 <Td>KES {formatNumberGroups(budget?.plannedExpenses)}</Td>
+                <Td>Calculate spent expenses from budget items</Td>
                 <Td>{formatNumberGroups(budget?.budgetItemsCount)}</Td>
                 <Td>KES {formatNumberGroups(budget?.plannedIncome)}</Td>
                 <Td
@@ -351,11 +353,11 @@ function ViewUserBudgets() {
                   alignItems="center"
                   bg="inherit"
                 >
-                  {budget?.category?.map((category) => (
+                  {budget?.category?.map((category, idx) => (
                     <Tag
                       mr={1}
                       mb={budget?.category.length > 3 ? 1 : 0}
-                      key={category._id}
+                      key={(category?._id || category?.value) + idx}
                     >
                       {category?.__isNew__ ? category?.label : category.name}
                     </Tag>

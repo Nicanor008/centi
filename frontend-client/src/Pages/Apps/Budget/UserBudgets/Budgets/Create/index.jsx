@@ -38,9 +38,7 @@ const BudgetForm = ({
             />
           </FormControl>
           <FormControl id="description">
-            <FormLabel htmlFor="description">
-              Planned Income for this budget
-            </FormLabel>
+            <FormLabel htmlFor="description">Description</FormLabel>
             <Input
               placeholder="Budget Description"
               bg="white"
@@ -116,30 +114,25 @@ const BudgetItemForm = ({
   return (
     <>
       <VStack spacing={4} alignItems="left">
-        <FormControl id="description">
-          <FormLabel htmlFor="description">Name</FormLabel>
-          <Input
-            placeholder="Budget Item Name"
-            bg="white"
-            {...methods.register("name")}
-          />
-        </FormControl>
-
         <Flex gap={4} flexDir={["solumn", "row"]}>
+          <FormControl id="name">
+            <FormLabel htmlFor="name">Name</FormLabel>
+            <Input
+              placeholder="Budget Item Name"
+              bg="white"
+              {...methods.register("name")}
+            />
+          </FormControl>
           <FormControl id="description">
-            <FormLabel htmlFor="description">
-              Planned Income for this budget
-            </FormLabel>
+            <FormLabel htmlFor="description">Description</FormLabel>
             <Input
               placeholder="Budget Item Description"
               bg="white"
               {...methods.register("description")}
             />
           </FormControl>
-          <FormControl id="description">
-            <FormLabel htmlFor="description">
-              Planned Income for this budget
-            </FormLabel>
+          <FormControl id="actualExpenses">
+            <FormLabel htmlFor="actualExpenses">Expense Spent</FormLabel>
             <Input
               placeholder="Budget Spent Expense"
               bg="white"
@@ -149,10 +142,8 @@ const BudgetItemForm = ({
           </FormControl>
         </Flex>
         <Flex gap={4} flexDir={["solumn", "row"]}>
-          <FormControl id="description">
-            <FormLabel htmlFor="description">
-              Planned Income for this budget
-            </FormLabel>
+          <FormControl>
+            <FormLabel>Financial Goal</FormLabel>
             <Select
               isLoading={false}
               isClearable={true}
@@ -199,7 +190,7 @@ const CreateBudget = () => {
     async function makeRequest() {
       try {
         const response = await axios.get(
-          "http://localhost:4005/api/v1/category",
+          "https://centi-6k7v.onrender.com/api/v1/category",
           { headers: { Authorization: `Bearer ${userToken}` } }
         );
 
@@ -222,7 +213,7 @@ const CreateBudget = () => {
     async function makeRequest() {
       try {
         const response = await axios.get(
-          "http://localhost:4005/api/v1/financial-goals",
+          "https://centi-6k7v.onrender.com/api/v1/financial-goals",
           { headers: { Authorization: `Bearer ${userToken}` } }
         );
 
@@ -266,7 +257,7 @@ const CreateBudget = () => {
     let config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: "http://localhost:4005/api/v1/budget/",
+      url: "https://centi-6k7v.onrender.com/api/v1/budget/",
       headers: {
         Authorization: `Bearer ${userToken}`,
         "Content-Type": "application/json",
@@ -282,9 +273,9 @@ const CreateBudget = () => {
       // add category
       removedUndefinedInCategory?.length > 0 &&
         (await axios.post(
-          "http://localhost:4005/api/v1/category/",
-          { headers: { Authorization: `Bearer ${userToken}` } },
-          removedUndefinedInCategory
+          "https://centi-6k7v.onrender.com/api/v1/category/",
+          removedUndefinedInCategory,
+          { headers: { Authorization: `Bearer ${userToken}` } }
         ));
 
       // clean up
@@ -315,7 +306,7 @@ const CreateBudget = () => {
     let config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: "http://localhost:4005/api/v1/budget-items/",
+      url: "https://centi-6k7v.onrender.com/api/v1/budget-items/",
       headers: {
         Authorization: `Bearer ${userToken}`,
         "Content-Type": "application/json",
@@ -329,9 +320,9 @@ const CreateBudget = () => {
 
       // add category
       await axios.post(
-        "http://localhost:4005/api/v1/category/",
-        { headers: { Authorization: `Bearer ${userToken}` } },
-        newCategoriesPayload
+        "https://centi-6k7v.onrender.com/api/v1/category/",
+        newCategoriesPayload,
+        { headers: { Authorization: `Bearer ${userToken}` } }
       );
 
       setSelectedCategory([]);

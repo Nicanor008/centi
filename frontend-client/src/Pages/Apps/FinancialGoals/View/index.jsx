@@ -52,7 +52,7 @@ function ViewUserFinancialGoals() {
     let config = {
       method: "get",
       maxBodyLength: Infinity,
-      url: "http://localhost:4005/api/v1/financial-goals/",
+      url: "https://centi-6k7v.onrender.com/api/v1/financial-goals/",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${userToken}`,
@@ -190,6 +190,7 @@ function ViewUserFinancialGoals() {
           </Button>
         </Flex>
       </Flex>
+      {console.log("...........Here we go........", financialGoals)}
 
       <TableContainer bg="gray.200" my={4}>
         <Table variant="striped" colorScheme="red">
@@ -208,7 +209,7 @@ function ViewUserFinancialGoals() {
             {financialGoals?.data?.map((goal, idx) => (
               <Tr
                 cursor="pointer"
-                key={goal._id}
+                key={goal._id + idx}
                 // onClick={() =>
                 //   navigate(`/budget/items/${goal_id}`, { state: { goal} })
                 // }
@@ -228,11 +229,11 @@ function ViewUserFinancialGoals() {
                   alignItems="center"
                   bg="inherit"
                 >
-                  {goal?.category?.map((category) => (
+                  {goal?.category?.map((category, idx) => (
                     <Tag
                       mr={1}
                       mb={goal?.category.length > 2 ? 1 : 0}
-                      key={category._id}
+                      key={(category?._id || category?.value) + idx}
                     >
                       {category?.__isNew__ ? category?.label : category.name}
                     </Tag>
