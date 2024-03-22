@@ -82,7 +82,7 @@ export default class AuthService {
 
 // export const authLocal = passport.authenticate('local', { session: false });
 export const authLocal = (req, res, next) => {
-  passport.authenticate("local", { session: false }, (err, user, info) => {
+  passport.authenticate("local", { session: true }, (err, user, info) => {
     if (err) {
       return next(err);
     }

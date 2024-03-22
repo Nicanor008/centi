@@ -18,7 +18,6 @@ class CategoryController extends Controller {
   }
 
   async viewAllCategoriesPerUser(req, res, next) {
-    console.log("viewAllCategoriesPerUser..........", req);
     try {
       const result = await categoryService.viewAllCategoriesPerUser(
         req.user?._id
