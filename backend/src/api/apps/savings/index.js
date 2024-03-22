@@ -5,7 +5,7 @@ import AuthService from "../../middlewares/auth";
 import {
   createValidationSchema,
   updateValidationSchema,
-  customPaginateValidateSchema,
+  customPaginateValidateSchema
 } from "./savings.validation";
 
 const router = express.Router();
@@ -138,7 +138,7 @@ router.put(
  */
 router.get(
   "/",
-  AuthService.optional,
+  AuthService.required,
   celebrate({ query: customPaginateValidateSchema }),
   savingsController.findAll
 );
@@ -198,6 +198,5 @@ router.get("/:id", savingsController.findOne);
  *        $ref: "#/responses/Unauthorized"
  */
 router.delete("/:id", AuthService.required, savingsController.remove);
-
 
 export default router;

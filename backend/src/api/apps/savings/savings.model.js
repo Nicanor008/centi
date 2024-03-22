@@ -4,14 +4,33 @@ import mongooseUniqueValidator from "mongoose-unique-validator";
 
 const SavingsSchema = new Schema(
   {
-    field: {
+    savingsGoalName: {
       type: String,
       required: true
     },
-    field2: {
+    amount: {
       type: String,
       required: true
+    },
+    maturityDate: {
+      type: String, // TODO: Should be date
+      required: false
+    },
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true
+    },
+    category: {
+      type: Array,
+      required: false
+    },
+    financialGoal: {
+      type: Schema.Types.ObjectId,
+      ref: "FinancialGoal",
+      required: false
     }
+    // solo/group
   },
   { timestamps: true }
 );

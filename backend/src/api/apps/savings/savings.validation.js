@@ -3,12 +3,14 @@ import { schemas } from "../../helpers";
 
 const { paginateValidationSchema, ObjectId } = schemas;
 
-
 export const customPaginateValidateSchema = paginateValidationSchema.keys();
 
 export const createValidationSchema = Joi.object({
-  field: Joi.string().required(),
-  field2: Joi.string().required()
+  savingsGoalName: Joi.string().required(),
+  amount: Joi.string().required(),
+  maturityDate: Joi.string().required(),
+  category: Joi.array().optional(),
+  financialGoal: Joi.string().optional()
 });
 
 export const updateValidationSchema = Joi.object({
