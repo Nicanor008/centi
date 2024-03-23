@@ -292,13 +292,13 @@ const NAV_ITEMS = [
     label: "Savings",
     children: [
       {
-        label: "Job Board",
-        subLabel: "Find your dream design job",
-        href: "#",
+        label: "Manage my Savings",
+        subLabel: "Track all your Savings",
+        href: "savings/dashboard",
       },
       {
-        label: "Freelance Projects",
-        subLabel: "An exclusive list for contract work",
+        label: "Tips & Resources",
+        subLabel: "Things you need in your finger tips ",
         href: "#",
       },
     ],

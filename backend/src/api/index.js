@@ -6,6 +6,7 @@ import Budget from "./apps/budgets";
 import BudgetItems from "./apps/budgetItems";
 import Categories from "./apps/categories";
 import FinancialGoals from "./apps/financialGoals";
+import Savings from "./apps/savings";
 
 const router = new Router();
 
@@ -19,5 +20,6 @@ router.use("/budget-items", BudgetItems);
 router.use("/category", Categories);
 
 router.use("/financial-goals", FinancialGoals);
+router.use("/savings", Savings);
 
 export default router;

@@ -45,6 +45,7 @@ export default function Login() {
       const response = await axios.post(`${config.API_URL}/auth/login`, data);
       localStorage.setItem("user", JSON.stringify(response.data.data));
       navigate("/budget/dashboard");
+      // navigate("/dashboard"); TODO: Update to navigate to this route(easy to switch afterwards)
     } catch (error) {
       console.error("Error:", error); // Handle error
     }

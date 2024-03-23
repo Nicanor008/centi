@@ -1,4 +1,4 @@
-import { Service } from "../../helpers/common";
+import { Service } from "../../../helpers/common";
 import Savings from "./savings.model";
 
 class SavingsService extends Service {
@@ -7,7 +7,7 @@ class SavingsService extends Service {
   }
 
   async create(data) {
-    return await FinancialGoals.create(data);
+    return await Savings.create(data);
   }
 
   async findAll({ userId, sortBy }) {

@@ -1,1 +1,1 @@
-// This is the dashboard for the logged in user
+export { default as SavingsDashboard } from "./Home";

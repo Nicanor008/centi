@@ -13,57 +13,51 @@ import {
   Tag,
   Input,
   useMediaQuery,
-  Link,
 } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
+  FaEllipsisV,
   FaPlus,
   FaSearch,
   FaSortAmountDown,
   FaSortAmountUp,
 } from "react-icons/fa";
+// import DataNotFound from "../../../../../../components/ErrorPages/DataNotFound";
 import { formatNumberGroups } from "../../../../helpers/formatNumberGroups";
-import DataNotFound from "../../../../components/ErrorPages/DataNotFound";
 import { getUserToken } from "../../../../helpers/getToken";
 import { config } from "../../../../config";
+import DataNotFound from "../../../../components/ErrorPages/DataNotFound";
 
-function ViewUserFinancialGoals() {
+function ViewAllSavings() {
   const navigate = useNavigate();
-  const [financialGoals, setFinancialGoals] = useState({ filtered: false });
+  const [data, setData] = useState({ filtered: false });
   const [manualRefresh, setManualRefresh] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [sortBy, setSortBy] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
   const [isLargerThan880] = useMediaQuery("(min-width: 880px)");
+
   const userToken = getUserToken();
 
-  const cachedGoals = useMemo(() => {
-    if (!financialGoals) return null;
+  const cachedData = useMemo(() => {
+    if (!data) return null;
 
     return {
-      total: financialGoals.total,
-      data: financialGoals.data,
+      total: data.total,
+      data: data.data,
       filtered: false,
     };
-  }, [financialGoals]);
+  }, [data]);
 
   useEffect(() => {
-    let payload = {
-      method: "get",
-      maxBodyLength: Infinity,
-      url: `${config.API_URL}/financial-goals/`,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userToken}`,
-      },
-    };
-
     async function makeRequest() {
       try {
-        const response = await axios.request(payload);
-        setFinancialGoals(response?.data?.data);
+        const response = await axios.get(`${config.API_URL}/savings/`, {
+          headers: { Authorization: `Bearer ${userToken}` },
+        });
+        setData(response.data.data);
       } catch (error) {
         console.log(error);
       }
@@ -76,14 +70,12 @@ function ViewUserFinancialGoals() {
     setSearchText(text);
     if (text.trim() !== "") {
       const lowerCaseSearch = text.toLowerCase();
-      const searchedBudgetData = financialGoals.data.filter(
-        (item) =>
-          item.name.toLowerCase().includes(lowerCaseSearch) ||
-          item.description.toLowerCase().includes(lowerCaseSearch)
+      const searchData = data.data.filter((item) =>
+        item.savingsGoalName.toLowerCase().includes(lowerCaseSearch)
       );
-      setFinancialGoals({
-        data: searchedBudgetData,
-        total: searchedBudgetData.length,
+      setData({
+        data: searchData,
+        total: searchData.length,
         filtered: false,
         search: true,
       });
@@ -99,14 +91,17 @@ function ViewUserFinancialGoals() {
       setSortBy(column);
       setSortOrder("asc");
     }
-    cachedGoals?.data?.sort((a, b) => {
+
+    cachedData?.data?.sort((a, b) => {
       const aValue = a[sortBy];
       const bValue = b[sortBy];
+
       if (typeof aValue === "string") {
         return sortOrder === "asc"
           ? aValue.localeCompare(bValue)
           : bValue.localeCompare(aValue);
       }
+
       return sortOrder === "asc" ? aValue - bValue : bValue - aValue;
     });
   };
@@ -138,37 +133,37 @@ function ViewUserFinancialGoals() {
         mb={[1, 4]}
       >
         <Flex alignItems="center" gap={2}>
-          {cachedGoals?.total > 0 ? (
+          {cachedData?.total ? (
             <Text
               bg="gray.300"
               p="2px 8px"
               borderRadius="full"
               fontWeight="bold"
             >
-              {cachedGoals?.total}
+              {cachedData?.total}
             </Text>
           ) : (
             <Box />
           )}
           <Flex flexDir="column">
             <Text fontWeight={600} fontSize={16}>
-              Financial goals
+              Savings
             </Text>
             {isLargerThan880 && (
               <Text color="gray.500" fontSize={12} fontWeight={400}>
-                Live a happinness guaranteed life with the right goals
+                This is your Savings goals management
               </Text>
             )}
           </Flex>
         </Flex>
 
         <Flex alignItems="center" gap={2}>
-          {cachedGoals?.total > 0 &&
+          {cachedData?.data?.length > 0 &&
             (!isLargerThan880 ? (
               <FaSearch />
             ) : (
               <Input
-                placeholder="Search financial goal ..."
+                placeholder="Search Savings ..."
                 bg={"gray.100"}
                 border="1px solid"
                 borderColor="gray.300"
@@ -184,61 +179,61 @@ function ViewUserFinancialGoals() {
           <Button
             bg={!isLargerThan880 ? "none" : "red.400"}
             color={!isLargerThan880 ? "inherit" : "white"}
-            onClick={() => navigate("/financial-goals/add")}
+            onClick={() => navigate("/savings/add")}
             px={!isLargerThan880 ? 0 : 4}
           >
-            {!isLargerThan880 ? <FaPlus /> : "Create a Financial Goal"}
+            {!isLargerThan880 ? <FaPlus /> : "Create Savings"}
           </Button>
         </Flex>
       </Flex>
-      {console.log("...........Here we go........", financialGoals)}
-
+      {/* view all data content */}
       <TableContainer bg="gray.200" my={4}>
         <Table variant="striped" colorScheme="red">
           <Thead>
             <Tr>
-              <ColumnHeaderCell name="Financial goal" column="name" />
-              <ColumnHeaderCell name="Target" column="targetAmount" />
-              <ColumnHeaderCell column="description" name="Description" />
-              <ColumnHeaderCell column="from" name="From" />
-              <ColumnHeaderCell column="to" name="To" />
-              <ColumnHeaderCell column="createdAt" name="Date Created" />
+              <ColumnHeaderCell name="Name" column="name" />
+              <ColumnHeaderCell column="targetAmount" name="Target" />
+              <ColumnHeaderCell name="Current Savings" column="currentAmount" />
+              <ColumnHeaderCell column="maturityDate" name="Maturity Date" />
               <Th>Category</Th>
+              <ColumnHeaderCell column="createdAt" name="Date Created" />
             </Tr>
           </Thead>
           <Tbody>
-            {financialGoals?.data?.map((goal, idx) => (
+            {cachedData?.data?.map((item, idx) => (
               <Tr
                 cursor="pointer"
-                key={goal._id + idx}
+                key={idx}
                 // onClick={() =>
-                //   navigate(`/budget/items/${goal_id}`, { state: { goal} })
+                //   navigate(`/budget/items/${item._id}`, { state: { item } })
                 // }
               >
-                <Td>{goal.name}</Td>
-                <Td>KES {formatNumberGroups(goal.targetAmount)}</Td>
-                <Td>{goal.description}</Td>
-                <Td>{new Date(goal.from).toDateString()}</Td>
-                <Td>{new Date(goal.to).toDateString()}</Td>
-                <Td>{new Date(goal.createdAt).toDateString()}</Td>
+                <Td>{item.savingsGoalName}</Td>
+                <Td>KES {formatNumberGroups(item?.targetAmount)}</Td>
+                <Td>KES {formatNumberGroups(item?.currentAmount)}</Td>
+                <Td>{new Date(item?.maturityDate).toLocaleDateString()}</Td>
                 <Td
-                  minW={goal.category?.length > 0 ? "200px" : "auto"}
-                  h={goal.category?.length > 0 ? "80px" : "auto"}
+                  minW={item?.category?.length > 0 ? "200px" : "auto"}
+                  h={item?.category?.length > 0 ? "80px" : "auto"}
                   display="flex"
                   flexWrap="wrap"
                   overflow="scroll"
                   alignItems="center"
                   bg="inherit"
                 >
-                  {goal?.category?.map((category, idx) => (
+                  {item?.category?.map((category, idx) => (
                     <Tag
                       mr={1}
-                      mb={goal?.category.length > 2 ? 1 : 0}
+                      mb={item?.category.length > 3 ? 1 : 0}
                       key={(category?._id || category?.value) + idx}
                     >
                       {category?.__isNew__ ? category?.label : category.name}
                     </Tag>
                   ))}
+                </Td>
+                <Td>{new Date(item?.createdAt).toDateString()}</Td>
+                <Td>
+                  <FaEllipsisV />
                 </Td>
               </Tr>
             ))}
@@ -246,19 +241,9 @@ function ViewUserFinancialGoals() {
         </Table>
       </TableContainer>
 
-      {financialGoals?.data?.length < 1 ? (
-        <Flex flexDir="column">
-          <DataNotFound>
-            <Link href="#" color="blue.500">
-              Understand why you need a financial goal
-            </Link>
-          </DataNotFound>
-        </Flex>
-      ) : (
-        <></>
-      )}
+      {cachedData?.data?.length < 1 ? <DataNotFound /> : <></>}
     </Flex>
   );
 }
 
-export default ViewUserFinancialGoals;
+export default ViewAllSavings;

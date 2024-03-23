@@ -13,6 +13,7 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import CreatableSelect from "react-select/creatable";
 import { getUserToken } from "../../../../helpers/getToken";
+import { config } from "../../../../config";
 
 const CreateFinancialGoal = () => {
   const navigate = useNavigate();
@@ -26,10 +27,9 @@ const CreateFinancialGoal = () => {
   React.useEffect(() => {
     async function makeRequest() {
       try {
-        const response = await axios.get(
-          "https://centi-6k7v.onrender.com/api/v1/category",
-          { headers: { Authorization: `Bearer ${userToken}` } }
-        );
+        const response = await axios.get(`${config.API_URL}/category`, {
+          headers: { Authorization: `Bearer ${userToken}` },
+        });
 
         const transformedData = response.data?.data?.map((item) => ({
           value: item.name.toLowerCase(),
@@ -67,9 +67,9 @@ const CreateFinancialGoal = () => {
       targetAmount: Number(getValues()?.targetAmount) ?? 0,
     };
 
-    let config = {
+    let payloadConfig = {
       method: "post",
-      url: "https://centi-6k7v.onrender.com/api/v1/financial-goals/",
+      url: `${config.API_URL}/financial-goals/`,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${userToken}`,
@@ -79,12 +79,12 @@ const CreateFinancialGoal = () => {
 
     try {
       // submit data
-      await axios.request(config);
+      await axios.request(payloadConfig);
 
       // add category
       removedUndefinedInCategory?.length > 0 &&
         (await axios.post(
-          "https://centi-6k7v.onrender.com/api/v1/category/",
+          `${config.API_URL}/category/`,
           removedUndefinedInCategory,
           { headers: { Authorization: `Bearer ${userToken}` } }
         ));

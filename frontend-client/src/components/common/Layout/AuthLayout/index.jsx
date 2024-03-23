@@ -20,23 +20,9 @@ import {
   Link,
 } from "@chakra-ui/react";
 import { useEffect } from "react";
-import {
-  FiHome,
-  FiTrendingUp,
-  FiCompass,
-  FiMenu,
-  FiBell,
-  FiChevronDown,
-} from "react-icons/fi";
-import { Outlet, useNavigate, useLocation } from "react-router-dom";
-
-const LinkItems = [
-  { name: "Dashboard", icon: FiHome, url: "/budget/dashboard" },
-  { name: "Budgets", icon: FiTrendingUp, url: "/budget/view" },
-  { name: "Financial goals", icon: FiCompass, url: "/financial-goals" },
-  // { name: "Templates", icon: FiStar, url: "#" },
-  // { name: "Settings", icon: FiSettings, url: "#" },
-];
+import { FiMenu, FiBell, FiChevronDown } from "react-icons/fi";
+import { Outlet, useNavigate } from "react-router-dom";
+import { LinkItems } from "./menuLinkItems";
 
 const SidebarContent = ({ onClose, ...rest }) => {
   return (
@@ -58,7 +44,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
         </Link>
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
-      {LinkItems.map((link) => (
+      {LinkItems().map((link) => (
         <NavItem key={link.name} icon={link.icon} url={link?.url}>
           {link.name}
         </NavItem>

@@ -8,9 +8,14 @@ const SavingsSchema = new Schema(
       type: String,
       required: true
     },
-    amount: {
-      type: String,
-      required: true
+    targetAmount: {
+      type: Number,
+      required: false
+    },
+    currentAmount: {
+      type: Number,
+      required: false,
+      default: 0
     },
     maturityDate: {
       type: String, // TODO: Should be date

@@ -18,6 +18,9 @@ import {
   ForgotPassword,
   ResetPassword,
   UserProfile,
+  SavingsDashboard,
+  ViewAllSavings,
+  CreateSavingGoal,
 } from "../Pages";
 
 export const routes = createRoutesFromElements(
@@ -46,6 +49,12 @@ export const routes = createRoutesFromElements(
           <Route path="view" element={<ViewUserBudgets />} />
           <Route path="add/:currentStep" element={<CreateUserBudgets />} />
           <Route path="items/:budgetId" element={<ViewUserBudgetItems />} />
+        </Route>
+        <Route path="savings">
+          <Route path="dashboard" element={<SavingsDashboard />} />
+          <Route path="view" element={<ViewAllSavings />} />
+          <Route path="add" element={<CreateSavingGoal />} />
+          {/* <Route path="items/:budgetId" element={<ViewUserBudgetItems />} /> */}
         </Route>
         {/* <Route path="*" element={<PageNotFoundScreen />} /> */}
       </Route>

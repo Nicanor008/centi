@@ -1,7 +1,7 @@
 import express from "express";
 import { celebrate } from "celebrate";
 import savingsController from "./savings.controller";
-import AuthService from "../../middlewares/auth";
+import AuthService from "../../../middlewares/auth";
 import {
   createValidationSchema,
   updateValidationSchema,
