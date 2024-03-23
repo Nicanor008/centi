@@ -39,6 +39,7 @@ import DatePicker, {
 import DataNotFound from "../../../../../../components/ErrorPages/DataNotFound";
 import { formatNumberGroups } from "../../../../../../helpers/formatNumberGroups";
 import { getUserToken } from "../../../../../../helpers/getToken";
+import { config } from "../../../../../../config";
 
 function ViewUserBudgets() {
   const navigate = useNavigate();
@@ -65,10 +66,10 @@ function ViewUserBudgets() {
   }, [budget]);
 
   useEffect(() => {
-    let config = {
+    let payload = {
       method: "get",
       maxBodyLength: Infinity,
-      url: "https://centi-6k7v.onrender.com/api/v1/budget/",
+      url: `${config.API_URL}/budget/`,
       headers: {
         Authorization: `Bearer ${userToken}`,
         "Content-Type": "application/json",
@@ -77,7 +78,7 @@ function ViewUserBudgets() {
 
     async function makeRequest() {
       try {
-        const response = await axios.request(config);
+        const response = await axios.request(payload);
         setBudget(response.data.data);
       } catch (error) {
         console.log(error);

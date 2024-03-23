@@ -5,6 +5,7 @@ import { Chart as ReactChartJs } from "react-chartjs-2";
 import "chart.js/auto";
 import { getMonthName } from "../../../../../../helpers/getMonths";
 import { getUserToken } from "../../../../../../helpers/getToken";
+import { config } from "../../../../../../config";
 
 const PlannedIncomeAndExpenseChart = () => {
   const [analytics, setAnalytics] = useState();
@@ -14,7 +15,7 @@ const PlannedIncomeAndExpenseChart = () => {
     async function makeRequest() {
       try {
         const response = await axios.get(
-          "https://centi-6k7v.onrender.com/api/v1/budget/dashboard/analytics",
+          `${config.API_URL}/budget/dashboard/analytics`,
           { headers: { Authorization: `Bearer ${userToken}` } }
         );
         setAnalytics(response.data.data);

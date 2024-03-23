@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import QuickBudgetAnalyticsNav from "../../../../../components/Analytics/QuickBudgetAnalyticsNav";
 import DataNotFound from "../../../../../components/ErrorPages/DataNotFound";
+import { config } from "../../../../../config";
 import { getUserToken } from "../../../../../helpers/getToken";
 import NumberofBudgetItems from "./NumberofBudgetItems";
 import PlannedIncomeAndExpenseChart from "./PlannedIncomeAndExpenseChart";
@@ -18,7 +19,7 @@ function BudgetDashboard() {
     async function makeRequest() {
       try {
         const response = await axios.get(
-          "https://centi-6k7v.onrender.com/api/v1/budget/dashboard/analytics",
+          `${config.API_URL}/budget/dashboard/analytics`,
           { headers: { Authorization: `Bearer ${userToken}` } }
         );
         setAnalytics(response.data.data);
@@ -33,10 +34,9 @@ function BudgetDashboard() {
   useEffect(() => {
     async function makeRequest() {
       try {
-        const response = await axios.get(
-          "https://centi-6k7v.onrender.com/api/v1/financial-goals/",
-          { headers: { Authorization: `Bearer ${userToken}` } }
-        );
+        const response = await axios.get(`${config.API_URL}/financial-goals/`, {
+          headers: { Authorization: `Bearer ${userToken}` },
+        });
         setFinancialGoals(response.data.data);
       } catch (error) {
         console.log(error);
@@ -78,41 +78,43 @@ function BudgetDashboard() {
       {/* body */}
       <Flex flexDir="column" my={(2, 8)}>
         {/* error */}
-        {!hasBudgetItems && <DataNotFound />}
-        {/* cards */}
-        <Flex justifyContent="space-between" flexWrap="wrap" gap={2}>
-          <QuickBudgetAnalyticsNav
-            title="Expenses(This month)"
-            amount={analytics?.totalPlannedExpensesThisMonth}
-          />
-          <QuickBudgetAnalyticsNav
-            title="Expenses"
-            amount={analytics?.totalBudgetExpensesAmount}
-          />
-          <QuickBudgetAnalyticsNav
-            title="Expenses(This month)"
-            amount={analytics?.totalNumberofBudgetThisMonth}
-            hasCurrency={false}
-          />
-          <QuickBudgetAnalyticsNav
-            title="No. Expenses"
-            amount={analytics?.totalNumberofBudgetItems}
-            hasCurrency={false}
-          />
-          <QuickBudgetAnalyticsNav
-            title="Total No. Budget"
-            amount={analytics?.totalNumberofBudget}
-            hasCurrency={false}
-          />
-          <QuickBudgetAnalyticsNav
-            title="Categories"
-            amount={
-              analytics?.categoryCount &&
-              Object.keys(analytics?.categoryCount).length
-            }
-            hasCurrency={false}
-          />
-        </Flex>
+        {!hasBudgetItems ? (
+          <DataNotFound />
+        ) : (
+          <Flex justifyContent="space-between" flexWrap="wrap" gap={2}>
+            <QuickBudgetAnalyticsNav
+              title="Expenses(This month)"
+              amount={analytics?.totalPlannedExpensesThisMonth}
+            />
+            <QuickBudgetAnalyticsNav
+              title="Expenses"
+              amount={analytics?.totalBudgetExpensesAmount}
+            />
+            <QuickBudgetAnalyticsNav
+              title="Expenses(This month)"
+              amount={analytics?.totalNumberofBudgetThisMonth}
+              hasCurrency={false}
+            />
+            <QuickBudgetAnalyticsNav
+              title="No. Expenses"
+              amount={analytics?.totalNumberofBudgetItems}
+              hasCurrency={false}
+            />
+            <QuickBudgetAnalyticsNav
+              title="Total No. Budget"
+              amount={analytics?.totalNumberofBudget}
+              hasCurrency={false}
+            />
+            <QuickBudgetAnalyticsNav
+              title="Categories"
+              amount={
+                analytics?.categoryCount &&
+                Object.keys(analytics?.categoryCount).length
+              }
+              hasCurrency={false}
+            />
+          </Flex>
+        )}
 
         {/* charts */}
         <Flex

@@ -20,6 +20,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useEffect } from "react";
+import { config } from "../../../config";
 
 export default function Login() {
   const { state } = useLocation();
@@ -41,10 +42,7 @@ export default function Login() {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post(
-        "https://centi-6k7v.onrender.com/api/v1/auth/login",
-        data
-      );
+      const response = await axios.post(`${config.API_URL}/auth/login`, data);
       localStorage.setItem("user", JSON.stringify(response.data.data));
       navigate("/budget/dashboard");
     } catch (error) {

@@ -15,6 +15,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import CreatableSelect from "react-select/creatable";
 import Select from "react-select";
 import { getUserToken } from "../../../../../../helpers/getToken";
+import { config } from "../../../../../../config";
 
 // Component for Budget Form
 const BudgetForm = ({
@@ -189,10 +190,9 @@ const CreateBudget = () => {
   React.useEffect(() => {
     async function makeRequest() {
       try {
-        const response = await axios.get(
-          "https://centi-6k7v.onrender.com/api/v1/category",
-          { headers: { Authorization: `Bearer ${userToken}` } }
-        );
+        const response = await axios.get(`${config.API_URL}/category`, {
+          headers: { Authorization: `Bearer ${userToken}` },
+        });
 
         const transformedData = response.data?.data?.map((item) => ({
           value: item.name.toLowerCase(),
@@ -212,10 +212,9 @@ const CreateBudget = () => {
   React.useEffect(() => {
     async function makeRequest() {
       try {
-        const response = await axios.get(
-          "https://centi-6k7v.onrender.com/api/v1/financial-goals",
-          { headers: { Authorization: `Bearer ${userToken}` } }
-        );
+        const response = await axios.get(`${config.API_URL}/financial-goals`, {
+          headers: { Authorization: `Bearer ${userToken}` },
+        });
 
         const updatedResponseData = response.data?.data?.data?.map((item) => {
           return { ...item, label: item.name, value: item._id };
@@ -257,7 +256,7 @@ const CreateBudget = () => {
     let config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: "https://centi-6k7v.onrender.com/api/v1/budget/",
+      url: `${config.API_URL}/budget/`,
       headers: {
         Authorization: `Bearer ${userToken}`,
         "Content-Type": "application/json",
@@ -273,7 +272,7 @@ const CreateBudget = () => {
       // add category
       removedUndefinedInCategory?.length > 0 &&
         (await axios.post(
-          "https://centi-6k7v.onrender.com/api/v1/category/",
+          `${config.API_URL}/category/`,
           removedUndefinedInCategory,
           { headers: { Authorization: `Bearer ${userToken}` } }
         ));
@@ -306,7 +305,7 @@ const CreateBudget = () => {
     let config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: "https://centi-6k7v.onrender.com/api/v1/budget-items/",
+      url: `${config.API_URL}/budget-items/`,
       headers: {
         Authorization: `Bearer ${userToken}`,
         "Content-Type": "application/json",
@@ -319,11 +318,9 @@ const CreateBudget = () => {
       await axios.request(config);
 
       // add category
-      await axios.post(
-        "https://centi-6k7v.onrender.com/api/v1/category/",
-        newCategoriesPayload,
-        { headers: { Authorization: `Bearer ${userToken}` } }
-      );
+      await axios.post(`${config.API_URL}/category/`, newCategoriesPayload, {
+        headers: { Authorization: `Bearer ${userToken}` },
+      });
 
       setSelectedCategory([]);
       reset();

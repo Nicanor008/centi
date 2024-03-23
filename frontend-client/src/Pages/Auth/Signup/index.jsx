@@ -19,6 +19,7 @@ import {
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
+import { config } from "../../../config";
 
 export default function Signup() {
   const { register, handleSubmit } = useForm();
@@ -35,10 +36,7 @@ export default function Signup() {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post(
-        "https://centi-6k7v.onrender.com/api/v1/auth/signup",
-        data
-      );
+      const response = await axios.post(`${config.API_URL}/auth/signup`, data);
       navigate("/login", { state: response.data });
     } catch (error) {
       console.error("Error:", error); // Handle error
