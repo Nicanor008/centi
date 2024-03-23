@@ -269,7 +269,7 @@ const NAV_ITEMS = [
       {
         label: "Manage my Budget",
         subLabel: "Track all your budget in one place",
-        href: "budget/dashboard",
+        href: "budget/view",
       },
       {
         label: "Learn the magic of budgeting",
@@ -294,7 +294,7 @@ const NAV_ITEMS = [
       {
         label: "Manage my Savings",
         subLabel: "Track all your Savings",
-        href: "savings/dashboard",
+        href: "savings/view",
       },
       {
         label: "Tips & Resources",

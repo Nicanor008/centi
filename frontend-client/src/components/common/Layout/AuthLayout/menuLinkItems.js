@@ -6,9 +6,9 @@ import { useLocation } from "react-router-dom";
 const getCurrentDashboardPath = (path) => {
   switch (path) {
     case "budget":
-      return "/budget/dashboard";
+      return "/budget/analytics";
     case "savings":
-      return "/savings/dashboard";
+      return "/savings/analytics";
     case "debt":
       return "/debt/dashboard";
     case "investment":
@@ -30,14 +30,14 @@ const tt = (path) => [
 const budgetLinkItems = [
   ...tt("budget"),
   { name: "Budgets", icon: FiTrendingUp, url: "/budget/view" },
-  { name: "Savings", icon: FaPiggyBank, url: "/savings/dashboard" },
+  { name: "Savings", icon: FaPiggyBank, url: "/savings/analytics" },
   // { name: "Templates", icon: FiStar, url: "#" },
   // { name: "Settings", icon: FiSettings, url: "#" },
 ];
 
 const savingsLinkItems = [
   ...tt("savings"),
-  { name: "Budget", icon: FiTrendingUp, url: "/budget/dashboard" },
+  { name: "Budget", icon: FiTrendingUp, url: "/budget/analytics" },
   { name: "Savings", icon: FaPiggyBank, url: "/savings/view" },
 ];
 
@@ -54,11 +54,12 @@ const investmentLinkItems = [
 ];
 
 const defaultLinkItems = [
-  ...tt(),
-  { name: "Budgets", icon: FiTrendingUp, url: "/budget/dashboard" },
-  { name: "Savings", icon: FaPiggyBank, url: "/savings/dashboard" },
-  { name: "Debt", icon: FcDebt, url: "/debt/dashboard" },
-  { name: "Investments", icon: FaCircleNodes, url: "/investment/dashboard" },
+  { name: "Dashboard", icon: FiHome, url: "/dashboard" },
+  { name: "Financial goals", icon: FiCompass, url: "/financial-goals" },
+  { name: "Budgets", icon: FiTrendingUp, url: "/budget/view" },
+  { name: "Savings", icon: FaPiggyBank, url: "/savings/view" },
+  { name: "Debt", icon: FcDebt, url: "/debt" },
+  { name: "Investments", icon: FaCircleNodes, url: "/investment" },
 ];
 
 export const LinkItems = () => {
@@ -66,10 +67,10 @@ export const LinkItems = () => {
   const pathname = location.pathname;
 
   // Check if the URL contains specific keywords
-  const hasBudget = pathname.includes("/budget/");
-  const hasSavings = pathname.includes("/savings/");
-  const hasDebt = pathname.includes("/debt/");
-  const hasInvestments = pathname.includes("/investments/");
+  const hasBudget = pathname.includes("/bu---dget/");
+  const hasSavings = pathname.includes("/savi--ngs/");
+  const hasDebt = pathname.includes("/de--bt/");
+  const hasInvestments = pathname.includes("/i--nvestments/");
 
   switch (true) {
     case hasBudget:

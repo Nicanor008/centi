@@ -20,6 +20,8 @@ import {
   MenuItemOption,
   Input,
   useMediaQuery,
+  Divider,
+  Link,
 } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -161,14 +163,7 @@ function ViewUserBudgets() {
   return (
     <Flex flexDir="column">
       {/* header */}
-      <Flex
-        py={4}
-        justifyContent="space-between"
-        alignItems="center"
-        borderBottom="1px solid"
-        borderColor="gray.300"
-        mb={[1, 4]}
-      >
+      <Flex justifyContent="space-between" alignItems="center">
         <Flex alignItems="center" gap={2}>
           {cachedBudget?.data?.length ? (
             <Text
@@ -273,6 +268,15 @@ function ViewUserBudgets() {
           )}
         </Flex>
       </Flex>
+
+      <Flex py={2}>
+        <Link href="/budget/analytics" fontSize={14} color="blue">
+          Budget Analytics
+        </Link>
+      </Flex>
+
+      <Divider borderColor="gray.300" />
+
       {cachedBudget?.data?.length > 0 && (
         <Flex alignItems="center" justifyContent="space-between">
           <Text>
@@ -300,7 +304,7 @@ function ViewUserBudgets() {
               borderColor="gray.400"
               color="gray.500"
               fontWeight={500}
-              onClick={() => navigate("/budget/dashboard")}
+              onClick={() => navigate("/budget/analytics")}
             >
               View Budget analytics
             </Button>

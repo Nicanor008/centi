@@ -377,7 +377,7 @@ function ViewUserBudgetItems() {
               borderColor="gray.400"
               color="gray.500"
               fontWeight={500}
-              onClick={() => navigate("/budget/dashboard")}
+              onClick={() => navigate("/budget/analytics")}
             >
               Detailed analytics
             </Button>

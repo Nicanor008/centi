@@ -21,6 +21,7 @@ import {
   SavingsDashboard,
   ViewAllSavings,
   CreateSavingGoal,
+  CentiDashboard,
 } from "../Pages";
 
 export const routes = createRoutesFromElements(
@@ -37,6 +38,9 @@ export const routes = createRoutesFromElements(
 
     <Route>
       <Route element={<AuthLayout />}>
+        <Route path="dashboard">
+          <Route path="" element={<CentiDashboard />} />
+        </Route>
         <Route path="user">
           <Route path="profile" element={<UserProfile />} />
         </Route>
@@ -45,13 +49,13 @@ export const routes = createRoutesFromElements(
           <Route path="add" element={<CreateFinancialGoal />} />
         </Route>
         <Route path="budget">
-          <Route path="dashboard" element={<BudgetDashboard />} />
+          <Route path="analytics" element={<BudgetDashboard />} />
           <Route path="view" element={<ViewUserBudgets />} />
           <Route path="add/:currentStep" element={<CreateUserBudgets />} />
           <Route path="items/:budgetId" element={<ViewUserBudgetItems />} />
         </Route>
         <Route path="savings">
-          <Route path="dashboard" element={<SavingsDashboard />} />
+          <Route path="analytics" element={<SavingsDashboard />} />
           <Route path="view" element={<ViewAllSavings />} />
           <Route path="add" element={<CreateSavingGoal />} />
           {/* <Route path="items/:budgetId" element={<ViewUserBudgetItems />} /> */}

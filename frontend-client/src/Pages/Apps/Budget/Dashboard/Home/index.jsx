@@ -19,7 +19,7 @@ function BudgetDashboard() {
     async function makeRequest() {
       try {
         const response = await axios.get(
-          `${config.API_URL}/budget/dashboard/analytics`,
+          `${config.API_URL}/budget/analytics/analytics`,
           { headers: { Authorization: `Bearer ${userToken}` } }
         );
         setAnalytics(response.data.data);

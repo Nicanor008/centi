@@ -30,7 +30,7 @@ export default function Signup() {
   const user = localStorage.getItem("user");
   useEffect(() => {
     if (user) {
-      return navigate("/budget/dashboard", { replace: true });
+      return navigate("/budget/analytics", { replace: true });
     }
   }, []);
 

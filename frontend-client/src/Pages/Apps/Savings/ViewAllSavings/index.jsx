@@ -13,6 +13,8 @@ import {
   Tag,
   Input,
   useMediaQuery,
+  Divider,
+  Link,
 } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -124,14 +126,7 @@ function ViewAllSavings() {
   return (
     <Flex flexDir="column">
       {/* header */}
-      <Flex
-        py={4}
-        justifyContent="space-between"
-        alignItems="center"
-        borderBottom="1px solid"
-        borderColor="gray.300"
-        mb={[1, 4]}
-      >
+      <Flex justifyContent="space-between" alignItems="center">
         <Flex alignItems="center" gap={2}>
           {cachedData?.total ? (
             <Text
@@ -156,7 +151,6 @@ function ViewAllSavings() {
             )}
           </Flex>
         </Flex>
-
         <Flex alignItems="center" gap={2}>
           {cachedData?.data?.length > 0 &&
             (!isLargerThan880 ? (
@@ -186,6 +180,14 @@ function ViewAllSavings() {
           </Button>
         </Flex>
       </Flex>
+      <Flex py={2}>
+        <Link href="/savings/analytics" fontSize={14} color="blue">
+          Savings Analytics
+        </Link>
+      </Flex>
+
+      <Divider borderColor="gray.300" />
+
       {/* view all data content */}
       <TableContainer bg="gray.200" my={4}>
         <Table variant="striped" colorScheme="red">
@@ -240,7 +242,6 @@ function ViewAllSavings() {
           </Tbody>
         </Table>
       </TableContainer>
-
       {cachedData?.data?.length < 1 ? <DataNotFound /> : <></>}
     </Flex>
   );

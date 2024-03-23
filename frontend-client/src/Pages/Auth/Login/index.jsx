@@ -36,7 +36,7 @@ export default function Login() {
   const user = localStorage.getItem("user");
   useEffect(() => {
     if (user) {
-      return navigate("/budget/dashboard", { replace: true });
+      return navigate("/budget/analytics", { replace: true });
     }
   }, []);
 
@@ -44,7 +44,7 @@ export default function Login() {
     try {
       const response = await axios.post(`${config.API_URL}/auth/login`, data);
       localStorage.setItem("user", JSON.stringify(response.data.data));
-      navigate("/budget/dashboard");
+      navigate("/budget/analytics");
       // navigate("/dashboard"); TODO: Update to navigate to this route(easy to switch afterwards)
     } catch (error) {
       console.error("Error:", error); // Handle error
