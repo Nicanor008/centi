@@ -269,13 +269,15 @@ function ViewUserBudgets() {
         </Flex>
       </Flex>
 
-      <Flex py={2}>
-        <Link href="/budget/analytics" fontSize={14} color="blue">
-          Budget Analytics
-        </Link>
-      </Flex>
+      {cachedBudget?.total > 0 && (
+        <Flex py={1}>
+          <Link href="/budget/analytics" fontSize={14} color="blue">
+            Budget Analytics
+          </Link>
+        </Flex>
+      )}
 
-      <Divider borderColor="gray.300" />
+      <Divider borderColor="gray.300" mt={2} />
 
       {cachedBudget?.data?.length > 0 && (
         <Flex alignItems="center" justifyContent="space-between">

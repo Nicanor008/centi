@@ -21,9 +21,16 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
 } from "@chakra-ui/icons";
+import { getUserToken } from "../../../helpers/getToken";
 
 export default function Navbar() {
   const { isOpen, onToggle } = useDisclosure();
+  const token = getUserToken();
+
+  const logoutHandler = () => {
+    localStorage.clear();
+    navigate("/login", { replace: true });
+  };
 
   return (
     <Box w="100%">
@@ -68,36 +75,49 @@ export default function Navbar() {
           <DesktopNav />
         </Flex>
 
-        <Stack
-          flex={{ base: 1, md: 0 }}
-          justify={"flex-end"}
-          direction={"row"}
-          spacing={6}
-        >
+        {token ? (
           <Button
-            as={"a"}
-            fontSize={"sm"}
-            fontWeight={400}
-            variant={"link"}
-            href="/login"
-          >
-            Sign In
-          </Button>
-          <Button
-            as={"a"}
-            display={{ base: "none", md: "inline-flex" }}
-            fontSize={"sm"}
-            fontWeight={600}
-            color={"white"}
-            bg={"pink.400"}
-            href="/signup"
+            color="white"
+            bg="pink.400"
             _hover={{
               bg: "pink.300",
             }}
+            onClick={logoutHandler}
           >
-            Sign Up
+            Logout
           </Button>
-        </Stack>
+        ) : (
+          <Stack
+            flex={{ base: 1, md: 0 }}
+            justify="flex-end"
+            direction="row"
+            spacing={6}
+          >
+            <Button
+              as="a"
+              fontSize="sm"
+              fontWeight={400}
+              variant="link"
+              href="/login"
+            >
+              Sign In
+            </Button>
+            <Button
+              as="a"
+              display={{ base: "none", md: "inline-flex" }}
+              fontSize="sm"
+              fontWeight={600}
+              color="white"
+              bg="pink.400"
+              href="/signup"
+              _hover={{
+                bg: "pink.300",
+              }}
+            >
+              Sign Up
+            </Button>
+          </Stack>
+        )}
       </Flex>
 
       <Collapse in={isOpen} animateOpacity>
