@@ -1,32 +1,9 @@
 import { Flex, Text } from "@chakra-ui/react";
-import axios from "axios";
-import { useEffect, useState } from "react";
 import { Chart as ReactChartJs } from "react-chartjs-2";
 import "chart.js/auto";
 import { getMonthName } from "../../../../../../helpers/getMonths";
-import { getUserToken } from "../../../../../../helpers/getToken";
-import { config } from "../../../../../../config";
 
-const PlannedIncomeAndExpenseChart = () => {
-  const [analytics, setAnalytics] = useState();
-  const userToken = getUserToken();
-
-  useEffect(() => {
-    async function makeRequest() {
-      try {
-        const response = await axios.get(
-          `${config.API_URL}/budget/analytics/analytics`,
-          { headers: { Authorization: `Bearer ${userToken}` } }
-        );
-        setAnalytics(response.data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    makeRequest();
-  }, []);
-
+const PlannedIncomeAndExpenseChart = ({ analytics }) => {
   const data = analytics?.budget && {
     labels: analytics?.budget
       ?.slice(-15)

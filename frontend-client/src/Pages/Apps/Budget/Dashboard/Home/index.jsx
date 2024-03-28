@@ -19,8 +19,10 @@ function BudgetDashboard() {
     async function makeRequest() {
       try {
         const response = await axios.get(
-          `${config.API_URL}/budget/analytics/analytics`,
-          { headers: { Authorization: `Bearer ${userToken}` } }
+          `${config.API_URL}/budget/dashboard/analytics/`,
+          {
+            headers: { Authorization: `Bearer ${userToken}` },
+          }
         );
         setAnalytics(response.data.data);
       } catch (error) {
@@ -124,11 +126,11 @@ function BudgetDashboard() {
           flexDir={["column", "row"]}
         >
           {hasBudgetItems && analytics?.totalNumberofBudgetItems > 0 && (
-            <PlannedIncomeAndExpenseChart />
+            <PlannedIncomeAndExpenseChart analytics={analytics} />
           )}
 
           {hasBudgetItems && analytics?.totalNumberofBudgetItems > 0 && (
-            <NumberofBudgetItems />
+            <NumberofBudgetItems analytics={analytics} />
           )}
         </Flex>
 
