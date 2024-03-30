@@ -253,7 +253,7 @@ const CreateBudget = () => {
       plannedIncome: Number(getValues()?.plannedIncome) ?? 0,
     };
 
-    let config = {
+    let config2 = {
       method: "post",
       maxBodyLength: Infinity,
       url: `${config.API_URL}/budget/`,
@@ -266,7 +266,7 @@ const CreateBudget = () => {
 
     try {
       // submit data
-      const response = await axios.request(config);
+      const response = await axios.request(config2);
       setBudget(response.data?.data);
 
       // add category
@@ -302,7 +302,7 @@ const CreateBudget = () => {
       budgetId: budget?._id,
     };
 
-    let config = {
+    let config2 = {
       method: "post",
       maxBodyLength: Infinity,
       url: `${config.API_URL}/budget-items/`,
@@ -315,7 +315,7 @@ const CreateBudget = () => {
 
     try {
       // submit data
-      await axios.request(config);
+      await axios.request(config2);
 
       // add category
       await axios.post(`${config.API_URL}/category/`, newCategoriesPayload, {
