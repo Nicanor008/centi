@@ -40,6 +40,7 @@ import DataNotFound from "../../../../../components/ErrorPages/DataNotFound";
 import { formatNumberGroups } from "../../../../../helpers/formatNumberGroups";
 import QuickBudgetAnalyticsNav from "../../../../../components/Analytics/QuickBudgetAnalyticsNav";
 import { getUserToken } from "../../../../../helpers/getToken";
+import { config } from "../../../../../config";
 
 function ViewUserBudgetItems() {
   const navigate = useNavigate();
@@ -64,7 +65,7 @@ function ViewUserBudgetItems() {
 
   //   STEP 1: GET Budget
   useEffect(() => {
-    let config = {
+    let budgetConfig = {
       method: "get",
       url: `${config.API_URL}/budget/${budgetId}/`,
       headers: {
@@ -75,7 +76,7 @@ function ViewUserBudgetItems() {
 
     async function makeRequest() {
       try {
-        const response = await axios.request(config);
+        const response = await axios.request(budgetConfig);
         setBudget(response.data.data);
       } catch (error) {
         console.log(error);
@@ -87,7 +88,7 @@ function ViewUserBudgetItems() {
 
   //   STEP 2: GET all budget items in a budget
   useEffect(() => {
-    let config = {
+    let budgetItemsConfig = {
       method: "get",
       maxBodyLength: Infinity,
       url: `${config.API_URL}/budget-items/budget/${budgetId}`,
@@ -99,7 +100,7 @@ function ViewUserBudgetItems() {
 
     async function makeRequest() {
       try {
-        const response = await axios.request(config);
+        const response = await axios.request(budgetItemsConfig);
         setBudgetItems({ data: response.data.data, filtered: false });
       } catch (error) {
         console.log("Error: ", error);

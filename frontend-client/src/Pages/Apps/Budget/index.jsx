@@ -1,2 +1,2 @@
 export * from "./UserBudgets";
-export { default as BudgetDashboard } from "./Dashboard/Home";
+export { default as BudgetDashboard } from "./Analytics";

@@ -1,7 +1,7 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { Chart as ReactChartJs } from "react-chartjs-2";
 import "chart.js/auto";
-import { getMonthName } from "../../../../../../helpers/getMonths";
+import { getMonthName } from "../../../../../helpers/getMonths";
 
 const PlannedIncomeAndExpenseChart = ({ analytics }) => {
   const data = analytics?.budget && {

@@ -2,10 +2,10 @@ import { Button, Divider, Flex, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import QuickBudgetAnalyticsNav from "../../../../../components/Analytics/QuickBudgetAnalyticsNav";
-import DataNotFound from "../../../../../components/ErrorPages/DataNotFound";
-import { config } from "../../../../../config";
-import { getUserToken } from "../../../../../helpers/getToken";
+import { config } from "../../../../config";
+import { getUserToken } from "../../../../helpers/getToken";
+import QuickBudgetAnalyticsNav from "../../../../components/Analytics/QuickBudgetAnalyticsNav";
+import DataNotFound from "../../../../components/ErrorPages/DataNotFound";
 import NumberofBudgetItems from "./NumberofBudgetItems";
 import PlannedIncomeAndExpenseChart from "./PlannedIncomeAndExpenseChart";
 
