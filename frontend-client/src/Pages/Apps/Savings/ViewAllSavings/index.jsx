@@ -1,7 +1,6 @@
 import {
   Button,
   Flex,
-  Text,
   Table,
   Thead,
   Tbody,
@@ -9,12 +8,9 @@ import {
   Th,
   Td,
   TableContainer,
-  Box,
-  Tag,
   Input,
   useMediaQuery,
   Divider,
-  Link,
 } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -26,11 +22,13 @@ import {
   FaSortAmountDown,
   FaSortAmountUp,
 } from "react-icons/fa";
-// import DataNotFound from "../../../../../../components/ErrorPages/DataNotFound";
 import { formatNumberGroups } from "../../../../helpers/formatNumberGroups";
 import { getUserToken } from "../../../../helpers/getToken";
 import { config } from "../../../../config";
 import DataNotFound from "../../../../components/ErrorPages/DataNotFound";
+import ShowAnalyticsLink from "../../../../components/ShowAnalyticsLink";
+import DataHeader from "../../../../components/Table/DataHeader";
+import CategoryCell from "../../../../components/Table/Cell/CategoryCell";
 
 function ViewAllSavings() {
   const navigate = useNavigate();
@@ -126,31 +124,11 @@ function ViewAllSavings() {
   return (
     <Flex flexDir="column">
       {/* header */}
-      <Flex justifyContent="space-between" alignItems="center">
-        <Flex alignItems="center" gap={2}>
-          {cachedData?.total ? (
-            <Text
-              bg="gray.300"
-              p="2px 8px"
-              borderRadius="full"
-              fontWeight="bold"
-            >
-              {cachedData?.total}
-            </Text>
-          ) : (
-            <Box />
-          )}
-          <Flex flexDir="column">
-            <Text fontWeight={600} fontSize={16}>
-              Savings
-            </Text>
-            {isLargerThan880 && (
-              <Text color="gray.500" fontSize={12} fontWeight={400}>
-                This is your Savings goals management
-              </Text>
-            )}
-          </Flex>
-        </Flex>
+      <DataHeader
+        count={cachedData?.total}
+        title="Savings Tracker"
+        subtitle="This is your Savings goals management"
+      >
         <Flex alignItems="center" gap={2}>
           {cachedData?.data?.length > 0 &&
             (!isLargerThan880 ? (
@@ -179,12 +157,13 @@ function ViewAllSavings() {
             {!isLargerThan880 ? <FaPlus /> : "Create Savings"}
           </Button>
         </Flex>
-      </Flex>
-      <Flex py={2}>
-        <Link href="/savings/analytics" fontSize={14} color="blue">
-          Savings Analytics
-        </Link>
-      </Flex>
+      </DataHeader>
+
+      <ShowAnalyticsLink
+        count={cachedData?.data?.length}
+        title="Savings Analytics"
+        link="/savings/analytics"
+      />
 
       <Divider borderColor="gray.300" />
 
@@ -203,36 +182,12 @@ function ViewAllSavings() {
           </Thead>
           <Tbody>
             {cachedData?.data?.map((item, idx) => (
-              <Tr
-                cursor="pointer"
-                key={idx}
-                // onClick={() =>
-                //   navigate(`/budget/items/${item._id}`, { state: { item } })
-                // }
-              >
+              <Tr cursor="pointer" key={idx}>
                 <Td>{item.savingsGoalName}</Td>
                 <Td>KES {formatNumberGroups(item?.targetAmount)}</Td>
                 <Td>KES {formatNumberGroups(item?.currentAmount)}</Td>
                 <Td>{new Date(item?.maturityDate).toLocaleDateString()}</Td>
-                <Td
-                  minW={item?.category?.length > 0 ? "200px" : "auto"}
-                  h={item?.category?.length > 0 ? "80px" : "auto"}
-                  display="flex"
-                  flexWrap="wrap"
-                  overflow="scroll"
-                  alignItems="center"
-                  bg="inherit"
-                >
-                  {item?.category?.map((category, idx) => (
-                    <Tag
-                      mr={1}
-                      mb={item?.category.length > 3 ? 1 : 0}
-                      key={(category?._id || category?.value) + idx}
-                    >
-                      {category?.__isNew__ ? category?.label : category.name}
-                    </Tag>
-                  ))}
-                </Td>
+                <CategoryCell categories={item?.category} />
                 <Td>{new Date(item?.createdAt).toDateString()}</Td>
                 <Td>
                   <FaEllipsisV />

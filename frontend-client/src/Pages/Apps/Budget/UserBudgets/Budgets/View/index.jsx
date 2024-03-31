@@ -9,7 +9,6 @@ import {
   Th,
   Td,
   TableContainer,
-  Box,
   Tag,
   Menu,
   MenuButton,
@@ -42,6 +41,9 @@ import DataNotFound from "../../../../../../components/ErrorPages/DataNotFound";
 import { formatNumberGroups } from "../../../../../../helpers/formatNumberGroups";
 import { getUserToken } from "../../../../../../helpers/getToken";
 import { config } from "../../../../../../config";
+import DataHeader from "../../../../../../components/Table/DataHeader";
+import ShowAnalyticsLink from "../../../../../../components/ShowAnalyticsLink";
+import CategoryCell from "../../../../../../components/Table/Cell/CategoryCell";
 
 function ViewUserBudgets() {
   const navigate = useNavigate();
@@ -163,32 +165,11 @@ function ViewUserBudgets() {
   return (
     <Flex flexDir="column">
       {/* header */}
-      <Flex justifyContent="space-between" alignItems="center">
-        <Flex alignItems="center" gap={2}>
-          {cachedBudget?.data?.length ? (
-            <Text
-              bg="gray.300"
-              p="2px 8px"
-              borderRadius="full"
-              fontWeight="bold"
-            >
-              {cachedBudget?.data?.length}
-            </Text>
-          ) : (
-            <Box />
-          )}
-          <Flex flexDir="column">
-            <Text fontWeight={600} fontSize={16}>
-              Budget Tracker
-            </Text>
-            {isLargerThan880 && (
-              <Text color="gray.500" fontSize={12} fontWeight={400}>
-                This is your budget history
-              </Text>
-            )}
-          </Flex>
-        </Flex>
-
+      <DataHeader
+        count={cachedBudget?.data?.length}
+        title="Budget Tracker"
+        subtitle="This is your budget history"
+      >
         <Flex alignItems="center" gap={2}>
           {cachedBudget?.data?.length > 0 &&
             (!isLargerThan880 ? (
@@ -267,15 +248,13 @@ function ViewUserBudgets() {
             </Menu>
           )}
         </Flex>
-      </Flex>
+      </DataHeader>
 
-      {cachedBudget?.total > 0 && (
-        <Flex py={1}>
-          <Link href="/budget/analytics" fontSize={14} color="blue">
-            Budget Analytics
-          </Link>
-        </Flex>
-      )}
+      <ShowAnalyticsLink
+        count={cachedBudget?.total}
+        title="Budget Analytics"
+        link="/budget/analytics"
+      />
 
       <Divider borderColor="gray.300" mt={2} />
 
@@ -351,25 +330,7 @@ function ViewUserBudgets() {
                 <Td>Calculate spent expenses from budget items</Td>
                 <Td>{formatNumberGroups(budget?.budgetItemsCount)}</Td>
                 <Td>KES {formatNumberGroups(budget?.plannedIncome)}</Td>
-                <Td
-                  minW={budget?.category?.length > 0 ? "200px" : "auto"}
-                  h={budget?.category?.length > 0 ? "80px" : "auto"}
-                  display="flex"
-                  flexWrap="wrap"
-                  overflow="scroll"
-                  alignItems="center"
-                  bg="inherit"
-                >
-                  {budget?.category?.map((category, idx) => (
-                    <Tag
-                      mr={1}
-                      mb={budget?.category.length > 3 ? 1 : 0}
-                      key={(category?._id || category?.value) + idx}
-                    >
-                      {category?.__isNew__ ? category?.label : category.name}
-                    </Tag>
-                  ))}
-                </Td>
+                <CategoryCell categories={budget?.category} />
                 <Td>{budget?.isActive ? "Yes" : "No"}</Td>
                 <Td>{budget?.isRecurring ? "Yes" : "No"}</Td>
                 <Td>{new Date(budget?.createdAt).toLocaleDateString()}</Td>

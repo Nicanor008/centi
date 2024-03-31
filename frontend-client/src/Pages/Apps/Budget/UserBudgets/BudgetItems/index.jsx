@@ -1,21 +1,10 @@
 import {
   Button,
   Flex,
-  Text,
-  Table,
-  Thead,
-  Box,
-  Tr,
-  Th,
-  Td,
-  TableContainer,
-  Tbody,
   Menu,
   MenuButton,
   MenuList,
-  MenuItem,
   IconButton,
-  Tag,
   MenuDivider,
   MenuOptionGroup,
   MenuItemOption,
@@ -25,41 +14,32 @@ import {
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import {
-  FaEdit,
-  FaEllipsisV,
-  FaEye,
-  FaSearch,
-  FaSortAmountDown,
-  FaSortAmountUp,
-  FaTrash,
-} from "react-icons/fa";
+import { FaEye, FaSearch } from "react-icons/fa";
 import { BsFilterRight } from "react-icons/bs";
 import { MdClose } from "react-icons/md";
-import DataNotFound from "../../../../../components/ErrorPages/DataNotFound";
-import { formatNumberGroups } from "../../../../../helpers/formatNumberGroups";
 import QuickBudgetAnalyticsNav from "../../../../../components/Analytics/QuickBudgetAnalyticsNav";
 import { getUserToken } from "../../../../../helpers/getToken";
 import { config } from "../../../../../config";
+import DataHeader from "../../../../../components/Table/DataHeader";
+import BudgetItemsDataTable from "./BudgetItemsDataTable";
+import DataNotFoundWithChildren from "./DataNotFoundWithChildren";
 
 function ViewUserBudgetItems() {
   const navigate = useNavigate();
   const [budget, setBudget] = useState();
   const [budgetItems, setBudgetItems] = useState({ filtered: false });
   const { budgetId } = useParams();
-  const [dataUpdated, setDataUpdated] = useState(false);
   const [manualRefresh, setManualRefresh] = useState(false);
 
-  const [selectedItem, setSelectedItem] = useState(null);
   const [searchText, setSearchText] = useState("");
 
   const [sortBy, setSortBy] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
   const [isLargerThan880] = useMediaQuery("(min-width: 880px)");
 
-  const handleEllipsisClick = (item) => {
-    setSelectedItem(item === selectedItem ? null : item);
-  };
+  // const handleEllipsisClick = (item) => {
+  //   setSelectedItem(item === selectedItem ? null : item);
+  // };
 
   const userToken = getUserToken();
 
@@ -84,7 +64,7 @@ function ViewUserBudgetItems() {
     }
 
     makeRequest();
-  }, [dataUpdated]);
+  }, []);
 
   //   STEP 2: GET all budget items in a budget
   useEffect(() => {
@@ -108,7 +88,7 @@ function ViewUserBudgetItems() {
     }
 
     makeRequest();
-  }, [dataUpdated]);
+  }, []);
 
   const handleFilterBudgetItems = (data) => {
     const key = Object.keys(data)[0];
@@ -135,17 +115,17 @@ function ViewUserBudgetItems() {
     }
   };
 
-  const deleteBudgetItem = async (data) => {
-    try {
-      await axios.delete(`${config.API_URL}/budget-items/${data?._id}`, {
-        headers: { Authorization: `Bearer ${userToken}` },
-      });
-      setDataUpdated(!dataUpdated);
-      setSelectedItem(null);
-    } catch (error) {
-      console.log("Error: ", error);
-    }
-  };
+  // const deleteBudgetItem = async (data) => {
+  //   try {
+  //     await axios.delete(`${config.API_URL}/budget-items/${data?._id}`, {
+  //       headers: { Authorization: `Bearer ${userToken}` },
+  //     });
+  //     setDataUpdated(!dataUpdated);
+  //     setSelectedItem(null);
+  //   } catch (error) {
+  //     console.log("Error: ", error);
+  //   }
+  // };
   const handleSearchChange = (text) => {
     setSearchText(text);
     if (text.trim() !== "") {
@@ -187,66 +167,26 @@ function ViewUserBudgetItems() {
     });
   };
 
-  const ColumnHeaderCell = ({ name, column }) => (
-    <>
-      <Th onClick={() => handleSort(column)} cursor="pointer">
-        <Flex alignItems="center">
-          {name} &nbsp;
-          {sortBy === column && sortOrder === "asc" ? (
-            <FaSortAmountUp />
-          ) : (
-            <FaSortAmountDown />
-          )}
-        </Flex>
-      </Th>
-    </>
-  );
-
   return (
     <Flex flexDir="column">
       {/* header */}
-      <Flex
-        py={4}
-        justifyContent="space-between"
-        alignItems={["flex-start", "center"]}
-        borderBottom="1px solid"
-        borderColor="gray.300"
-        mb={[1, 4]}
-        flexDir={["column", "row"]}
-        gap={[4, 0]}
+      <DataHeader
+        count={budgetItems?.data?.length}
+        title={
+          !isLargerThan880
+            ? `${budget?.name.substring(0, 30)} ${
+                budget?.name.length > 30 ? " ..." : ""
+              }`
+            : budget?.name
+        }
+        subtitle={
+          !isLargerThan880
+            ? `${budget?.description.substring(0, 50)} ${
+                budget?.name.length > 30 ? " ..." : ""
+              }`
+            : budget?.description
+        }
       >
-        <Flex alignItems="center" gap={2}>
-          {budgetItems?.data?.length ? (
-            <Text
-              bg="gray.300"
-              p="2px 8px"
-              borderRadius="full"
-              fontWeight="bold"
-            >
-              {budgetItems?.data?.length}
-            </Text>
-          ) : (
-            <Box />
-          )}
-          <Flex flexDir="column" justifyContent="flex-start">
-            <Text fontWeight={600} fontSize={16}>
-              {!isLargerThan880
-                ? `${budget?.name.substring(0, 30)} ${
-                    budget?.name.length > 30 ? " ..." : ""
-                  }`
-                : budget?.name}
-            </Text>
-            <Text color="gray.500" fontSize={12} fontWeight={400}>
-              {!isLargerThan880
-                ? `${budget?.description.substring(0, 50)} ${
-                    budget?.name.length > 30 ? " ..." : ""
-                  }`
-                : budget?.description}
-            </Text>
-          </Flex>
-        </Flex>
-
-        {/* menu */}
         <Flex gap={2} alignItems="center">
           {(budgetItems?.data?.length === 0 && budgetItems?.search) ||
           budgetItems?.data?.length > 0 ? (
@@ -355,7 +295,8 @@ function ViewUserBudgetItems() {
             <></>
           )}
         </Flex>
-      </Flex>
+      </DataHeader>
+
       {/* budget metadata/analytics */}
       {budgetItems?.data?.length > 0 && (
         <Flex justifyContent="space-between" alignItems="center">
@@ -385,125 +326,20 @@ function ViewUserBudgetItems() {
           )}
         </Flex>
       )}
-      <TableContainer bg="gray.200" my={4}>
-        <Table variant="striped" colorScheme="red">
-          <Thead>
-            <Tr>
-              <ColumnHeaderCell name="Name" column="name" />
-              <ColumnHeaderCell name="Description" column="description" />
-              <ColumnHeaderCell name="Expenses" column="plannedExpenses" />
-              <ColumnHeaderCell name="Planned Income" column="actualExpenses" />
-              <Th>Category</Th>
-              <Th>Active</Th>
-              <Th>Recurring</Th>
-              <ColumnHeaderCell name="Date Created" column="createdAt" />
-            </Tr>
-          </Thead>
-          <Tbody>
-            {budgetItems?.data?.length > 0 &&
-              budgetItems?.data?.map((item, idx) => (
-                <Tr
-                  cursor="pointer"
-                  key={idx}
-                  // onClick={() => navigate("/item/add/2", { state: { item } })}
-                >
-                  <Td>{item.name}</Td>
-                  <Td>{item?.description}</Td>
-                  <Td>KES {formatNumberGroups(item?.plannedExpenses)}</Td>
-                  <Td>KES {formatNumberGroups(item?.actualExpenses)}</Td>
-                  <Td
-                    minW={item?.category?.length > 0 ? "200px" : "auto"}
-                    h={item?.category?.length > 0 ? "80px" : "auto"}
-                    display="flex"
-                    flexWrap="wrap"
-                    overflow="scroll"
-                    alignItems="center"
-                    bg="inherit"
-                  >
-                    {item?.category?.map((category, idx) => (
-                      <Tag
-                        mr={1}
-                        mb={item?.category.length > 3 ? 1 : 0}
-                        key={(category?._id || category?.value) + idx}
-                      >
-                        {category?.__isNew__ ? category?.label : category.name}
-                      </Tag>
-                    ))}
-                  </Td>
-                  <Td>{item?.isActive ? "Yes" : "No"}</Td>
-                  <Td>{item?.isRecurring ? "Yes" : "No"}</Td>
-                  <Td>{new Date(item?.createdAt).toDateString()}</Td>
-                  <Td>
-                    <Menu>
-                      <MenuButton
-                        as={IconButton}
-                        aria-label="Options"
-                        icon={<FaEllipsisV />}
-                        onClick={() => handleEllipsisClick(item)}
-                      />
-                      <MenuList>
-                        <MenuItem
-                          icon={<FaEdit />}
-                          onClick={() => setSelectedItem(null)}
-                        >
-                          Update
-                        </MenuItem>
-                        <MenuItem
-                          icon={<FaTrash />}
-                          onClick={() => deleteBudgetItem(item)}
-                        >
-                          Delete
-                        </MenuItem>
-                      </MenuList>
-                    </Menu>
-                  </Td>
-                </Tr>
-              ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
-      {(budgetItems?.data?.length < 1 &&
-        (budgetItems?.filtered || budgetItems?.search)) ||
-      budgetItems?.data?.length < 1 ? (
-        <Flex
-          alignItems="center"
-          justifyContent="center"
-          h="65vh"
-          flexDir="column"
-          gap={4}
-        >
-          <DataNotFound>
-            <Flex gap={3} mt={4}>
-              <Button
-                bg="green.400"
-                color="white"
-                onClick={() =>
-                  navigate("/budget/add/2", {
-                    state: { budget: { ...budgetItems, _id: budgetId } },
-                  })
-                }
-                _hover={{
-                  bg: "green.400",
-                }}
-              >
-                Add Expense
-              </Button>
-              <Button
-                bg="red.400"
-                color="white"
-                onClick={() => deleteBudget(budget)}
-                _hover={{
-                  bg: "red.400",
-                }}
-              >
-                Delete Budget
-              </Button>
-            </Flex>
-          </DataNotFound>
-        </Flex>
-      ) : (
-        <></>
-      )}
+      <BudgetItemsDataTable
+        data={budgetItems?.data}
+        sortBy={sortBy}
+        sortOrder={sortOrder}
+        handleSort={handleSort}
+      />
+
+      {/* not found */}
+      <DataNotFoundWithChildren
+        budget={budget}
+        budgetItems={budgetItems}
+        budgetId={budgetId}
+        deleteBudget={deleteBudget}
+      />
     </Flex>
   );
 }

@@ -10,7 +10,6 @@ import {
   Td,
   TableContainer,
   Box,
-  Tag,
   Input,
   useMediaQuery,
   Link,
@@ -28,6 +27,7 @@ import { formatNumberGroups } from "../../../../helpers/formatNumberGroups";
 import DataNotFound from "../../../../components/ErrorPages/DataNotFound";
 import { getUserToken } from "../../../../helpers/getToken";
 import { config } from "../../../../config";
+import CategoryCell from "../../../../components/Table/Cell/CategoryCell";
 
 function ViewUserFinancialGoals() {
   const navigate = useNavigate();
@@ -191,7 +191,6 @@ function ViewUserFinancialGoals() {
           </Button>
         </Flex>
       </Flex>
-      {console.log("...........Here we go........", financialGoals)}
 
       <TableContainer bg="gray.200" my={4}>
         <Table variant="striped" colorScheme="red">
@@ -208,38 +207,14 @@ function ViewUserFinancialGoals() {
           </Thead>
           <Tbody>
             {financialGoals?.data?.map((goal, idx) => (
-              <Tr
-                cursor="pointer"
-                key={goal._id + idx}
-                // onClick={() =>
-                //   navigate(`/budget/items/${goal_id}`, { state: { goal} })
-                // }
-              >
+              <Tr cursor="pointer" key={goal._id + idx}>
                 <Td>{goal.name}</Td>
                 <Td>KES {formatNumberGroups(goal.targetAmount)}</Td>
                 <Td>{goal.description}</Td>
                 <Td>{new Date(goal.from).toDateString()}</Td>
                 <Td>{new Date(goal.to).toDateString()}</Td>
                 <Td>{new Date(goal.createdAt).toDateString()}</Td>
-                <Td
-                  minW={goal.category?.length > 0 ? "200px" : "auto"}
-                  h={goal.category?.length > 0 ? "80px" : "auto"}
-                  display="flex"
-                  flexWrap="wrap"
-                  overflow="scroll"
-                  alignItems="center"
-                  bg="inherit"
-                >
-                  {goal?.category?.map((category, idx) => (
-                    <Tag
-                      mr={1}
-                      mb={goal?.category.length > 2 ? 1 : 0}
-                      key={(category?._id || category?.value) + idx}
-                    >
-                      {category?.__isNew__ ? category?.label : category.name}
-                    </Tag>
-                  ))}
-                </Td>
+                <CategoryCell categories={goal?.category} />
               </Tr>
             ))}
           </Tbody>
