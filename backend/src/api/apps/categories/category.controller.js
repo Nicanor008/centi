@@ -1,7 +1,7 @@
+import httpStatus from "http-status";
 import { Controller } from "../../../helpers/common";
 import categoryService from "./category.service";
 import { handleResponse as Response } from "../../../helpers";
-import httpStatus from "http-status";
 
 class CategoryController extends Controller {
   constructor(service, name) {
@@ -9,7 +9,12 @@ class CategoryController extends Controller {
   }
   async create(req, res, next) {
     try {
-      const data = { ...req.body, userId: req.user?._id };
+      let data = req.body;
+      if (Array.isArray(req.body)) {
+        data = data.map(item => ({ ...item, userId: req.user?._id }));
+      } else {
+        data = { ...req.body, userId: req.user?._id };
+      }
       const result = await categoryService.create(data);
       return Response.success(res, result, httpStatus.CREATED);
     } catch (exception) {

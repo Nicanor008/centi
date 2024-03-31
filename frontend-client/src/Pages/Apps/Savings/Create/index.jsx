@@ -41,8 +41,8 @@ const CreateSavingGoal = () => {
         });
 
         const transformedData = response.data?.data?.map((item) => ({
-          value: item.name.toLowerCase(),
-          label: item.name,
+          value: item?.name?.toLowerCase(),
+          label: item?.name,
           ...item,
         }));
         setUserCategories(transformedData);
