@@ -1,176 +1,13 @@
 import React from "react";
 import axios from "axios";
 import { useForm, FormProvider } from "react-hook-form";
-import {
-  Flex,
-  Text,
-  Button,
-  Input,
-  VStack,
-  useMediaQuery,
-  FormControl,
-  FormLabel,
-} from "@chakra-ui/react";
+import { Flex, Text, Button, useMediaQuery } from "@chakra-ui/react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import CreatableSelect from "react-select/creatable";
-import Select from "react-select";
 import { getUserToken } from "../../../../../../helpers/getToken";
 import { config } from "../../../../../../config";
+import CreateBudgetForm from "./CreateBudget";
+import CreateBudgetItemForm from "./CreateBudgetItems";
 
-// Component for Budget Form
-const BudgetForm = ({
-  methods,
-  userCategories,
-  selectedCategory,
-  handleSelectedCategory,
-  financialGoals,
-  setSelectedFinancialGoal,
-}) => {
-  return (
-    <>
-      <VStack spacing={4} alignItems="left">
-        <Flex gap={4} flexDir={["column", "row"]}>
-          <FormControl id="name">
-            <FormLabel htmlFor="name">Name</FormLabel>
-            <Input
-              placeholder="Budget Name"
-              bg="white"
-              {...methods.register("name")}
-            />
-          </FormControl>
-          <FormControl id="description">
-            <FormLabel htmlFor="description">Description</FormLabel>
-            <Input
-              placeholder="Budget Description"
-              bg="white"
-              {...methods.register("description")}
-            />
-          </FormControl>
-        </Flex>
-        <Flex gap={4} flexDir={["column", "row"]}>
-          <FormControl id="plannedIncome">
-            <FormLabel htmlFor="plannedIncome">
-              Planned Income for this budget
-            </FormLabel>
-            <Input
-              placeholder="Budget Planned Income"
-              bg="white"
-              _placeholder={{
-                color: "gray.500",
-              }}
-              {...methods.register("plannedIncome")}
-              type="number"
-            />
-          </FormControl>
-          <FormControl id="plannedExpenses">
-            <FormLabel htmlFor="plannedExpenses">Expense</FormLabel>
-            <Input
-              placeholder="Budget Planned Expenses"
-              bg={"white"}
-              _placeholder={{
-                color: "gray.500",
-              }}
-              {...methods.register("plannedExpenses")}
-              type="number"
-            />
-          </FormControl>
-        </Flex>
-        <Flex gap={4} flexDir={["column", "row"]}>
-          <FormControl>
-            <FormLabel>Financial Goal</FormLabel>
-            <Select
-              isLoading={false}
-              isClearable={true}
-              isSearchable={false}
-              options={financialGoals}
-              onChange={(e) => setSelectedFinancialGoal(e.value)}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Category</FormLabel>
-            <CreatableSelect
-              isMulti
-              isCreatable
-              options={userCategories}
-              // styles={customStyles}
-              value={selectedCategory}
-              onChange={handleSelectedCategory}
-            />
-          </FormControl>
-        </Flex>
-      </VStack>
-    </>
-  );
-};
-
-// Component for Budget Item Form
-const BudgetItemForm = ({
-  methods,
-  userCategories,
-  selectedCategory,
-  handleSelectedCategory,
-  financialGoals,
-  setSelectedFinancialGoal,
-}) => {
-  return (
-    <>
-      <VStack spacing={4} alignItems="left">
-        <Flex gap={4} flexDir={["solumn", "row"]}>
-          <FormControl id="name">
-            <FormLabel htmlFor="name">Name</FormLabel>
-            <Input
-              placeholder="Budget Item Name"
-              bg="white"
-              {...methods.register("name")}
-            />
-          </FormControl>
-          <FormControl id="description">
-            <FormLabel htmlFor="description">Description</FormLabel>
-            <Input
-              placeholder="Budget Item Description"
-              bg="white"
-              {...methods.register("description")}
-            />
-          </FormControl>
-          <FormControl id="actualExpenses">
-            <FormLabel htmlFor="actualExpenses">Expense Spent</FormLabel>
-            <Input
-              placeholder="Budget Spent Expense"
-              bg="white"
-              {...methods.register("actualExpenses")}
-              type="number"
-            />
-          </FormControl>
-        </Flex>
-        <Flex gap={4} flexDir={["solumn", "row"]}>
-          <FormControl>
-            <FormLabel>Financial Goal</FormLabel>
-            <Select
-              isLoading={false}
-              isClearable={true}
-              isSearchable={false}
-              options={financialGoals}
-              onChange={(e) => setSelectedFinancialGoal(e.value)}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Category</FormLabel>
-            <CreatableSelect
-              isMulti
-              isCreatable
-              options={userCategories}
-              // styles={customStyles}
-              value={selectedCategory}
-              onChange={handleSelectedCategory}
-            />
-          </FormControl>
-        </Flex>
-      </VStack>
-    </>
-  );
-};
-
-// Stepper Component
 const CreateBudget = () => {
   const navigate = useNavigate();
   const { currentStep } = useParams();
@@ -337,7 +174,7 @@ const CreateBudget = () => {
       case 0:
         return (
           <form onSubmit={handleSubmit(handleNext)}>
-            <BudgetForm
+            <CreateBudgetForm
               methods={methods}
               userCategories={userCategories}
               setSelectedCategory={setSelectedCategory}
@@ -350,7 +187,7 @@ const CreateBudget = () => {
       case 1:
         return (
           <form onSubmit={handleSubmit(onSubmit)}>
-            <BudgetItemForm
+            <CreateBudgetItemForm
               budget={budget}
               methods={methods}
               userCategories={userCategories}
