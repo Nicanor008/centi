@@ -172,7 +172,7 @@ const verifyCode = async data => {
 //         { email: data.email }
 //       ]
 //     });
-    
+
 //     if (!user) {
 //       user = new User();
 //       user.services.facebook.id = data.id;

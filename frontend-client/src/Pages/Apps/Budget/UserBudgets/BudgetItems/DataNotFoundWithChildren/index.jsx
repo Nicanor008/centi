@@ -1,4 +1,5 @@
 import { Button, Flex } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 import DataNotFound from "../../../../../../components/ErrorPages/DataNotFound";
 
 const DataNotFoundWithChildren = ({
@@ -6,10 +7,12 @@ const DataNotFoundWithChildren = ({
   budgetItems,
   budgetId,
   deleteBudget,
-}) =>
-  (budgetItems?.data?.length < 1 &&
+}) => {
+  const navigate = useNavigate();
+
+  return (budgetItems?.data?.length < 1 &&
     (budgetItems?.filtered || budgetItems?.search)) ||
-  budgetItems?.data?.length < 1 ? (
+    budgetItems?.data?.length < 1 ? (
     <Flex
       alignItems="center"
       justifyContent="center"
@@ -49,5 +52,6 @@ const DataNotFoundWithChildren = ({
   ) : (
     <></>
   );
+};
 
 export default DataNotFoundWithChildren;

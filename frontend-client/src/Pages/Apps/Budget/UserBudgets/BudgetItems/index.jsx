@@ -1,28 +1,15 @@
-import {
-  Button,
-  Flex,
-  Menu,
-  MenuButton,
-  MenuList,
-  IconButton,
-  MenuDivider,
-  MenuOptionGroup,
-  MenuItemOption,
-  Input,
-  useMediaQuery,
-} from "@chakra-ui/react";
+import { Button, Flex, Input, useMediaQuery } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { FaEye, FaSearch } from "react-icons/fa";
-import { BsFilterRight } from "react-icons/bs";
-import { MdClose } from "react-icons/md";
-import QuickBudgetAnalyticsNav from "../../../../../components/Analytics/QuickBudgetAnalyticsNav";
 import { getUserToken } from "../../../../../helpers/getToken";
 import { config } from "../../../../../config";
 import DataHeader from "../../../../../components/Table/DataHeader";
 import BudgetItemsDataTable from "./BudgetItemsDataTable";
 import DataNotFoundWithChildren from "./DataNotFoundWithChildren";
+import BudgetItemsFilterData from "./BudgetItemsDataTable/BudgetItemsFilterData";
+import DetailedAnalyticsNav from "../../../../../components/Analytics/DetailedAnalyticsNav";
 
 function ViewUserBudgetItems() {
   const navigate = useNavigate();
@@ -90,20 +77,6 @@ function ViewUserBudgetItems() {
     makeRequest();
   }, []);
 
-  const handleFilterBudgetItems = (data) => {
-    const key = Object.keys(data)[0];
-    const value = Object.values(data)[0];
-
-    const filteredBudget = budgetItems.data.filter(
-      (item) => item[key] === value
-    );
-
-    setBudgetItems({
-      data: filteredBudget,
-      filtered: true,
-    });
-  };
-
   const deleteBudget = async (data) => {
     try {
       await axios.delete(`${config.API_URL}/budget/${data?._id}`, {
@@ -143,28 +116,6 @@ function ViewUserBudgetItems() {
     } else {
       setManualRefresh(true);
     }
-  };
-
-  const handleSort = (column) => {
-    if (sortBy === column) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortBy(column);
-      setSortOrder("asc");
-    }
-
-    budgetItems?.data?.sort((a, b) => {
-      const aValue = a[sortBy];
-      const bValue = b[sortBy];
-
-      if (typeof aValue === "string") {
-        return sortOrder === "asc"
-          ? aValue.localeCompare(bValue)
-          : bValue.localeCompare(aValue);
-      }
-
-      return sortOrder === "asc" ? aValue - bValue : bValue - aValue;
-    });
   };
 
   return (
@@ -242,95 +193,27 @@ function ViewUserBudgetItems() {
             x
           </Button>
           {(budgetItems?.data?.length === 0 && budgetItems?.filtered) ||
-          budgetItems?.data?.length > 0 ? (
-            <Menu closeOnSelect={true}>
-              <MenuButton
-                as={IconButton}
-                aria-label="filter"
-                icon={
-                  budgetItems?.filtered ? (
-                    <MdClose onClick={() => setManualRefresh(true)} />
-                  ) : (
-                    <BsFilterRight cursor="pointer" />
-                  )
-                }
+            (budgetItems?.data?.length > 0 && (
+              <BudgetItemsFilterData
+                setBudgetItems={setBudgetItems}
+                budgetItems={budgetItems}
+                setManualRefresh={setManualRefresh}
               />
-              <MenuList>
-                <MenuOptionGroup title="Status" type="radio">
-                  <MenuItemOption
-                    value="yes"
-                    onClick={() => handleFilterBudgetItems({ isActive: true })}
-                  >
-                    Active
-                  </MenuItemOption>
-                  <MenuItemOption
-                    value="no"
-                    onClick={() => handleFilterBudgetItems({ isActive: false })}
-                  >
-                    Inactive
-                  </MenuItemOption>
-                </MenuOptionGroup>
-                <MenuDivider />
-                <MenuOptionGroup title="Recurring" type="radio">
-                  <MenuItemOption
-                    value="yes"
-                    onClick={() =>
-                      handleFilterBudgetItems({ isRecurring: true })
-                    }
-                  >
-                    Yes
-                  </MenuItemOption>
-                  <MenuItemOption
-                    value="no"
-                    onClick={() =>
-                      handleFilterBudgetItems({ isRecurring: false })
-                    }
-                  >
-                    No
-                  </MenuItemOption>
-                </MenuOptionGroup>
-              </MenuList>
-            </Menu>
-          ) : (
-            <></>
-          )}
+            ))}
         </Flex>
       </DataHeader>
 
       {/* budget metadata/analytics */}
-      {budgetItems?.data?.length > 0 && (
-        <Flex justifyContent="space-between" alignItems="center">
-          <Flex gap={4}>
-            <QuickBudgetAnalyticsNav
-              title="Total Expenses"
-              amount={budgetItems?.data?.reduce(
-                (acc, item) => acc + item.plannedExpenses,
-                0
-              )}
-            />
-            <QuickBudgetAnalyticsNav
-              title="Total Planned Expenses"
-              amount={budget?.plannedExpenses}
-            />
-          </Flex>
-          {isLargerThan880 && (
-            <Button
-              border="1px solid"
-              borderColor="gray.400"
-              color="gray.500"
-              fontWeight={500}
-              onClick={() => navigate("/budget/analytics")}
-            >
-              Detailed analytics
-            </Button>
-          )}
-        </Flex>
-      )}
+      <DetailedAnalyticsNav
+        data={budgetItems?.data}
+        plannedExpense={budget?.plannedExpenses}
+      />
       <BudgetItemsDataTable
         data={budgetItems?.data}
         sortBy={sortBy}
         sortOrder={sortOrder}
-        handleSort={handleSort}
+        setSortOrder={setSortOrder}
+        setSortBy={setSortBy}
       />
 
       {/* not found */}
