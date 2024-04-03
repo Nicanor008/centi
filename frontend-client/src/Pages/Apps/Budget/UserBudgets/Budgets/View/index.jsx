@@ -11,10 +11,11 @@ import ShowAnalyticsLink from "../../../../../../components/ShowAnalyticsLink";
 import BudgetDataTable from "./BudgetDataTable";
 import BudgetFilterMenu from "./BudgetFilterMenu";
 import BudgetDetailedAnalyticsNav from "./BudgetDetailedAnalyticsNav";
+import { DataLoader } from "../../../../../../components";
 
 function ViewUserBudgets() {
   const navigate = useNavigate();
-  const [budget, setBudget] = useState({ filtered: false });
+  const [budget, setBudget] = useState({ filtered: false, loading: true });
   const [manualRefresh, setManualRefresh] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [isLargerThan880] = useMediaQuery("(min-width: 880px)");
@@ -45,8 +46,9 @@ function ViewUserBudgets() {
     async function makeRequest() {
       try {
         const response = await axios.request(payload);
-        setBudget(response.data.data);
+        setBudget({ ...response.data.data, loading: false });
       } catch (error) {
+        setBudget({ loading: false });
         console.log(error);
       }
     }
@@ -55,6 +57,7 @@ function ViewUserBudgets() {
   }, [manualRefresh]);
 
   const handleSearchChange = (text) => {
+    setBudget({ loading: true });
     setSearchText(text);
     if (text.trim() !== "") {
       const lowerCaseSearch = text.toLowerCase();
@@ -68,6 +71,7 @@ function ViewUserBudgets() {
         total: searchedBudgetData.length,
         filtered: false,
         search: true,
+        loading: false,
       });
     } else {
       setManualRefresh(true);
@@ -112,20 +116,26 @@ function ViewUserBudgets() {
         </Flex>
       </DataHeader>
 
-      <ShowAnalyticsLink
-        count={cachedBudget?.total}
-        title="Budget Analytics"
-        link="/budget/analytics"
-      />
+      {budget?.loading ? (
+        <DataLoader />
+      ) : (
+        <>
+          <ShowAnalyticsLink
+            count={cachedBudget?.total}
+            title="Budget Analytics"
+            link="/budget/analytics"
+          />
 
-      <Divider borderColor="gray.300" mt={2} />
+          <Divider borderColor="gray.300" mt={2} />
 
-      <BudgetDetailedAnalyticsNav data={cachedBudget?.data} />
+          <BudgetDetailedAnalyticsNav data={cachedBudget?.data} />
 
-      {/* data */}
-      <BudgetDataTable data={cachedBudget?.data} />
+          {/* data */}
+          <BudgetDataTable data={cachedBudget?.data} />
 
-      {cachedBudget?.data?.length < 1 ? <DataNotFound /> : <></>}
+          {cachedBudget?.data?.length < 1 ? <DataNotFound /> : <></>}
+        </>
+      )}
     </Flex>
   );
 }

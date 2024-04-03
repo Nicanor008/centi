@@ -29,10 +29,11 @@ import DataNotFound from "../../../../components/ErrorPages/DataNotFound";
 import ShowAnalyticsLink from "../../../../components/ShowAnalyticsLink";
 import DataHeader from "../../../../components/Table/DataHeader";
 import CategoryCell from "../../../../components/Table/Cell/CategoryCell";
+import { DataLoader } from "../../../../components";
 
 function ViewAllSavings() {
   const navigate = useNavigate();
-  const [data, setData] = useState({ filtered: false });
+  const [data, setData] = useState({ filtered: false, loading: true });
   const [manualRefresh, setManualRefresh] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [sortBy, setSortBy] = useState(null);
@@ -57,8 +58,9 @@ function ViewAllSavings() {
         const response = await axios.get(`${config.API_URL}/savings/`, {
           headers: { Authorization: `Bearer ${userToken}` },
         });
-        setData(response.data.data);
+        setData({ ...response.data.data, loading: false });
       } catch (error) {
+        setData({ loading: false });
         console.log(error);
       }
     }
@@ -159,37 +161,49 @@ function ViewAllSavings() {
 
       <Divider borderColor="gray.300" />
 
-      {/* view all data content */}
-      <TableContainer bg="gray.200" my={4}>
-        <Table variant="striped" colorScheme="red">
-          <Thead>
-            <Tr>
-              <ColumnHeaderCell name="Name" column="name" />
-              <ColumnHeaderCell column="targetAmount" name="Target" />
-              <ColumnHeaderCell name="Current Savings" column="currentAmount" />
-              <ColumnHeaderCell column="maturityDate" name="Maturity Date" />
-              <Th>Category</Th>
-              <ColumnHeaderCell column="createdAt" name="Date Created" />
-            </Tr>
-          </Thead>
-          <Tbody>
-            {cachedData?.data?.map((item, idx) => (
-              <Tr cursor="pointer" key={idx}>
-                <Td>{item.savingsGoalName}</Td>
-                <Td>KES {formatNumberGroups(item?.targetAmount)}</Td>
-                <Td>KES {formatNumberGroups(item?.currentAmount)}</Td>
-                <Td>{new Date(item?.maturityDate).toLocaleDateString()}</Td>
-                <CategoryCell categories={item?.category} />
-                <Td>{new Date(item?.createdAt).toDateString()}</Td>
-                <Td>
-                  <FaEllipsisV />
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
-      {cachedData?.data?.length < 1 ? <DataNotFound /> : <></>}
+      {data?.loading ? (
+        <DataLoader />
+      ) : (
+        <>
+          {/* view all data content */}
+          <TableContainer bg="gray.200" my={4}>
+            <Table variant="striped" colorScheme="red">
+              <Thead>
+                <Tr>
+                  <ColumnHeaderCell name="Name" column="name" />
+                  <ColumnHeaderCell column="targetAmount" name="Target" />
+                  <ColumnHeaderCell
+                    name="Current Savings"
+                    column="currentAmount"
+                  />
+                  <ColumnHeaderCell
+                    column="maturityDate"
+                    name="Maturity Date"
+                  />
+                  <Th>Category</Th>
+                  <ColumnHeaderCell column="createdAt" name="Date Created" />
+                </Tr>
+              </Thead>
+              <Tbody>
+                {cachedData?.data?.map((item, idx) => (
+                  <Tr cursor="pointer" key={idx}>
+                    <Td>{item.savingsGoalName}</Td>
+                    <Td>KES {formatNumberGroups(item?.targetAmount)}</Td>
+                    <Td>KES {formatNumberGroups(item?.currentAmount)}</Td>
+                    <Td>{new Date(item?.maturityDate).toLocaleDateString()}</Td>
+                    <CategoryCell categories={item?.category} />
+                    <Td>{new Date(item?.createdAt).toDateString()}</Td>
+                    <Td>
+                      <FaEllipsisV />
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+          {cachedData?.data?.length < 1 ? <DataNotFound /> : <></>}
+        </>
+      )}
     </Flex>
   );
 }

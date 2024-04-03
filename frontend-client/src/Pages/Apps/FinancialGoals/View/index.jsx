@@ -28,10 +28,14 @@ import DataNotFound from "../../../../components/ErrorPages/DataNotFound";
 import { getUserToken } from "../../../../helpers/getToken";
 import { config } from "../../../../config";
 import CategoryCell from "../../../../components/Table/Cell/CategoryCell";
+import { DataLoader } from "../../../../components";
 
 function ViewUserFinancialGoals() {
   const navigate = useNavigate();
-  const [financialGoals, setFinancialGoals] = useState({ filtered: false });
+  const [financialGoals, setFinancialGoals] = useState({
+    filtered: false,
+    loading: true,
+  });
   const [manualRefresh, setManualRefresh] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [sortBy, setSortBy] = useState(null);
@@ -63,8 +67,9 @@ function ViewUserFinancialGoals() {
     async function makeRequest() {
       try {
         const response = await axios.request(payload);
-        setFinancialGoals(response?.data?.data);
+        setFinancialGoals({ ...response?.data?.data, loading: false });
       } catch (error) {
+        setFinancialGoals({ loading: false });
         console.log(error);
       }
     }
@@ -184,45 +189,51 @@ function ViewUserFinancialGoals() {
         </Flex>
       </Flex>
 
-      <TableContainer bg="gray.200" my={4}>
-        <Table variant="striped" colorScheme="red">
-          <Thead>
-            <Tr>
-              <ColumnHeaderCell name="Financial goal" column="name" />
-              <ColumnHeaderCell name="Target" column="targetAmount" />
-              <ColumnHeaderCell column="description" name="Description" />
-              <ColumnHeaderCell column="from" name="From" />
-              <ColumnHeaderCell column="to" name="To" />
-              <ColumnHeaderCell column="createdAt" name="Date Created" />
-              <Th>Category</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {financialGoals?.data?.map((goal, idx) => (
-              <Tr cursor="pointer" key={goal._id + idx}>
-                <Td>{goal.name}</Td>
-                <Td>KES {formatNumberGroups(goal.targetAmount)}</Td>
-                <Td>{goal.description}</Td>
-                <Td>{new Date(goal.from).toDateString()}</Td>
-                <Td>{new Date(goal.to).toDateString()}</Td>
-                <Td>{new Date(goal.createdAt).toDateString()}</Td>
-                <CategoryCell categories={goal?.category} />
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
-
-      {financialGoals?.data?.length < 1 ? (
-        <Flex flexDir="column">
-          <DataNotFound>
-            <Link href="#" color="blue.500">
-              Understand why you need a financial goal
-            </Link>
-          </DataNotFound>
-        </Flex>
+      {financialGoals?.loading ? (
+        <DataLoader />
       ) : (
-        <></>
+        <>
+          <TableContainer bg="gray.200" my={4}>
+            <Table variant="striped" colorScheme="red">
+              <Thead>
+                <Tr>
+                  <ColumnHeaderCell name="Financial goal" column="name" />
+                  <ColumnHeaderCell name="Target" column="targetAmount" />
+                  <ColumnHeaderCell column="description" name="Description" />
+                  <ColumnHeaderCell column="from" name="From" />
+                  <ColumnHeaderCell column="to" name="To" />
+                  <ColumnHeaderCell column="createdAt" name="Date Created" />
+                  <Th>Category</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {financialGoals?.data?.map((goal, idx) => (
+                  <Tr cursor="pointer" key={goal._id + idx}>
+                    <Td>{goal.name}</Td>
+                    <Td>KES {formatNumberGroups(goal.targetAmount)}</Td>
+                    <Td>{goal.description}</Td>
+                    <Td>{new Date(goal.from).toDateString()}</Td>
+                    <Td>{new Date(goal.to).toDateString()}</Td>
+                    <Td>{new Date(goal.createdAt).toDateString()}</Td>
+                    <CategoryCell categories={goal?.category} />
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+
+          {financialGoals?.data?.length < 1 ? (
+            <Flex flexDir="column">
+              <DataNotFound>
+                <Link href="#" color="blue.500">
+                  Understand why you need a financial goal
+                </Link>
+              </DataNotFound>
+            </Flex>
+          ) : (
+            <></>
+          )}
+        </>
       )}
     </Flex>
   );
