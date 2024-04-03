@@ -147,7 +147,6 @@ const CreateSavingGoal = () => {
               <FormLabel htmlFor="savingsGoalName">Name</FormLabel>
               <Input
                 placeholder="Savings Goal Name"
-                bg="white"
                 {...methods.register("savingsGoalName")}
               />
             </FormControl>
@@ -155,7 +154,6 @@ const CreateSavingGoal = () => {
               <FormLabel htmlFor="targetAmount">Target</FormLabel>
               <Input
                 placeholder="Savings Goal Target amount"
-                bg="white"
                 {...methods.register("targetAmount")}
                 type="number"
               />
@@ -164,7 +162,6 @@ const CreateSavingGoal = () => {
               <FormLabel htmlFor="currentAmount">Current Savings</FormLabel>
               <Input
                 placeholder="Currently saved amount"
-                bg="white"
                 {...methods.register("currentAmount")}
                 type="number"
               />
@@ -175,7 +172,6 @@ const CreateSavingGoal = () => {
               <FormLabel htmlFor="maturityDate">Maturity Date</FormLabel>
               <Input
                 placeholder="Maturity Date"
-                bg="white"
                 {...methods.register("maturityDate")}
                 type="date"
               />

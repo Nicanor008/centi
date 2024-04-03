@@ -136,13 +136,6 @@ function ViewAllSavings() {
             ) : (
               <Input
                 placeholder="Search Savings ..."
-                bg={"gray.100"}
-                border="1px solid"
-                borderColor="gray.300"
-                color={"gray.500"}
-                _placeholder={{
-                  color: "gray.500",
-                }}
                 value={searchText}
                 onChange={(e) => handleSearchChange(e.target.value)}
                 w="fit-content"

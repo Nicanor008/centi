@@ -7,7 +7,7 @@ const { definePartsStyle, defineMultiStyleConfig } =
 const primary = definePartsStyle({
   field: {
     border: "1px solid",
-    borderColor: "gray.200",
+    borderColor: "red.100",
     background: "#FFF",
     rounded: 8,
   },
@@ -24,7 +24,7 @@ const primary = definePartsStyle({
 const outline = definePartsStyle({
   field: {
     border: "2px solid",
-    borderColor: "blue.500",
+    borderColor: "red.500",
   },
 });
 

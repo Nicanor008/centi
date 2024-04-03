@@ -138,7 +138,6 @@ const CreateFinancialGoal = () => {
               <FormLabel htmlFor="name">Name</FormLabel>
               <Input
                 placeholder="Financial Goal Name"
-                bg="white"
                 {...methods.register("name")}
               />
             </FormControl>
@@ -146,7 +145,6 @@ const CreateFinancialGoal = () => {
               <FormLabel htmlFor="description">Description</FormLabel>
               <Input
                 placeholder="Financial Goal Description"
-                bg="white"
                 {...methods.register("description")}
               />
             </FormControl>
@@ -156,7 +154,6 @@ const CreateFinancialGoal = () => {
               <FormLabel htmlFor="targetAmount">Target Amount</FormLabel>
               <Input
                 placeholder="Target Amount"
-                bg="white"
                 {...methods.register("targetAmount")}
                 type="number"
               />
@@ -165,7 +162,6 @@ const CreateFinancialGoal = () => {
               <FormLabel htmlFor="from">Starting Date</FormLabel>
               <Input
                 placeholder="Goal Starts from"
-                bg="white"
                 {...methods.register("from")}
                 type="date"
               />
@@ -174,7 +170,6 @@ const CreateFinancialGoal = () => {
               <FormLabel htmlFor="to">End Date</FormLabel>
               <Input
                 placeholder="Goal ends on"
-                bg="white"
                 {...methods.register("to")}
                 type="date"
               />
@@ -186,7 +181,6 @@ const CreateFinancialGoal = () => {
               isMulti
               isCreatable
               options={userCategories}
-              // styles={customStyles}
               value={selectedCategory}
               onChange={handleSelectedCategory}
               placeholder="Budget is advisable to have one or multiple categories"
