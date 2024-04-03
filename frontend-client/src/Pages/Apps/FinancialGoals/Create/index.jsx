@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import CreatableSelect from "react-select/creatable";
 import { getUserToken } from "../../../../helpers/getToken";
 import { config } from "../../../../config";
+import { useState } from "react";
 
 const CreateFinancialGoal = () => {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ const CreateFinancialGoal = () => {
 
   const [userCategories, setUserCategories] = React.useState([]);
   const userToken = getUserToken();
+  const [submitting, setSubmitting] = useState(false);
 
   React.useEffect(() => {
     async function makeRequest() {
@@ -61,6 +63,7 @@ const CreateFinancialGoal = () => {
   );
 
   const onSubmit = async () => {
+    setSubmitting(true);
     const payload = {
       ...getValues(),
       category: selectedCategory,
@@ -91,10 +94,12 @@ const CreateFinancialGoal = () => {
 
       setSelectedCategory([]);
       reset();
+      setSubmitting(false);
       setTimeout(function () {
         navigate(`/financial-goals`);
       }, 1000);
     } catch (error) {
+      setSubmitting(false);
       console.log(error);
     }
   };
@@ -191,7 +196,11 @@ const CreateFinancialGoal = () => {
           <Button variant="secondary" onClick={() => navigate(-1)}>
             Back
           </Button>
-          <Button onClick={() => onSubmit()} type="submit">
+          <Button
+            onClick={() => onSubmit()}
+            type="submit"
+            isLoading={submitting}
+          >
             Submit
           </Button>
         </Flex>

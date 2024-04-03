@@ -28,6 +28,7 @@ const CreateSavingGoal = () => {
   const [userCategories, setUserCategories] = useState([]);
   const userToken = getUserToken();
   const [isLargerThan880] = useMediaQuery("(min-width: 880px)");
+  const [submitting, setSubmitting] = useState(false);
 
   const handleSelectedCategory = async (selected) => {
     setSelectedCategory(selected);
@@ -75,6 +76,7 @@ const CreateSavingGoal = () => {
   }, []);
 
   const onSubmit = async () => {
+    setSubmitting(true);
     const payload = {
       ...getValues(),
       category: selectedCategory,
@@ -99,10 +101,12 @@ const CreateSavingGoal = () => {
 
       setSelectedCategory([]);
       reset();
+      setSubmitting(false);
       setTimeout(function () {
         navigate(`/savings/view`);
       }, 1000);
     } catch (error) {
+      setSubmitting(false);
       console.log(error);
     }
   };
@@ -207,7 +211,12 @@ const CreateSavingGoal = () => {
           >
             Back
           </Button>
-          <Button mt={(2, 8)} onClick={() => onSubmit()} type="submit">
+          <Button
+            mt={(2, 8)}
+            onClick={() => onSubmit()}
+            type="submit"
+            isLoading={submitting}
+          >
             Submit
           </Button>
         </div>

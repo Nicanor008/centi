@@ -23,6 +23,7 @@ const CreateBudget = () => {
   const [userCategories, setUserCategories] = React.useState([]);
   const userToken = getUserToken();
   const [isLargerThan880] = useMediaQuery("(min-width: 880px)");
+  const [submitting, setSubmitting] = React.useState(false);
 
   React.useEffect(() => {
     async function makeRequest() {
@@ -82,6 +83,7 @@ const CreateBudget = () => {
   );
 
   const handleNext = async () => {
+    setSubmitting(true);
     const payload = {
       ...getValues(),
       category: selectedCategory,
@@ -118,15 +120,18 @@ const CreateBudget = () => {
       setSelectedCategory([]);
       setFinancialGoals([]);
       reset();
+      setSubmitting(false);
 
       // go to the next form
       setActiveStep((prevStep) => prevStep + 1);
     } catch (error) {
+      setSubmitting(false);
       console.log(error);
     }
   };
 
   const onSubmit = async () => {
+    setSubmitting(true);
     // Perform any final actions here
     const payload = {
       ...getValues(),
@@ -161,10 +166,12 @@ const CreateBudget = () => {
 
       setSelectedCategory([]);
       reset();
+      setSubmitting(false);
       setTimeout(function () {
         navigate(`/budget/items/${budget._id}`);
       }, 1000);
     } catch (error) {
+      setSubmitting(false);
       console.log(error);
     }
   };
@@ -251,11 +258,23 @@ const CreateBudget = () => {
             </Button>
           )}
           {activeStep < 1 ? (
-            <Button mt={8} onClick={() => handleNext()} type="submit">
+            <Button
+              variant="primary"
+              mt={8}
+              onClick={() => handleNext()}
+              type="submit"
+              isLoading={submitting}
+            >
               Next
             </Button>
           ) : (
-            <Button mt={(2, 8)} onClick={() => onSubmit()} type="submit">
+            <Button
+              variant="primary"
+              mt={(2, 8)}
+              onClick={() => onSubmit()}
+              type="submit"
+              isLoading={submitting}
+            >
               Submit
             </Button>
           )}
