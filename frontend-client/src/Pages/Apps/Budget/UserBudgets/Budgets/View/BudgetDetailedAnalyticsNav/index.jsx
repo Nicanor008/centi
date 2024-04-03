@@ -7,7 +7,7 @@ const BudgetDetailedAnalyticsNav = ({ data }) => {
 
   return (
     data?.length > 0 && (
-      <Flex alignItems="center" justifyContent="space-between">
+      <Flex alignItems="center" justifyContent="space-between" mt={4}>
         <Text>
           Total spent from{" "}
           <b>
@@ -23,13 +23,7 @@ const BudgetDetailedAnalyticsNav = ({ data }) => {
           </b>
         </Text>
         {isLargerThan880 && (
-          <Button
-            border="1px solid"
-            borderColor="gray.400"
-            color="gray.500"
-            fontWeight={500}
-            onClick={() => navigate("/budget/analytics")}
-          >
+          <Button variant="ghost" onClick={() => navigate("/budget/analytics")}>
             View Budget analytics
           </Button>
         )}

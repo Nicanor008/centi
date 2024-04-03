@@ -1,4 +1,13 @@
 import { extendTheme } from "@chakra-ui/react";
+import Button from "./components/button";
+import Input from "./components/input";
+import Text from "./components/textStyles";
+
+const components = {
+  Button,
+  Input,
+  Text,
+};
 
 const theme = extendTheme({
   colors: {
@@ -107,6 +116,7 @@ const theme = extendTheme({
     wider: "0.05em",
     widest: "0.1em",
   },
+  components,
 });
 
 export default theme;

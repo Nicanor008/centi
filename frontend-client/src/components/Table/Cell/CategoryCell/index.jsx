@@ -2,13 +2,13 @@ import { Tag, Td } from "@chakra-ui/react";
 
 const CategoryCell = ({ categories }) => (
   <Td
-    minW={categories?.length > 0 ? "200px" : "auto"}
+    minW={categories?.length > 0 ? "200px" : "100%"}
     h={categories?.length > 0 ? "80px" : "auto"}
     display="flex"
     flexWrap="wrap"
-    overflow="scroll"
+    // overflow="scroll"
     alignItems="center"
-    bg="inherit"
+    minHeight="72px"
   >
     {categories?.map((category, idx) => (
       <Tag

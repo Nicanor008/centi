@@ -226,22 +226,11 @@ const CreateBudget = () => {
         <Flex mr={[0, 8]}>
           {/* TODO: this should be a modal/dialog */}
           {isLargerThan880 && (
-            <Button
-              border="1px solid"
-              borderColor="gray.400"
-              onClick={() => navigate("/financial-goals/add")}
-              mr={2}
-              color="gray.700"
-              fontWeight={400}
-            >
+            <Button onClick={() => navigate("/financial-goals/add")} mr={2}>
               Create Financial Goal
             </Button>
           )}
-          <Button
-            bg="red.400"
-            color="white"
-            onClick={() => navigate("/budget/view")}
-          >
+          <Button variant="secondary" onClick={() => navigate("/budget/view")}>
             Cancel
           </Button>
         </Flex>
@@ -253,46 +242,20 @@ const CreateBudget = () => {
         <div>
           {activeStep > 0 && (
             <Button
-              fontFamily={"heading"}
+              variant="secondary"
               mt={8}
-              bg="gray.400"
-              color={"white"}
               onClick={() => navigate(-1)}
-              _hover={{
-                bg: "gray.400",
-                boxShadow: "xl",
-              }}
               mr={4}
             >
               Back
             </Button>
           )}
           {activeStep < 1 ? (
-            <Button
-              mt={8}
-              bgGradient="linear(to-r, red.400,pink.400)"
-              color={"white"}
-              onClick={() => handleNext()}
-              type="submit"
-              _hover={{
-                bgGradient: "linear(to-r, red.400,pink.400)",
-                boxShadow: "xl",
-              }}
-            >
+            <Button mt={8} onClick={() => handleNext()} type="submit">
               Next
             </Button>
           ) : (
-            <Button
-              mt={(2, 8)}
-              bgGradient="linear(to-r, red.400,pink.400)"
-              color={"white"}
-              onClick={() => onSubmit()}
-              type="submit"
-              _hover={{
-                bgGradient: "linear(to-r, red.400,pink.400)",
-                boxShadow: "xl",
-              }}
-            >
+            <Button mt={(2, 8)} onClick={() => onSubmit()} type="submit">
               Submit
             </Button>
           )}

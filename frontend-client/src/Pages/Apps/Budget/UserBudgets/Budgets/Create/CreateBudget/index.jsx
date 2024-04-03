@@ -77,7 +77,6 @@ const CreateBudgetForm = ({
               isMulti
               isCreatable
               options={userCategories}
-              // styles={customStyles}
               value={selectedCategory}
               onChange={handleSelectedCategory}
             />

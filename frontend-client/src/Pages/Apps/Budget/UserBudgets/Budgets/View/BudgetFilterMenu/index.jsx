@@ -39,6 +39,7 @@ const BudgetFilterMenu = ({
   return (
     <Menu closeOnSelect={true}>
       <MenuButton
+        variant="ghost"
         as={IconButton}
         aria-label="filter"
         icon={

@@ -10,7 +10,7 @@ import {
   FormControl,
   FormLabel,
 } from "@chakra-ui/react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CreatableSelect from "react-select/creatable";
 import { getUserToken } from "../../../../helpers/getToken";
 import { config } from "../../../../config";
@@ -122,8 +122,7 @@ const CreateFinancialGoal = () => {
 
         <Flex mr={[0, 8]}>
           <Button
-            bg="red.400"
-            color="white"
+            variant="secondary"
             onClick={() => navigate("/financial-goals")}
           >
             Cancel
@@ -195,27 +194,10 @@ const CreateFinancialGoal = () => {
           </FormControl>
         </VStack>
         <Flex gap={2}>
-          <Button
-            bg="gray.400"
-            color={"white"}
-            onClick={() => navigate(-1)}
-            _hover={{
-              bg: "gray.400",
-              boxShadow: "xl",
-            }}
-          >
+          <Button variant="secondary" onClick={() => navigate(-1)}>
             Back
           </Button>
-          <Button
-            bgGradient="linear(to-r, red.400,pink.400)"
-            color={"white"}
-            onClick={() => onSubmit()}
-            type="submit"
-            _hover={{
-              bgGradient: "linear(to-r, red.400,pink.400)",
-              boxShadow: "xl",
-            }}
-          >
+          <Button onClick={() => onSubmit()} type="submit">
             Submit
           </Button>
         </Flex>

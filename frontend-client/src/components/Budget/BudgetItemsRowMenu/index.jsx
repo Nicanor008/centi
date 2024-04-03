@@ -16,6 +16,7 @@ const BudgetItemsRowMenu = () => (
         aria-label="Options"
         icon={<FaEllipsisV />}
         onClick={() => handleEllipsisClick(item)}
+        variant="none"
       />
       <MenuList>
         <MenuItem icon={<FaEdit />} onClick={() => setSelectedItem(null)}>

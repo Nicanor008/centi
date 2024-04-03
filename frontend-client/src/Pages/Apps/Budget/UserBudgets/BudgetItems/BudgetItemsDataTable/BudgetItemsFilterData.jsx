@@ -35,6 +35,7 @@ const BudgetItemsFilterData = ({
       <MenuButton
         as={IconButton}
         aria-label="filter"
+        variant="ghost"
         icon={
           budgetItems?.filtered ? (
             <MdClose onClick={() => setManualRefresh(true)} />

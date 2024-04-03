@@ -62,17 +62,7 @@ function BudgetDashboard() {
             Summary of your budget expenses and other related activity
           </Text>
         </Flex>
-        <Button
-          w="fit-content"
-          bg="red.400"
-          color="white"
-          onClick={() => navigate("/budget/add/1")}
-          _hover={{
-            bg: "red.400",
-          }}
-        >
-          Add Budget
-        </Button>
+        <Button onClick={() => navigate("/budget/add/1")}>Add Budget</Button>
       </Flex>
 
       <Divider borderColor="gray.300" />
@@ -174,26 +164,8 @@ function BudgetDashboard() {
                 </Flex>
               ))}
               <Flex justifyContent="space-between" mt={4}>
-                <Button
-                  w="fit-content"
-                  bg="none"
-                  border="1px solid"
-                  borderColor="blue.400"
-                  _hover={{
-                    bg: "none",
-                  }}
-                >
-                  View all Expenses
-                </Button>
-                <Button
-                  w="fit-content"
-                  bg="red.400"
-                  color="white"
-                  onClick={() => navigate("/budget/add/1")}
-                  _hover={{
-                    bg: "red.400",
-                  }}
-                >
+                <Button variant="secondary">View all Expenses</Button>
+                <Button onClick={() => navigate("/budget/add/1")}>
                   Add Expense
                 </Button>
               </Flex>
@@ -238,26 +210,12 @@ function BudgetDashboard() {
               ))}
               <Flex justifyContent="space-between" mt={4}>
                 <Button
-                  w="fit-content"
-                  bg="none"
-                  border="1px solid"
-                  borderColor="blue.400"
-                  _hover={{
-                    bg: "none",
-                  }}
+                  variant="secondary"
                   onClick={() => navigate("/financial-goals")}
                 >
                   View all Financial Goals
                 </Button>
-                <Button
-                  w="fit-content"
-                  bg="red.400"
-                  color="white"
-                  onClick={() => navigate("/financial-goals/add")}
-                  _hover={{
-                    bg: "red.400",
-                  }}
-                >
+                <Button onClick={() => navigate("/financial-goals/add")}>
                   Add Financial Goals
                 </Button>
               </Flex>

@@ -161,11 +161,7 @@ function ViewUserBudgetItems() {
           ) : (
             <></>
           )}
-          <Button
-            border="1px solid"
-            borderColor="gray.400"
-            onClick={() => navigate("/budget/view")}
-          >
+          <Button variant="ghost" onClick={() => navigate("/budget/view")}>
             {!isLargerThan880 ? <FaEye /> : "View All Budgets"}
           </Button>
           <Button

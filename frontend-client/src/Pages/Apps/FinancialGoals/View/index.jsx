@@ -182,8 +182,7 @@ function ViewUserFinancialGoals() {
               />
             ))}
           <Button
-            bg={!isLargerThan880 ? "none" : "red.400"}
-            color={!isLargerThan880 ? "inherit" : "white"}
+            variant={!isLargerThan880 ? "ghost" : "primary"}
             onClick={() => navigate("/financial-goals/add")}
             px={!isLargerThan880 ? 0 : 4}
           >

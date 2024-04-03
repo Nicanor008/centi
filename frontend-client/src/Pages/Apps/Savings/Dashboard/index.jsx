@@ -34,17 +34,7 @@ function SavingsDashboard() {
             Summary of your budget expenses and other related activity
           </Text>
         </Flex>
-        <Button
-          w="fit-content"
-          bg="red.400"
-          color="white"
-          onClick={() => navigate("/savings/add")}
-          _hover={{
-            bg: "red.400",
-          }}
-        >
-          Add Savings
-        </Button>
+        <Button onClick={() => navigate("/savings/add")}>Add Savings</Button>
       </Flex>
 
       <Divider borderColor="gray.300" />

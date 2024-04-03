@@ -102,8 +102,7 @@ function ViewUserBudgets() {
               />
             ))}
           <Button
-            bg={!isLargerThan880 ? "none" : "red.400"}
-            color={!isLargerThan880 ? "inherit" : "white"}
+            variant={!isLargerThan880 ? "ghost" : "primary"}
             onClick={() => navigate("/budget/add/1")}
             px={!isLargerThan880 ? 0 : 4}
           >
