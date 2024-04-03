@@ -1,26 +1,35 @@
 import { Button, Divider, Flex, Text } from "@chakra-ui/react";
+import axios from "axios";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { DataLoader } from "../../../../components";
+import QuickBudgetAnalyticsNav from "../../../../components/Analytics/QuickBudgetAnalyticsNav";
+import { config } from "../../../../config";
+import { getUserToken } from "../../../../helpers/getToken";
+import SavingsProgressChart from "./SavingsProgressChart";
 
 function SavingsDashboard() {
   const navigate = useNavigate();
-  // const [analytics, setAnalytics] = useState();
-  // const userToken = getUserToken();
+  const [analytics, setAnalytics] = useState();
+  const [loading, setLoading] = useState(true);
+  const userToken = getUserToken();
 
-  // useEffect(() => {
-  //   async function makeRequest() {
-  //     try {
-  //       const response = await axios.get(
-  //         `${config.API_URL}/budget/analytics/analytics`,
-  //         { headers: { Authorization: `Bearer ${userToken}` } }
-  //       );
-  //       setAnalytics(response.data.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
+  useEffect(() => {
+    async function makeRequest() {
+      try {
+        const response = await axios.get(`${config.API_URL}/savings`, {
+          headers: { Authorization: `Bearer ${userToken}` },
+        });
+        setAnalytics(response.data.data);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.log(error);
+      }
+    }
 
-  //   makeRequest();
-  // }, []);
+    makeRequest();
+  }, []);
 
   return (
     <Flex flexDir="column">
@@ -39,8 +48,32 @@ function SavingsDashboard() {
 
       <Divider borderColor="gray.300" />
 
-      {/* body */}
-      <Flex flexDir="column" my={(2, 8)}></Flex>
+      {loading ? (
+        <DataLoader />
+      ) : (
+        <>
+          {/* body */}
+          <Flex flexDir="column" my={(2, 8)}>
+            <Flex justifyContent="left" flexWrap="wrap" gap={4} mb={(2, 8)}>
+              <QuickBudgetAnalyticsNav
+                title="Total Savings"
+                amount={analytics?.data.reduce(
+                  (acc, curr) => acc + curr.currentAmount,
+                  0
+                )}
+              />
+              <QuickBudgetAnalyticsNav
+                title="No. of Savings"
+                amount={analytics?.data?.length}
+              />
+            </Flex>
+
+            <SavingsProgressChart analytics={analytics.data} />
+          </Flex>
+
+          {analytics?.total < 1 ? <DataNotFound /> : <></>}
+        </>
+      )}
     </Flex>
   );
 }
