@@ -197,7 +197,7 @@ const AuthLayout = () => {
   }, []);
 
   return (
-    <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")} w="100vw">
+    <Box minH="100vh" bg="gray.50" w="100vw">
       <SidebarContent
         onClose={() => onClose}
         display={{ base: "none", md: "block" }}

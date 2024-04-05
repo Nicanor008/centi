@@ -33,13 +33,13 @@ export default function Navbar() {
   };
 
   return (
-    <Box w="100%">
+    <Box w="100vw">
       <Flex
         bg="white"
         color={useColorModeValue("gray.600", "white")}
         minH={"60px"}
         py={{ base: 2 }}
-        px={{ base: 4 }}
+        px={[4, 24]}
         borderBottom={1}
         borderStyle={"solid"}
         borderColor={useColorModeValue("gray.200", "gray.900")}
@@ -83,6 +83,7 @@ export default function Navbar() {
               bg: "pink.300",
             }}
             onClick={logoutHandler}
+            ml={4}
           >
             Logout
           </Button>

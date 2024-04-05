@@ -23,7 +23,6 @@ function CentiDashboard() {
 
     makeRequest();
   }, []);
-  console.log(".........Dashboard analytics.......", analytics);
 
   return (
     <Flex flexDir="column">
@@ -37,8 +36,6 @@ function CentiDashboard() {
             Summary of your your financials
           </Text>
         </Flex>
-        {/* TODO: Add filters here */}
-        {/* <Text>Filters go here</Text> */}
       </Flex>
 
       <Divider borderColor="gray.300" />

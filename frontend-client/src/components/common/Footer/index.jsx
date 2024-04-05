@@ -65,7 +65,7 @@ const SocialButton = ({ children, label, href }) => {
 export default function Footer() {
   return (
     <Box bg="red.50" mt="80px" w="100vw">
-      <Flex flexDir="column" gap={2} alignItems="center" my={4}>
+      <Flex flexDir="column" gap={2} alignItems="center" mt={[1, 4]}>
         <Box>
           <Heading as="h4" fontFamily="inherit">
             Centi
