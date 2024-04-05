@@ -2,19 +2,22 @@ import {
   Container,
   Stack,
   Flex,
-  Box,
   Heading,
   Text,
   Button,
   Image,
   Icon,
-  IconButton,
   createIcon,
-  useColorModeValue,
   Link,
+  useMediaQuery,
 } from "@chakra-ui/react";
+import { getUserToken } from "../../../helpers/getToken";
+import HeroImage from "../../../assets/wallet-money.png";
 
 export default function Hero() {
+  const user = getUserToken();
+  const [isLargerThan880] = useMediaQuery("(min-width: 880px)");
+
   return (
     <Container maxW={"7xl"}>
       <Stack
@@ -27,7 +30,7 @@ export default function Hero() {
           <Heading
             lineHeight={1.1}
             fontWeight={600}
-            fontSize={{ base: "3xl", sm: "4xl", lg: "6xl" }}
+            fontSize={{ base: "2xl", sm: "3xl", lg: "5xl" }}
             fontFamily="inherit"
           >
             <Text
@@ -45,94 +48,50 @@ export default function Hero() {
                 zIndex: -1,
               }}
             >
-              One Financial tool,
+              Budget, Save & Track Goals,
             </Text>
             <br />
             <Text as={"span"} color={"red.400"}>
-              use everywhere!
+              in One Platform
             </Text>
           </Heading>
-          <Text color={"gray.500"}>
-            Simple customisable easy to use Budget Tracker tool for all your
-            conveniences and daily budget activities. With multiple support on
-            different environments, you get all the freedom at your fingerprints
+          <Text color={"gray.700"}>
+            Empower your financial journey with our comprehensive budgeting and
+            savings tools. Take control of your finances, plan for the future,
+            and achieve your financial goals with ease.
           </Text>
           <Stack
             spacing={{ base: 4, sm: 6 }}
             direction={{ base: "column", sm: "row" }}
           >
-            <Link href="/login">
-              <Button
-                rounded={"full"}
-                size={"lg"}
-                fontWeight={"normal"}
-                px={6}
-                colorScheme={"red"}
-                bg={"red.400"}
-                _hover={{ bg: "red.500" }}
-              >
-                Get started
-              </Button>
+            <Link href={user ? "/dashboard" : "/login"}>
+              <Button px={6}>{user ? "Go to Dashboard" : "Get started"}</Button>
             </Link>
             <Button
-              rounded={"full"}
-              size={"lg"}
-              fontWeight={"normal"}
               px={6}
-              leftIcon={<PlayIcon h={4} w={4} color={"gray.300"} />}
+              leftIcon={<PlayIcon h={4} w={4} color={"gray.500"} />}
+              variant="secondary"
             >
               How It Works
             </Button>
           </Stack>
         </Stack>
-        <Flex
-          flex={1}
-          justify={"center"}
-          align={"center"}
-          position={"relative"}
-          w={"full"}
-        >
-          <Blob
-            w={"150%"}
-            h={"150%"}
-            position={"absolute"}
-            top={"-20%"}
-            left={0}
-            zIndex={-1}
-            color={useColorModeValue("red.50", "red.400")}
-          />
-          <Box
+        {isLargerThan880 && (
+          <Flex
+            flex={1}
+            justify={"center"}
+            align={"center"}
             position={"relative"}
-            height={"300px"}
-            rounded={"2xl"}
-            boxShadow={"2xl"}
-            width={"full"}
-            overflow={"hidden"}
+            w={"full"}
           >
-            <IconButton
-              aria-label={"Play Button"}
-              variant={"ghost"}
-              _hover={{ bg: "transparent" }}
-              icon={<PlayIcon w={12} h={12} />}
-              size={"lg"}
-              color={"white"}
-              position={"absolute"}
-              left={"50%"}
-              top={"50%"}
-              transform={"translateX(-50%) translateY(-50%)"}
-            />
             <Image
               alt={"Hero Image"}
               fit={"cover"}
               align={"center"}
-              w={"100%"}
-              h={"100%"}
-              src={
-                "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=800&q=80"
-              }
+              src={HeroImage}
             />
-          </Box>
-        </Flex>
+          </Flex>
+        )}
       </Stack>
     </Container>
   );

@@ -6,12 +6,18 @@ import Navbar from "../nav";
 function Layout() {
   return (
     <Flex minW="100vw" minH="100vh" overflow="hidden" bg="white">
-      <Flex w={["100vw", "96vw"]} flexDir="column" my={[0, 4]} mx={[0, 8]}>
+      <Flex
+        w={["100vw", "96vw"]}
+        flexDir="column"
+        my={[0, 4]}
+        marginInlineEnd={0}
+        marginInlineStart={0}
+      >
         {/* nav */}
         <Navbar />
 
         {/* main/children */}
-        <Flex minH="80vh" pt={[2, 8]} flexDir="column">
+        <Flex minH="80vh" pt={[2, 8]} flexDir="column" w="100vw">
           <Outlet />
         </Flex>
 
