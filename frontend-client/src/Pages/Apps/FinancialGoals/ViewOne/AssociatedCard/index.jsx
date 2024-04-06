@@ -11,15 +11,11 @@ const AssociatedFinancialCard = ({ title, children }) => (
     borderRadius={8}
     w={["98%", "48%"]}
   >
-    <Text
-      py={2}
-      bg="gray.50"
-      borderRadius={4}
-      fontWeight={800}
-      textAlign="center"
-    >
-      {title}
-    </Text>
+    <Flex bg="gray.50" px={[1, 2]} py={2}>
+      <Text py={2} borderRadius={4} fontWeight={800} w="100%">
+        {title}
+      </Text>
+    </Flex>
     {children}
   </Flex>
 );
