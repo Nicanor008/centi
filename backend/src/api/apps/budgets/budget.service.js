@@ -24,24 +24,33 @@ class BudgetService extends Service {
           as: "budgetItems"
         }
       },
-      {
-        $lookup: {
-          from: "financialGoals",
-          localField: "_id",
-          foreignField: "financialGoal",
-          as: "financialGoal"
-        }
-      },
+      // {
+      //   $lookup: {
+      //     from: "financialGoal",
+      //     localField: "_id",
+      //     foreignField: "financialGoal",
+      //     as: "financialGoal"
+      //   }
+      // },
+      // {
+      //   $lookup: {
+      //     from: "users",
+      //     localField: "_id",
+      //     foreignField: "userId",
+      //     as: "users"
+      //   }
+      // },
       {
         $addFields: {
           budgetItemsCount: { $size: "$budgetItems" }
         }
       },
-      {
-        $project: {
-          budgetItems: 0
-        }
-      },
+      // {
+      //   $project: {
+      //     budgetItems: "$budgetItems",
+      //     financialGoals: "$financialGoals"
+      //   }
+      // },
       {
         $sort: { createdAt: sortBy ?? -1 }
       }

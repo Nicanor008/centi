@@ -208,7 +208,11 @@ function ViewUserFinancialGoals() {
               </Thead>
               <Tbody>
                 {financialGoals?.data?.map((goal, idx) => (
-                  <Tr cursor="pointer" key={goal._id + idx}>
+                  <Tr
+                    cursor="pointer"
+                    key={goal._id + idx}
+                    onClick={() => navigate(`/financial-goals/${goal._id}`)}
+                  >
                     <Td>{goal.name}</Td>
                     <Td>KES {formatNumberGroups(goal.targetAmount)}</Td>
                     <Td>{goal.description}</Td>

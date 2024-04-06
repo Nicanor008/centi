@@ -200,4 +200,11 @@ router.get("/:id", AuthService.required, financialGoalsController.findOneById);
  */
 router.delete("/:id", AuthService.required, financialGoalsController.remove);
 
+// group all budget, savings per the financial goal
+router.get(
+  "/group/all",
+  AuthService.required,
+  financialGoalsController.groupedFinancialGoals
+);
+
 export default router;

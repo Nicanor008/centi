@@ -42,6 +42,17 @@ class FinancialGoalsController extends Controller {
       next(e);
     }
   }
+
+  async groupedFinancialGoals(req, res, next) {
+    try {
+      const result = await financialGoalsService.groupedFinancialGoals({
+        user: req.user
+      });
+      return Response.success(res, result);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 export default new FinancialGoalsController(

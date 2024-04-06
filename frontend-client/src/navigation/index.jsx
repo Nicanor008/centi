@@ -22,6 +22,7 @@ import {
   ViewAllSavings,
   CreateSavingGoal,
   CentiDashboard,
+  ViewOneUserFinancialGoals,
 } from "../Pages";
 
 export const routes = createRoutesFromElements(
@@ -47,6 +48,7 @@ export const routes = createRoutesFromElements(
         <Route path="financial-goals">
           <Route path="" element={<ViewUserFinancialGoals />} />
           <Route path="add" element={<CreateFinancialGoal />} />
+          <Route path=":id" element={<ViewOneUserFinancialGoals />} />
         </Route>
         <Route path="budget">
           <Route path="analytics" element={<BudgetDashboard />} />
