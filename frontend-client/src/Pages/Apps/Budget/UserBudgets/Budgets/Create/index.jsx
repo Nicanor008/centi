@@ -223,10 +223,10 @@ const CreateBudget = () => {
       >
         <Flex flexDir="column">
           <Text fontWeight={600} fontSize={16}>
-            Create Budget
+            Create {activeStep === 0 ? "Budget" : "Expense"}
           </Text>
           <Text color="gray.500" fontSize={12} fontWeight={400}>
-            Create and add items to your budget for easy tracking
+            Create and add expenses to your budget for easy tracking
           </Text>
         </Flex>
 

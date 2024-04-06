@@ -7,6 +7,7 @@ import {
   Tbody,
   Td,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import { ColumnHeaderCellWithSort } from "../../../../../../components";
 import BudgetItemsRowMenu from "../../../../../../components/Budget/BudgetItemsRowMenu";
 import CategoryCell from "../../../../../../components/Table/Cell/CategoryCell";
@@ -19,6 +20,11 @@ const BudgetItemsDataTable = ({
   setSortOrder,
   setSortBy,
 }) => {
+  const [selectedItem, setSelectedItem] = useState();
+  const handleEllipsisClick = (item) => {
+    setSelectedItem(item === selectedItem ? null : item);
+  };
+
   const handleSort = (column) => {
     if (sortBy === column) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
@@ -68,7 +74,7 @@ const BudgetItemsDataTable = ({
               handleSort={handleSort}
             />
             <ColumnHeaderCellWithSort
-              name="Planned Income"
+              name="Income"
               column="actualExpenses"
               sortBy={sortBy}
               sortOrder={sortOrder}
@@ -98,7 +104,10 @@ const BudgetItemsDataTable = ({
                 <Td>{item?.isActive ? "Yes" : "No"}</Td>
                 <Td>{item?.isRecurring ? "Yes" : "No"}</Td>
                 <Td>{new Date(item?.createdAt).toDateString()}</Td>
-                <BudgetItemsRowMenu />
+                <BudgetItemsRowMenu
+                  handleEllipsisClick={handleEllipsisClick}
+                  selectedItem={selectedItem}
+                />
               </Tr>
             ))}
         </Tbody>

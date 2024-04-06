@@ -21,18 +21,16 @@ function ViewOneUserFinancialGoals() {
   const userToken = getUserToken();
 
   useEffect(() => {
-    let payload = {
-      method: "get",
-      url: `${config.API_URL}/financial-goals/group/all/`,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userToken}`,
-      },
-    };
-
     async function makeRequest() {
       try {
-        const response = await axios.request(payload);
+        const response = await axios.get(
+          `${config.API_URL}/financial-goals/group/all/`,
+          {
+            headers: {
+              Authorization: `Bearer ${userToken}`,
+            },
+          }
+        );
         setFinancialGoal(response.data.data);
       } catch (error) {
         setFinancialGoal([]);
