@@ -211,7 +211,9 @@ function ViewUserFinancialGoals() {
                   <Tr
                     cursor="pointer"
                     key={goal._id + idx}
-                    onClick={() => navigate(`/financial-goals/${goal._id}`)}
+                    onClick={() =>
+                      navigate(`/financial-goals/${goal._id}`, { state: goal })
+                    }
                   >
                     <Td>{goal.name}</Td>
                     <Td>KES {formatNumberGroups(goal.targetAmount)}</Td>

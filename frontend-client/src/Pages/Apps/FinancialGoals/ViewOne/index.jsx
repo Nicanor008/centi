@@ -1,15 +1,26 @@
-import { Flex, Text, useMediaQuery, Link, Button } from "@chakra-ui/react";
+import {
+  Flex,
+  Text,
+  useMediaQuery,
+  Link,
+  Button,
+  Divider,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import DataNotFound from "../../../../components/ErrorPages/DataNotFound";
 import { getUserToken } from "../../../../helpers/getToken";
 import { config } from "../../../../config";
 import { DataLoader } from "../../../../components";
 import QuickBudgetAnalyticsNav from "../../../../components/Analytics/QuickBudgetAnalyticsNav";
+import AssociatedFinancialCard from "./AssociatedCard";
+import { MdArrowBack } from "react-icons/md";
 
 function ViewOneUserFinancialGoals() {
   const params = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
   const [financialGoal, setFinancialGoal] = useState({
     filtered: false,
     loading: true,
@@ -55,28 +66,26 @@ function ViewOneUserFinancialGoals() {
         mb={[1, 4]}
       >
         <Flex alignItems="center" gap={2}>
-          {/* {cachedGoals?.total > 0 ? (
-            <Text
-              bg="gray.300"
-              p="2px 8px"
-              borderRadius="full"
-              fontWeight="bold"
-            >
-              {cachedGoals?.total}
-            </Text>
-          ) : (
-            <Box />
-          )} */}
+          <MdArrowBack onClick={() => navigate(-1)} cursor="pointer" />
           <Flex flexDir="column">
             <Text fontWeight={600} fontSize={16}>
-              Financial goals
+              {location?.state?.name}
             </Text>
             {isLargerThan880 && (
               <Text color="gray.500" fontSize={12} fontWeight={400}>
-                Live a happinness guaranteed life with the right goals
+                {location?.state?.description ??
+                  "Live a happinness guaranteed life with the right goals"}
               </Text>
             )}
           </Flex>
+        </Flex>
+        <Flex flexDir="column" mr={[1, 10]}>
+          <Text fontWeight={600} fontSize={16}>
+            Dateline
+          </Text>
+          <Text color="gray.500" fontSize={12} fontWeight={400}>
+            {location?.state?.to}
+          </Text>
         </Flex>
       </Flex>
 
@@ -97,6 +106,27 @@ function ViewOneUserFinancialGoals() {
                   amount={totalBudgetExpensesCount}
                   hasCurrency={false}
                 />
+              </Flex>
+              <Flex my={(3, 10)} flexDir={["column", "row"]} gap={4}>
+                {/* {analytics?.budget?.length > 0 && ( */}
+                <AssociatedFinancialCard title="Associated Budget">
+                  {financialGoal.budget?.data[params.id]
+                    ?.slice(-30)
+                    ?.map((budget) => (
+                      <Flex key={budget._id} flexDir="column">
+                        <Flex justifyContent="space-between" py={2}>
+                          <Text>
+                            {budget.name.length > 40
+                              ? budget.name.substring(0, 40) + "..."
+                              : budget.name}
+                          </Text>
+                          <Text ml={(2, 6)}>Total expenses amount</Text>
+                        </Flex>
+                        <Divider borderColor="gray.200" />
+                      </Flex>
+                    ))}
+                </AssociatedFinancialCard>
+                <AssociatedFinancialCard title="Associated Savings"></AssociatedFinancialCard>
               </Flex>
             </>
           )}
