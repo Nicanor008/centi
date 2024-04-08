@@ -24,6 +24,17 @@ class BudgetItemsController extends Controller {
     }
   }
 
+  // update budget item
+  async updateBudget(req, res, next) {
+    try {
+      const data = { ...req.body, userId: req.user?._id };
+      const result = await BudgetItemsService.updateBudget(req.params.id, data);
+      return Response.success(res, result, httpStatus.SUCCESS);
+    } catch (exception) {
+      next(exception);
+    }
+  }
+
   // Get all budget items for one budget
   async getBudgetItemsForOneBudget(req, res, next) {
     try {

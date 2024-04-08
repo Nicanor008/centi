@@ -65,6 +65,13 @@ router.post(
   budgetItemsController.createBudgetItems
 );
 
+router.patch(
+  "/:id",
+  AuthService.required,
+  celebrate({ body: updateValidationSchema }),
+  budgetItemsController.updateBudget
+);
+
 /**
  * @swagger
  *

@@ -11,70 +11,81 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
-import React from "react";
+import axios from "axios";
 import { useForm } from "react-hook-form";
+import { config } from "../../../../../../config";
+import { getUserToken } from "../../../../../../helpers/getToken";
 
-function UpdateExpense({ selectedItem, isOpen, onOpen, onClose }) {
-  const initialRef = React.useRef(null);
-  const finalRef = React.useRef(null);
+function UpdateExpense({ selectedItem, isOpen, onClose, setManualRefresh }) {
   const methods = useForm({
     defaultValues: {
-      actualExpenses: selectedItem.actualExpenses,
+      name: selectedItem?.name ?? "",
+      actualExpenses: selectedItem?.actualExpenses ?? "",
     },
   });
+  const userToken = getUserToken();
 
-  const onSubmit = () => {
-    console.log(".......");
+  const onSubmit = async () => {
+    setManualRefresh(true);
+    const payload = {
+      ...methods.getValues(),
+      actualExpenses: Number(methods.getValues()?.actualExpenses),
+    };
+
+    try {
+      await axios.patch(
+        `${config.API_URL}/budget-items/${selectedItem._id}`,
+        payload,
+        {
+          headers: { Authorization: `Bearer ${userToken}` },
+        }
+      );
+      setManualRefresh(false);
+      onClose();
+    } catch (error) {
+      setManualRefresh(false);
+      console.log(error);
+    }
   };
 
   return (
-    <>
-      <Button onClick={onOpen}>Open Modal</Button>
-      <Button ml={4} ref={finalRef}>
-        I'll receive focus on close
-      </Button>
+    <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      <ModalOverlay />
+      <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <ModalContent>
+          <ModalHeader>Update Expense</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <FormControl mt={4}>
+              <FormLabel>Expense name</FormLabel>
+              <Input {...methods.register("name")} disabled />
+            </FormControl>
+            <FormControl>
+              <FormLabel>Expense</FormLabel>
+              <Input
+                {...methods.register("actualExpenses")}
+                type="number"
+                autoFocus
+              />
+            </FormControl>
+          </ModalBody>
 
-      <Modal
-        initialFocusRef={initialRef}
-        finalFocusRef={finalRef}
-        isOpen={isOpen}
-        onClose={onClose}
-      >
-        <ModalOverlay />
-        <form onSubmit={methods.handleSubmit(onSubmit)}>
-          <ModalContent>
-            <ModalHeader>Update Expense</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody pb={6}>
-              <FormControl mt={4}>
-                <FormLabel>Expense name</FormLabel>
-                <Input
-                  placeholder="Last name"
-                  {...methods.register("name")}
-                  disabled
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Expense</FormLabel>
-                <Input
-                  ref={initialRef}
-                  placeholder="First name"
-                  {...methods.register("actualExpenses")}
-                  type="number"
-                />
-              </FormControl>
-            </ModalBody>
-
-            <ModalFooter>
-              <Button colorScheme="blue" mr={3}>
-                Save
-              </Button>
-              <Button onClick={onClose}>Cancel</Button>
-            </ModalFooter>
-          </ModalContent>
-        </form>
-      </Modal>
-    </>
+          <ModalFooter>
+            <Button
+              colorScheme="blue"
+              mr={3}
+              isLoading={methods.formState.isSubmitting}
+              type="submit"
+            >
+              Save
+            </Button>
+            <Button onClick={onClose} variant="secondary">
+              Cancel
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </form>
+    </Modal>
   );
 }
 

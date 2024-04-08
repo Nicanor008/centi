@@ -1,4 +1,10 @@
-import { Button, Flex, Input, useMediaQuery } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Input,
+  useDisclosure,
+  useMediaQuery,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -10,6 +16,7 @@ import BudgetItemsDataTable from "./BudgetItemsDataTable";
 import DataNotFoundWithChildren from "./DataNotFoundWithChildren";
 import BudgetItemsFilterData from "./BudgetItemsDataTable/BudgetItemsFilterData";
 import DetailedAnalyticsNav from "../../../../../components/Analytics/DetailedAnalyticsNav";
+import { ConfirmDeleteModal } from "../../../../../components";
 
 function ViewUserBudgetItems() {
   const navigate = useNavigate();
@@ -17,17 +24,17 @@ function ViewUserBudgetItems() {
   const [budgetItems, setBudgetItems] = useState({ filtered: false });
   const { budgetId } = useParams();
   const [manualRefresh, setManualRefresh] = useState(false);
+  const {
+    isOpen: isOpenDeletePrompt,
+    onOpen: openDeletePrompt,
+    onClose: onCloseDeletePrompt,
+  } = useDisclosure();
 
   const [searchText, setSearchText] = useState("");
 
   const [sortBy, setSortBy] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
   const [isLargerThan880] = useMediaQuery("(min-width: 880px)");
-
-  // const handleEllipsisClick = (item) => {
-  //   setSelectedItem(item === selectedItem ? null : item);
-  // };
-
   const userToken = getUserToken();
 
   //   STEP 1: GET Budget
@@ -75,30 +82,27 @@ function ViewUserBudgetItems() {
     }
 
     makeRequest();
-  }, []);
+  }, [manualRefresh]);
+  const [deleteItem, setDeleteItem] = useState();
 
-  const deleteBudget = async (data) => {
+  // handle to select the item to be delete and open delete prompt
+  const deleteModalItem = (item) => {
+    setDeleteItem(item);
+    openDeletePrompt();
+  };
+
+  const deleteBudget = async () => {
     try {
-      await axios.delete(`${config.API_URL}/budget/${data?._id}`, {
+      await axios.delete(`${config.API_URL}/budget/${deleteItem?._id}`, {
         headers: { Authorization: `Bearer ${userToken}` },
       });
+      onCloseDeletePrompt();
       navigate("/budget/view");
     } catch (error) {
       console.log("Error: ", error);
     }
   };
 
-  // const deleteBudgetItem = async (data) => {
-  //   try {
-  //     await axios.delete(`${config.API_URL}/budget-items/${data?._id}`, {
-  //       headers: { Authorization: `Bearer ${userToken}` },
-  //     });
-  //     setDataUpdated(!dataUpdated);
-  //     setSelectedItem(null);
-  //   } catch (error) {
-  //     console.log("Error: ", error);
-  //   }
-  // };
   const handleSearchChange = (text) => {
     setSearchText(text);
     if (text.trim() !== "") {
@@ -177,7 +181,7 @@ function ViewUserBudgetItems() {
             _hover={{
               bg: "red.400",
             }}
-            onClick={() => deleteBudget(budget)}
+            onClick={() => deleteModalItem(budget)}
           >
             x
           </Button>
@@ -203,6 +207,7 @@ function ViewUserBudgetItems() {
         sortOrder={sortOrder}
         setSortOrder={setSortOrder}
         setSortBy={setSortBy}
+        setManualRefresh={setManualRefresh}
       />
 
       {/* not found */}
@@ -210,8 +215,17 @@ function ViewUserBudgetItems() {
         budget={budget}
         budgetItems={budgetItems}
         budgetId={budgetId}
-        deleteBudget={deleteBudget}
+        deleteBudget={deleteModalItem}
       />
+
+      {/* delete budget modal */}
+      {isOpenDeletePrompt && (
+        <ConfirmDeleteModal
+          isOpen={isOpenDeletePrompt}
+          onClose={onCloseDeletePrompt}
+          deleteHandler={deleteBudget}
+        />
+      )}
     </Flex>
   );
 }

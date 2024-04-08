@@ -20,6 +20,16 @@ class BudgetController extends Controller {
     }
   }
 
+  async updateBudget(req, res, next) {
+    try {
+      const data = { ...req.body, userId: req.user?._id };
+      const result = await budgetService.updateBudget(req.params.id, data);
+      return handleResponse.success(res, result, httpStatus.ACCEPTED);
+    } catch (exception) {
+      next(exception);
+    }
+  }
+
   // View all budgets
   async viewAllBudgets(req, res, next) {
     try {

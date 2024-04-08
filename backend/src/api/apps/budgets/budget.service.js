@@ -11,6 +11,10 @@ class BudgetService extends Service {
     return await Budget.create(data);
   }
 
+  async updateBudget(id, data) {
+    return await Budget.findOneAndUpdate({ _id: id }, data);
+  }
+
   async viewAllBudgets({ user, sortBy }) {
     const response = await Budget.aggregate([
       {

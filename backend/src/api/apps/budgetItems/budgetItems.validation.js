@@ -7,7 +7,9 @@ export const customPaginateValidateSchema = paginateValidationSchema.keys();
 
 export const createValidationSchema = Joi.object({
   name: Joi.string().required(),
-  description: Joi.string().optional(),
+  description: Joi.string()
+    .optional()
+    .allow(""),
   plannedExpenses: Joi.number().optional(),
   actualExpenses: Joi.number().optional(),
   budgetId: Joi.string(),
@@ -18,6 +20,5 @@ export const createValidationSchema = Joi.object({
 });
 
 export const updateValidationSchema = Joi.object({
-  field: Joi.string().optional(),
-  field2: Joi.string().optional()
+  actualExpenses: Joi.number().optional()
 }).unknown(true);

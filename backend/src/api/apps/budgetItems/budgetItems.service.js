@@ -10,6 +10,10 @@ class BudgetItemsService extends Service {
     return await BudgetItems.create(data);
   }
 
+  async updateBudget(id, data) {
+    return await BudgetItems.findOneAndUpdate({ _id: id }, data);
+  }
+
   async getBudgetItemsForOneBudget(budgetId, userId) {
     return await BudgetItems.find({
       budgetId,

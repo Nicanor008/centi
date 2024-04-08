@@ -137,10 +137,10 @@ const CreateBudget = () => {
       ...getValues(),
       category: selectedCategory,
       financialGoal: selectedFinancialGoal,
-      actualExpenses: getValues()?.plannedExpenses
+      plannedExpenses: getValues()?.plannedExpenses
         ? Number(getValues()?.plannedExpenses)
         : 0,
-      plannedExpenses: Number(getValues()?.actualExpenses) ?? 0,
+      actualExpenses: Number(getValues()?.actualExpenses) ?? 0,
       budgetId: budget?._id,
     };
 

@@ -5,14 +5,16 @@ import {
   MenuList,
   MenuItem,
   IconButton,
-  useDisclosure,
 } from "@chakra-ui/react";
+import axios from "axios";
 import { FaEdit, FaEllipsisV, FaTrash } from "react-icons/fa";
-import UpdateExpense from "../../../Pages/Apps/Budget/UserBudgets/BudgetItems/UpdateExpense";
 
-const BudgetItemsRowMenu = ({ selectedItem, handleEllipsisClick }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
+const BudgetItemsRowMenu = ({
+  item,
+  onOpen,
+  handleEllipsisClick,
+  openDeletePrompt,
+}) => {
   return (
     <>
       <Td>
@@ -28,15 +30,12 @@ const BudgetItemsRowMenu = ({ selectedItem, handleEllipsisClick }) => {
             <MenuItem icon={<FaEdit />} onClick={() => onOpen()}>
               Update
             </MenuItem>
-            <MenuItem icon={<FaTrash />} onClick={() => deleteBudgetItem(item)}>
+            <MenuItem icon={<FaTrash />} onClick={() => openDeletePrompt()}>
               Delete
             </MenuItem>
           </MenuList>
         </Menu>
       </Td>
-      {isOpen && (
-        <UpdateExpense onClose={onClose} selectedItem={selectedItem} />
-      )}
     </>
   );
 };
