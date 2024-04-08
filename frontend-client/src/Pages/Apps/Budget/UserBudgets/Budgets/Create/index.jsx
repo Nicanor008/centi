@@ -160,9 +160,12 @@ const CreateBudget = () => {
       await axios.request(config2);
 
       // add category
-      await axios.post(`${config.API_URL}/category/`, newCategoriesPayload, {
-        headers: { Authorization: `Bearer ${userToken}` },
-      });
+      removedUndefinedInCategory?.length > 0 &&
+        (await axios.post(
+          `${config.API_URL}/category/`,
+          removedUndefinedInCategory,
+          { headers: { Authorization: `Bearer ${userToken}` } }
+        ));
 
       setSelectedCategory([]);
       reset();
