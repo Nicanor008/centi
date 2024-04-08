@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import QuickBudgetAnalyticsNav from "../../../components/Analytics/QuickBudgetAnalyticsNav";
 import { config } from "../../../config";
 import { getUserToken } from "../../../helpers/getToken";
+import DashboardSectionWrapper from "./DashboardSectionWrapper";
 
 function CentiDashboard() {
   const [analytics, setAnalytics] = useState();
@@ -42,11 +43,8 @@ function CentiDashboard() {
 
       {/* body */}
       <Flex flexDir="column" my={(2, 8)}>
-        <Flex justifyContent="space-between" flexWrap="wrap">
-          <Box>
-            <Text mt={(2, 6)} mb={2} fontWeight={700}>
-              Budget
-            </Text>
+        <Flex flexDir="column" gap={8}>
+          <DashboardSectionWrapper title="Budget">
             <Flex gap={6}>
               <QuickBudgetAnalyticsNav
                 title="Total Budget Expenses"
@@ -62,11 +60,8 @@ function CentiDashboard() {
                 hasCurrency={false}
               />
             </Flex>
-          </Box>
-          <Box>
-            <Text mt={(2, 6)} mb={2} fontWeight={700}>
-              Savings
-            </Text>
+          </DashboardSectionWrapper>
+          <DashboardSectionWrapper title="Savings">
             <Flex gap={6}>
               <QuickBudgetAnalyticsNav
                 title="Total Savings"
@@ -78,22 +73,20 @@ function CentiDashboard() {
                 hasCurrency={false}
               />
             </Flex>
-          </Box>
-        </Flex>
-
-        <Text mt={(2, 10)} mb={2} fontWeight={700}>
-          Financial Goals
-        </Text>
-        <Flex justifyContent="left" flexWrap="wrap" gap={6}>
-          <QuickBudgetAnalyticsNav
-            title="No. of Goals"
-            amount={analytics?.financialGoal.total}
-            hasCurrency={false}
-          />
-          <QuickBudgetAnalyticsNav
-            title="Total Target Goal"
-            amount={analytics?.financialGoal.totalFinancialGoalTargetAmount}
-          />
+          </DashboardSectionWrapper>
+          <DashboardSectionWrapper title="Financial Goals">
+            <Flex justifyContent="left" flexWrap="wrap" gap={6}>
+              <QuickBudgetAnalyticsNav
+                title="No. of Goals"
+                amount={analytics?.financialGoal.total}
+                hasCurrency={false}
+              />
+              <QuickBudgetAnalyticsNav
+                title="Total Target Goal"
+                amount={analytics?.financialGoal.totalFinancialGoalTargetAmount}
+              />
+            </Flex>
+          </DashboardSectionWrapper>
         </Flex>
       </Flex>
     </Flex>
