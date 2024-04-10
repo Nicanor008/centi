@@ -2,9 +2,9 @@ import User from "../users/users.model";
 import { jwt, mailService } from "../../services";
 import { utils } from "../../helpers";
 import { generateOtp, compareOtp } from "../../helpers/utils";
-// import deviceTokenService from '../deviceTokens/deviceToken.service';
 import userService from "../users/users.service";
 import refreshTokenService from "../refreshTokens/refreshToken.service";
+import sendEmail from "../../helpers/email/sendMail";
 
 const signup = async (data, ipAddress) => {
   const existingUser = await User.findOne({ email: data.email });
@@ -14,6 +14,22 @@ const signup = async (data, ipAddress) => {
   const user = await User.create(data);
   const token = generateToken(user);
   const refreshToken = await generateRefreshToken(user, ipAddress);
+
+  const OTP = await generateOtp(user.email);
+
+  // const html = `<html>
+  //   <body>
+  //     <h2>Hi, ${user.firstName}</h2>
+  //     <p>Welcome onboard.<br /> This is a ship sailing towards financial independence city. To get all the benefits at hand, kindly enter the provided code below on the Centi platform to proceed to the next cabin</p>
+  //     <h3>${OTP}</h3>
+  //     <button>Login</button>
+  //     <p>If you didn't request this, you can ignore it</p>
+  //   </body>
+  // </html>`;
+
+  // send mail
+  await sendEmail(user.email, "Centi: Financial Account Created", OTP);
+
   const result = {
     user,
     token,

@@ -10,9 +10,9 @@ class MailgunConnect {
       const mailgun = new Mailgun(formData);
       const mg = mailgun.client({
         username: "api",
-        key: config.mailgun.apiKey,
-        timeout: 60000
+        key: config.mailgun.apiKey
       });
+      console.log(domain, ";;;;;;;;;;;;;;;;-----------------;;", mg);
       this.instance = mg;
     }
 
@@ -21,7 +21,7 @@ class MailgunConnect {
 }
 
 const domain = config.mailgun.domain;
-const fromEmail = "Support<support@astraler.com>";
+const fromEmail = "Centi <mailgun@sandbox-123.mailgun.org>";
 
 export const sendPasswordResetEmail = async (to, passcode) => {
   try {
@@ -51,14 +51,38 @@ export const sendPasswordResetEmail = async (to, passcode) => {
 
 export const sendEmail = async options => {
   try {
-    const mailOptions = {
-      from: fromEmail,
-      to: options.to,
-      subject: options.subject,
-      html: options.html
-    };
-    const mg = MailgunConnect.getInstance();
-    return mg.messages.create(domain, mailOptions);
+    // const mailOptions = {
+    //   from: fromEmail,
+    //   to: options.to,
+    //   subject: options.subject,
+    //   html: options.html
+    // };
+    // const mg = MailgunConnect.getInstance();
+    // const tt = await mg.messages.create("sandbox-123.mailgun.org", {
+    //   from: "Excited User <mailgun@sandbox-123.mailgun.org>",
+    //   to: ["test@example.com"],
+    //   subject: "Hello",
+    //   text: "Testing some Mailgun awesomeness!",
+    //   html: "<h1>Testing some Mailgun awesomeness!</h1>"
+    // });
+    // return tt;
+    const mailgun = new Mailgun(formData);
+    const mg = mailgun.client({
+      username: "NicKie",
+      key: "c83651752ad631f7783f7f852d1bcd15-4b670513-f1c036f3",
+      url: "https://api.eu.mailgun.net"
+    });
+
+    mg.messages
+      .create("centi.nicanor.me", {
+        from: "Excited User <mailgun@centi.nicanor.me>",
+        to: ["test@example.com"],
+        subject: "Hello",
+        text: "Testing some Mailgun awesomeness!",
+        html: "<h1>Testing some Mailgun awesomeness!</h1>"
+      })
+      .then(msg => console.log(msg)) // logs response data
+      .catch(err => console.log("MAIL---GUN Error;", err));
   } catch (error) {
     console.log(error);
   }
