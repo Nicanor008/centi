@@ -11,11 +11,12 @@ const signup = async (data, ipAddress) => {
   if (existingUser) {
     throw new Error("Email existing in system!");
   }
-  const user = await User.create(data);
+  const OTP = await generateOtp(user.email);
+
+  const payload = { ...data, otp: OTP, otpLastUpdate: Date.now() };
+  const user = await User.create(payload);
   const token = generateToken(user);
   const refreshToken = await generateRefreshToken(user, ipAddress);
-
-  const OTP = await generateOtp(user.email);
 
   // const html = `<html>
   //   <body>
@@ -66,6 +67,14 @@ const requestOtpLogin = async email => {
   };
 
   return sendEmail(optionsEmail);
+};
+
+const verifyOTPOnSignup = async (user, otp, ipAddress) => {
+  const isValidOtp = await compareOtp(user.email, otp);
+  if (!isValidOtp) {
+  }
+
+  return login(user, ipAddress);
 };
 
 const handleCompareOtp = async (email, otpRequest) => {
@@ -267,5 +276,6 @@ export default {
   forgotPassword,
   resetPassword,
   verifyCode,
-  refreshToken
+  refreshToken,
+  verifyOTPOnSignup
 };

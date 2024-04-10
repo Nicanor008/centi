@@ -13,6 +13,19 @@ export const signup = async (req, res, next) => {
   }
 };
 
+export const verifyOTPOnSignup = async (req, res, next) => {
+  try {
+    const result = await authService.verifyOTPOnSignup(
+      req.params.user,
+      req.body,
+      req.ip
+    );
+    return Response.success(res, result, httpStatus.SUCCESS);
+  } catch (exception) {
+    next(exception);
+  }
+};
+
 export const login = async (req, res) => {
   const user = req.user;
   const ipAddress = req.ip;

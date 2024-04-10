@@ -1,7 +1,7 @@
-const nodemailer = require("nodemailer");
+import { createTransport } from "nodemailer";
 
 async function sendEmail(to, subject, text) {
-  let transporter = nodemailer.createTransport({
+  let transporter = createTransport({
     service: "Gmail", // Example: 'Gmail', 'Outlook', etc.
     auth: {
       user: "nicanorkorir008@gmail.com", // Your email address
@@ -27,4 +27,4 @@ async function sendEmail(to, subject, text) {
   }
 }
 
-module.exports = sendEmail;
+export default sendEmail;

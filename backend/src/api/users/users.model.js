@@ -45,6 +45,14 @@ const UserSchema = new Schema(
       enum: Object.values(ROLES),
       default: ROLES.USER
     },
+    otp: {
+      type: String,
+      required: false
+    },
+    otpLastUpdate: {
+      type: String,
+      required: false
+    },
     // services: {
     //   facebook: {
     //     id: String,
