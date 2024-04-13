@@ -11,25 +11,26 @@ const signup = async (data, ipAddress) => {
   if (existingUser) {
     throw new Error("Email existing in system!");
   }
-  const OTP = await generateOtp(user.email);
+  const OTP = await generateOtp();
 
   const payload = { ...data, otp: OTP, otpLastUpdate: Date.now() };
+
   const user = await User.create(payload);
   const token = generateToken(user);
   const refreshToken = await generateRefreshToken(user, ipAddress);
 
-  // const html = `<html>
-  //   <body>
-  //     <h2>Hi, ${user.firstName}</h2>
-  //     <p>Welcome onboard.<br /> This is a ship sailing towards financial independence city. To get all the benefits at hand, kindly enter the provided code below on the Centi platform to proceed to the next cabin</p>
-  //     <h3>${OTP}</h3>
-  //     <button>Login</button>
-  //     <p>If you didn't request this, you can ignore it</p>
-  //   </body>
-  // </html>`;
+  const html = `<html>
+    <body>
+      <h2>Hi, ${user.firstName}</h2>
+      <p>Welcome onboard.<br /> This is a ship sailing towards financial independence city. To get all the benefits at hand, kindly enter the provided code below on the Centi platform to proceed to the next cabin</p>
+      <h3>${OTP}</h3>
+      <button>Login</button>
+      <p>If you didn't request this, you can ignore it</p>
+    </body>
+  </html>`;
 
   // send mail
-  await sendEmail(user.email, "Centi: Financial Account Created", OTP);
+  await sendEmail(user.email, "Centi: Financial Account Created", html);
 
   const result = {
     user,

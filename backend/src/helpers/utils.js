@@ -29,7 +29,7 @@ export const decodeToken = async token => {
   //   requestHeaders: {}, // Optional
   //   timeout: 30000 // Defaults to 30s
   // });
-  const key = 'await client.getSigningKey(kid)';
+  const key = "await client.getSigningKey(kid)";
   const signingKey = key.getPublicKey() || key.rsaPublicKey();
   return jwt.verify(token, signingKey, { algorithms: alg });
 };
@@ -39,7 +39,7 @@ export const getDeviceId = req => {
   return deviceId;
 };
 
-export const generateOtp = async email => {
+export const generateOtp = async () => {
   const otp = randomVerifiedCode();
 
   // await Promise.all([
@@ -85,4 +85,3 @@ export const compareOtp = async (email, otpRequest) => {
 
   return true;
 };
-
