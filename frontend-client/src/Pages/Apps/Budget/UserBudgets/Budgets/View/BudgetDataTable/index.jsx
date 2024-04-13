@@ -90,7 +90,7 @@ const BudgetDataTable = ({ data }) => {
             />
             <Th>Category</Th>
             <Th>Active</Th>
-            <Th>Recurring</Th>
+            {/* <Th>Recurring</Th> */}
             <ColumnHeaderCellWithSort
               column="createdAt"
               name="Date Created"
@@ -117,7 +117,7 @@ const BudgetDataTable = ({ data }) => {
               <Td>KES {formatNumberGroups(budget?.plannedIncome)}</Td>
               <CategoryCell categories={budget?.category} />
               <Td>{budget?.isActive ? "Yes" : "No"}</Td>
-              <Td>{budget?.isRecurring ? "Yes" : "No"}</Td>
+              {/* <Td>{budget?.isRecurring ? "Yes" : "No"}</Td> */}
               <Td>{new Date(budget?.createdAt).toLocaleDateString()}</Td>
               <Td>
                 <FaEllipsisV />

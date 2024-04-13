@@ -66,7 +66,7 @@ const BudgetFilterMenu = ({
           </MenuItemOption>
         </MenuOptionGroup>
         <MenuDivider />
-        <MenuOptionGroup title="Recurring" type="radio">
+        {/* <MenuOptionGroup title="Recurring" type="radio">
           <MenuItemOption
             value="yes"
             onClick={() => handleFilterBudget({ isRecurring: true })}
@@ -79,7 +79,7 @@ const BudgetFilterMenu = ({
           >
             No
           </MenuItemOption>
-        </MenuOptionGroup>
+        </MenuOptionGroup> */}
         <DatePicker
           value={datePickerValue}
           onChange={(newValue) => setDatePickerValue(newValue)}

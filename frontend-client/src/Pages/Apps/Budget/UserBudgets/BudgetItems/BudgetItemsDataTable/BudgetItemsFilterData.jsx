@@ -60,7 +60,7 @@ const BudgetItemsFilterData = ({
           </MenuItemOption>
         </MenuOptionGroup>
         <MenuDivider />
-        <MenuOptionGroup title="Recurring" type="radio">
+        {/* <MenuOptionGroup title="Recurring" type="radio">
           <MenuItemOption
             value="yes"
             onClick={() => handleFilterBudgetItems({ isRecurring: true })}
@@ -73,7 +73,7 @@ const BudgetItemsFilterData = ({
           >
             No
           </MenuItemOption>
-        </MenuOptionGroup>
+        </MenuOptionGroup> */}
       </MenuList>
     </Menu>
   );
