@@ -127,19 +127,9 @@ const MobileNav = ({ onOpen, user, ...rest }) => {
       </Text>
 
       <HStack spacing={{ base: "0", md: "6" }}>
-        <IconButton
-          size="lg"
-          variant="ghost"
-          aria-label="open menu"
-          icon={<FiBell />}
-        />
         <Flex alignItems={"center"}>
           <Menu>
-            <MenuButton
-              py={2}
-              transition="all 0.3s"
-              _focus={{ boxShadow: "none" }}
-            >
+            <MenuButton transition="all 0.3s" _focus={{ boxShadow: "none" }}>
               <HStack>
                 <Avatar
                   size={"sm"}
@@ -151,7 +141,6 @@ const MobileNav = ({ onOpen, user, ...rest }) => {
                   display={{ base: "none", md: "flex" }}
                   alignItems="flex-start"
                   spacing="1px"
-                  ml="2"
                 >
                   <Text fontSize="sm">
                     {user?.firstName} {user?.lastName}
