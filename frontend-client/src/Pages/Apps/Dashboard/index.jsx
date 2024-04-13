@@ -51,7 +51,7 @@ function CentiDashboard() {
       ) : (
         <Flex flexDir="column" my={(2, 8)}>
           <Flex flexDir="column" gap={8}>
-            <DashboardSectionWrapper title="Budget">
+            <DashboardSectionWrapper title="Budget" titleUri="budget/add/1">
               <Flex gap={6}>
                 <QuickBudgetAnalyticsNav
                   title="Total Budget Expenses"
@@ -68,7 +68,7 @@ function CentiDashboard() {
                 />
               </Flex>
             </DashboardSectionWrapper>
-            <DashboardSectionWrapper title="Savings">
+            <DashboardSectionWrapper title="Savings" titleUri="savings/add">
               <Flex gap={6}>
                 <QuickBudgetAnalyticsNav
                   title="Total Savings"
@@ -81,7 +81,10 @@ function CentiDashboard() {
                 />
               </Flex>
             </DashboardSectionWrapper>
-            <DashboardSectionWrapper title="Financial Goals">
+            <DashboardSectionWrapper
+              title="Financial Goals"
+              titleUri="/financial-goals/add"
+            >
               <Flex justifyContent="left" flexWrap="wrap" gap={6}>
                 <QuickBudgetAnalyticsNav
                   title="No. of Goals"
