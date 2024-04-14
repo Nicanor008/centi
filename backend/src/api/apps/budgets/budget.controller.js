@@ -1,9 +1,9 @@
 import httpStatus from "http-status";
 import { handleResponse } from "../../../helpers";
 import { Controller } from "../../../helpers/common";
+import Expenses from "../expenses/expenses.model";
 import Budget from "./budget.model";
 import budgetService from "./budget.service";
-import BudgetItems from "../budgetItems/budgetItems.model";
 
 class BudgetController extends Controller {
   constructor(service) {
@@ -76,7 +76,7 @@ class BudgetController extends Controller {
       );
 
       // if result is successfully, delete all budget items
-      await BudgetItems.deleteMany({ budgetId: req.params.id });
+      await Expenses.deleteMany({ budgetId: req.params.id });
 
       return handleResponse.success(res, result);
     } catch (e) {

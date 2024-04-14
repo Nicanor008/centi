@@ -1,25 +1,24 @@
 import { Service } from "../../../helpers/common";
-import BudgetItems from "./budgetItems.model";
-const { ObjectId } = require("mongodb");
+import Expenses from "./expenses.model";
 
-class BudgetItemsService extends Service {
+class ExpensesService extends Service {
   constructor() {
-    super(BudgetItems);
+    super(Expenses);
   }
   async createBudgetItems(data) {
-    return await BudgetItems.create(data);
+    return await Expenses.create(data);
   }
 
   async updateBudget(id, data) {
-    return await BudgetItems.findOneAndUpdate({ _id: id }, data);
+    return await Expenses.findOneAndUpdate({ _id: id }, data);
   }
 
   async getBudgetItemsForOneBudget(budgetId, userId) {
-    return await BudgetItems.find({
+    return await Expenses.find({
       budgetId,
       userId
     });
-    // const tt = await BudgetItems.aggregate([
+    // const tt = await Expenses.aggregate([
     //   {
     //     $match: {
     //       budgetId: ObjectId(budgetId),
@@ -72,7 +71,7 @@ class BudgetItemsService extends Service {
   }
 
   async deleteBudgetItem(budgetItemId, userId) {
-    const budgetItem = await BudgetItems.findById({
+    const budgetItem = await Expenses.findById({
       _id: budgetItemId,
       userId
     });
@@ -81,8 +80,8 @@ class BudgetItemsService extends Service {
       throw new Error("Budget item not found");
     }
 
-    return await BudgetItems.findByIdAndDelete(budgetItemId);
+    return await Expenses.findByIdAndDelete(budgetItemId);
   }
 }
 
-export default new BudgetItemsService();
+export default new ExpensesService();

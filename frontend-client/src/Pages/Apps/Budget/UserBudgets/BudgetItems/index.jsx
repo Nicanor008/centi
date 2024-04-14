@@ -65,7 +65,7 @@ function ViewUserBudgetItems() {
     let budgetItemsConfig = {
       method: "get",
       maxBodyLength: Infinity,
-      url: `${config.API_URL}/budget-items/budget/${budgetId}`,
+      url: `${config.API_URL}/expenses/budget/${budgetId}`,
       headers: {
         Authorization: `Bearer ${userToken}`,
         "Content-Type": "application/json",

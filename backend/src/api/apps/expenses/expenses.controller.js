@@ -1,13 +1,9 @@
-// import { Controller } from "../../helpers/common";
-import budgetItemsService from "./budgetItems.service";
-// import { handleResponse as Response } from "../../../helpers";
-import BudgetItemsService from "./budgetItems.service";
-
+import httpStatus from "http-status";
 import { handleResponse as Response } from "../../../helpers";
 import { Controller } from "../../../helpers/common";
-import httpStatus from "http-status";
+import ExpensesService from "./expenses.service";
 
-class BudgetItemsController extends Controller {
+class ExpensesController extends Controller {
   constructor(service) {
     super(service);
     // this.createBudget = this.createBudget.bind(this);
@@ -17,7 +13,7 @@ class BudgetItemsController extends Controller {
   async createBudgetItems(req, res, next) {
     try {
       const data = { ...req.body, userId: req.user._id };
-      const result = await BudgetItemsService.createBudgetItems(data);
+      const result = await ExpensesService.createBudgetItems(data);
       return Response.success(res, result, httpStatus.CREATED);
     } catch (exception) {
       next(exception);
@@ -28,7 +24,7 @@ class BudgetItemsController extends Controller {
   async updateBudget(req, res, next) {
     try {
       const data = { ...req.body, userId: req.user?._id };
-      const result = await BudgetItemsService.updateBudget(req.params.id, data);
+      const result = await ExpensesService.updateBudget(req.params.id, data);
       return Response.success(res, result, httpStatus.SUCCESS);
     } catch (exception) {
       next(exception);
@@ -38,7 +34,7 @@ class BudgetItemsController extends Controller {
   // Get all budget items for one budget
   async getBudgetItemsForOneBudget(req, res, next) {
     try {
-      const result = await BudgetItemsService.getBudgetItemsForOneBudget(
+      const result = await ExpensesService.getBudgetItemsForOneBudget(
         req.params.budgetId,
         req.user._id
       );
@@ -51,7 +47,7 @@ class BudgetItemsController extends Controller {
   // delete budget item
   async deleteBudgetItem(req, res, next) {
     try {
-      const result = await BudgetItemsService.deleteBudgetItem(
+      const result = await ExpensesService.deleteBudgetItem(
         req.params.id,
         req.user?._id
       );
@@ -62,4 +58,4 @@ class BudgetItemsController extends Controller {
   }
 }
 
-export default new BudgetItemsController(budgetItemsService, "BudgetItems");
+export default new ExpensesController(ExpensesService, "BudgetItems");

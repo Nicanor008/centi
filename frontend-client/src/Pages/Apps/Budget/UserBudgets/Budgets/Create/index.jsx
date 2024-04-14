@@ -147,7 +147,7 @@ const CreateBudget = () => {
     let config2 = {
       method: "post",
       maxBodyLength: Infinity,
-      url: `${config.API_URL}/budget-items/`,
+      url: `${config.API_URL}/expenses/`,
       headers: {
         Authorization: `Bearer ${userToken}`,
         "Content-Type": "application/json",

@@ -1,12 +1,12 @@
 import express from "express";
 import { celebrate } from "celebrate";
-import budgetItemsController from "./budgetItems.controller";
 import AuthService from "../../../middlewares/auth";
 import {
   createValidationSchema,
   updateValidationSchema,
   customPaginateValidateSchema
-} from "./budgetItems.validation";
+} from "./expenses.validation";
+import ExpensesController from "./expenses.controller";
 
 const router = express.Router();
 /**
@@ -62,14 +62,14 @@ const router = express.Router();
 router.post(
   "/",
   [AuthService.required, celebrate({ body: createValidationSchema })],
-  budgetItemsController.createBudgetItems
+  ExpensesController.createBudgetItems
 );
 
 router.patch(
   "/:id",
   AuthService.required,
   celebrate({ body: updateValidationSchema }),
-  budgetItemsController.updateBudget
+  ExpensesController.updateBudget
 );
 
 /**
@@ -105,7 +105,7 @@ router.put(
   "/:id",
   [AuthService.required],
   celebrate({ body: updateValidationSchema }),
-  budgetItemsController.update
+  ExpensesController.update
 );
 
 /**
@@ -147,7 +147,7 @@ router.get(
   "/",
   AuthService.required,
   celebrate({ query: customPaginateValidateSchema }),
-  budgetItemsController.findAll
+  ExpensesController.findAll
 );
 
 /**
@@ -175,7 +175,7 @@ router.get(
  *      401:
  *        $ref: "#/responses/Unauthorized"
  */
-router.get("/:id", budgetItemsController.findOne);
+router.get("/:id", ExpensesController.findOne);
 
 /**
  * @swagger
@@ -207,14 +207,14 @@ router.get("/:id", budgetItemsController.findOne);
 router.delete(
   "/:id",
   AuthService.required,
-  budgetItemsController.deleteBudgetItem
+  ExpensesController.deleteBudgetItem
 );
 
 // get all budget items within one budget
 router.get(
   "/budget/:budgetId",
   AuthService.required,
-  budgetItemsController.getBudgetItemsForOneBudget
+  ExpensesController.getBudgetItemsForOneBudget
 );
 
 export default router;

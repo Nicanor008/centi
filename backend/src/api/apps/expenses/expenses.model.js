@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 import mongooseUniqueValidator from "mongoose-unique-validator";
 
-const BudgetItemsSchema = new Schema(
+const ExpensesSchema = new Schema(
   {
     name: {
       type: String,
@@ -69,8 +69,8 @@ const BudgetItemsSchema = new Schema(
   { timestamps: true }
 );
 
-BudgetItemsSchema.plugin(mongoosePaginate);
-BudgetItemsSchema.plugin(mongooseUniqueValidator);
+ExpensesSchema.plugin(mongoosePaginate);
+ExpensesSchema.plugin(mongooseUniqueValidator);
 
-const BudgetItems = mongoose.model("BudgetItems", BudgetItemsSchema);
-export default BudgetItems;
+const Expenses = mongoose.model("Expenses", ExpensesSchema);
+export default Expenses;

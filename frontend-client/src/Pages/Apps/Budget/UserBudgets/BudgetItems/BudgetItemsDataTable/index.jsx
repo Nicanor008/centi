@@ -69,12 +69,9 @@ const BudgetItemsDataTable = ({
   const deleteBudgetItem = async () => {
     setManualRefresh(true);
     try {
-      await axios.delete(
-        `${config.API_URL}/budget-items/${selectedItem?._id}`,
-        {
-          headers: { Authorization: `Bearer ${userToken}` },
-        }
-      );
+      await axios.delete(`${config.API_URL}/expenses/${selectedItem?._id}`, {
+        headers: { Authorization: `Bearer ${userToken}` },
+      });
       setManualRefresh(false);
       setSelectedItem(null);
       onCloseDeletePrompt();

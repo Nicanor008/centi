@@ -34,7 +34,7 @@ function UpdateExpense({ selectedItem, isOpen, onClose, setManualRefresh }) {
 
     try {
       await axios.patch(
-        `${config.API_URL}/budget-items/${selectedItem._id}`,
+        `${config.API_URL}/expenses/${selectedItem._id}`,
         payload,
         {
           headers: { Authorization: `Bearer ${userToken}` },
