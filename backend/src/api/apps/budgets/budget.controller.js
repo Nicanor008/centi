@@ -1,7 +1,9 @@
 import httpStatus from "http-status";
 import { handleResponse } from "../../../helpers";
 import { Controller } from "../../../helpers/common";
+import Budget from "./budget.model";
 import budgetService from "./budget.service";
+import BudgetItems from "../budgetItems/budgetItems.model";
 
 class BudgetController extends Controller {
   constructor(service) {
@@ -54,6 +56,27 @@ class BudgetController extends Controller {
   async budgetAnalytics(req, res, next) {
     try {
       const result = await budgetService.budgetAnalytics(req.user);
+
+      return handleResponse.success(res, result);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async deleteBudget(req, res, next) {
+    try {
+      const result = await Budget.findByIdAndRemove(req.params.id);
+
+      console.log(
+        "============================================================"
+      );
+      console.log(result);
+      console.log(
+        "============================================================"
+      );
+
+      // if result is successfully, delete all budget items
+      await BudgetItems.deleteMany({ budgetId: req.params.id });
 
       return handleResponse.success(res, result);
     } catch (e) {
