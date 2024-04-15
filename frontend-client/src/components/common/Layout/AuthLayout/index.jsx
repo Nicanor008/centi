@@ -20,11 +20,12 @@ import {
   Link,
 } from "@chakra-ui/react";
 import { useEffect } from "react";
-import { FiMenu, FiBell, FiChevronDown } from "react-icons/fi";
-import { Outlet, useNavigate } from "react-router-dom";
+import { FiMenu, FiChevronDown } from "react-icons/fi";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { LinkItems } from "./menuLinkItems";
 
 const SidebarContent = ({ onClose, ...rest }) => {
+  const location = useLocation();
   return (
     <Box
       transition="3s ease"
@@ -45,7 +46,13 @@ const SidebarContent = ({ onClose, ...rest }) => {
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems().map((link) => (
-        <NavItem key={link.name} icon={link.icon} url={link?.url}>
+        <NavItem
+          key={link.name}
+          name={link.name}
+          icon={link.icon}
+          url={link?.url}
+          active={location.pathname.includes(link.uniqueId)}
+        >
           {link.name}
         </NavItem>
       ))}
@@ -53,7 +60,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
   );
 };
 
-const NavItem = ({ icon, url, children, ...rest }) => {
+const NavItem = ({ name, icon, url, active, children, ...rest }) => {
   return (
     <Box
       as="a"
@@ -69,9 +76,10 @@ const NavItem = ({ icon, url, children, ...rest }) => {
         role="group"
         cursor="pointer"
         _hover={{
-          bg: "red.300",
+          bg: "red.100",
           color: "white",
         }}
+        bg={active ? "red.100" : "none"}
         {...rest}
       >
         {icon && (

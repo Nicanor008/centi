@@ -54,12 +54,32 @@ const investmentLinkItems = [
 ];
 
 const defaultLinkItems = [
-  { name: "Dashboard", icon: FiHome, url: "/dashboard" },
-  { name: "Financial goals", icon: FiCompass, url: "/financial-goals" },
-  { name: "Budgets", icon: FiTrendingUp, url: "/budget/view" },
-  { name: "Savings", icon: FaPiggyBank, url: "/savings/view" },
-  { name: "Debt", icon: FcDebt, url: "/debt" },
-  { name: "Investments", icon: FaCircleNodes, url: "/investment" },
+  { name: "Dashboard", icon: FiHome, url: "/dashboard", uniqueId: "dashboard" },
+  {
+    name: "Financial goals",
+    icon: FiCompass,
+    url: "/financial-goals",
+    uniqueId: "financial-goal",
+  },
+  {
+    name: "Budgets",
+    icon: FiTrendingUp,
+    url: "/budget/view",
+    uniqueId: "budget",
+  },
+  {
+    name: "Savings",
+    icon: FaPiggyBank,
+    url: "/savings/view",
+    uniqueId: "saving",
+  },
+  { name: "Debt", icon: FcDebt, url: "/debt", uniqueId: "debt" },
+  {
+    name: "Investments",
+    icon: FaCircleNodes,
+    url: "/investment",
+    uniqueId: "investment",
+  },
 ];
 
 export const LinkItems = () => {
