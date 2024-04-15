@@ -2,6 +2,9 @@ import httpStatus from "http-status";
 import financialGoalsService from "./financialGoals.service";
 import { handleResponse as Response } from "../../../helpers";
 import { Controller } from "../../../helpers/common";
+import FinancialGoals from "./financialGoals.model";
+import Budget from "../budgets/budget.model";
+import Expenses from "../expenses/expenses.model";
 
 class FinancialGoalsController extends Controller {
   constructor(service, name) {
@@ -49,6 +52,21 @@ class FinancialGoalsController extends Controller {
         user: req.user
       });
       return Response.success(res, result);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async deleteFinancialGoal(req, res, next) {
+    try {
+      const result = await FinancialGoals.findByIdAndRemove(req.params.id);
+      // const result = await Budget.findByIdAndRemove(req.params.id);
+
+      // if result is successfully, delete all budget items
+      await Expenses.deleteMany({ financialGoal: req.params.id });
+      await Budget.deleteMany({ financialGoal: req.params.id });
+
+      return handleResponse.success(res, result);
     } catch (e) {
       next(e);
     }

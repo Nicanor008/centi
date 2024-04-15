@@ -67,14 +67,6 @@ class BudgetController extends Controller {
     try {
       const result = await Budget.findByIdAndRemove(req.params.id);
 
-      console.log(
-        "============================================================"
-      );
-      console.log(result);
-      console.log(
-        "============================================================"
-      );
-
       // if result is successfully, delete all budget items
       await Expenses.deleteMany({ budgetId: req.params.id });
 
