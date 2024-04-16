@@ -17,3 +17,5 @@ export * from "./Apps/Savings";
 
 // user dashboard
 export { default as CentiDashboard } from "./Apps/Dashboard";
+
+export * from "./ErrorPages";

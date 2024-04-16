@@ -23,6 +23,7 @@ import {
   CreateSavingGoal,
   CentiDashboard,
   ViewOneUserFinancialGoals,
+  PageNotFound,
 } from "../Pages";
 
 export const routes = createRoutesFromElements(
@@ -62,7 +63,7 @@ export const routes = createRoutesFromElements(
           <Route path="add" element={<CreateSavingGoal />} />
           {/* <Route path="items/:budgetId" element={<ViewUserBudgetItems />} /> */}
         </Route>
-        {/* <Route path="*" element={<PageNotFoundScreen />} /> */}
+        <Route path="*" element={<PageNotFound />} />
       </Route>
     </Route>
   </Route>
