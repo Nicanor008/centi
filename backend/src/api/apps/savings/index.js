@@ -108,6 +108,8 @@ router.put(
  *   get:
  *     tags: [savings]
  *     description: get all savings
+ *     security:
+ *       - BearerAuth: []
  *     produces:
  *       - application/json
  *     parameters:
@@ -150,6 +152,8 @@ router.get(
  *   get:
  *     tags: [savings]
  *     description: get detail savings
+ *     security:
+ *       - BearerAuth: []
  *     produces:
  *       - application/json
  *     parameters:

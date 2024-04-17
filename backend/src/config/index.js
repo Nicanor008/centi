@@ -16,6 +16,9 @@ export default {
     secret: process.env.SESSION_SECRET
   },
 
+  MAIL_USERNAME: process.env.MAIL_USERNAME,
+  MAIL_PASS: process.env.MAIL_PASS,
+
   // facebook: {
   //   clientID: process.env.FACEBOOK_CLIENT_ID,
   //   clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
@@ -59,7 +62,7 @@ export default {
   mailgun: {
     apiKey: process.env.MAILGUN_API_KEY,
     domain: process.env.MAILGUN_DOMAIN
-  },
+  }
   // profileUrl: {
   //   google_access_token: process.env.GOOGLE_USER_PROFILE_URL_ACCESS_TOKEN,
   //   google_id_token: process.env.GOOGLE_USER_PROFILE_URL_ID_TOKEN,

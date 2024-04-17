@@ -102,6 +102,8 @@ router.put(
  *   get:
  *     tags: [categories]
  *     description: get all categories
+ *     security:
+ *       - BearerAuth: []
  *     produces:
  *       - application/json
  *     parameters:

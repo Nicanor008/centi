@@ -116,6 +116,8 @@ router.put(
  *   get:
  *     tags: [budgets]
  *     description: get all budgets
+ *     security:
+ *       - BearerAuth: []
  *     produces:
  *       - application/json
  *     parameters:
@@ -158,6 +160,8 @@ router.get(
  *   get:
  *     tags: [budgets]
  *     description: get detail budget
+ *     security:
+ *       - BearerAuth: []
  *     produces:
  *       - application/json
  *     parameters:

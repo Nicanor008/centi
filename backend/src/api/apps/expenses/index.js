@@ -13,7 +13,7 @@ const router = express.Router();
  * @swagger
  *
  * definitions:
- *   BudgetItems:
+ *   expenses:
  *     type: object
  *     required:
  *       - field1
@@ -24,19 +24,19 @@ const router = express.Router();
  *       field2:
  *         type: string
  *
- *   ArrayOfBudgetItems:
+ *   ArrayOfexpenses:
  *      type: array
  *      items:
- *        $ref: "#/definitions/BudgetItems"
+ *        $ref: "#/definitions/expenses"
  */
 
 /**
  * @swagger
  *
- * /budgetItems:
+ * /expenses:
  *   post:
- *     tags: [budgetItems]
- *     description: create a budgetItems
+ *     tags: [expenses]
+ *     description: create a expenses
  *     security:
  *       - BearerAuth: []
  *     produces:
@@ -46,13 +46,13 @@ const router = express.Router();
  *         in: body
  *         required: true
  *         schema:
- *          $ref: "#/definitions/BudgetItems"
+ *          $ref: "#/definitions/expenses"
  *
  *     responses:
  *      200:
  *         description: OK
  *         schema:
- *           $ref: "#/definitions/BudgetItems"
+ *           $ref: "#/definitions/expenses"
  *      400:
  *        $ref: "#/responses/Error"
  *      401:
@@ -75,10 +75,10 @@ router.patch(
 /**
  * @swagger
  *
- * /budgetItems:
+ * /expenses:
  *   put:
- *     tags: [budgetItems]
- *     description: create a budgetItems
+ *     tags: [expenses]
+ *     description: create a expenses
  *     security:
  *       - BearerAuth: []
  *     produces:
@@ -88,13 +88,13 @@ router.patch(
  *         in: body
  *         required: true
  *         schema:
- *          $ref: "#/definitions/BudgetItems"
+ *          $ref: "#/definitions/expenses"
  *
  *     responses:
  *      200:
  *         description: OK
  *         schema:
- *           $ref: "#/definitions/BudgetItems"
+ *           $ref: "#/definitions/expenses"
  *      400:
  *        $ref: "#/responses/Error"
  *      401:
@@ -111,10 +111,12 @@ router.put(
 /**
  * @swagger
  *
- * /budgetItems:
+ * /expenses:
  *   get:
- *     tags: [budgetItems]
- *     description: get all budgetItems
+ *     tags: [expenses]
+ *     description: get all expenses
+ *     security:
+ *       - BearerAuth: []
  *     produces:
  *       - application/json
  *     parameters:
@@ -139,7 +141,7 @@ router.put(
  *                type: integer
  *                format: int32
  *              data:
- *                $ref: "#/definitions/ArrayOfBudgetItems"
+ *                $ref: "#/definitions/ArrayOfexpenses"
  *        401:
  *          $ref: "#/responses/Unauthorized"
  */
@@ -153,23 +155,25 @@ router.get(
 /**
  * @swagger
  *
- * /budgetItems/{id}:
+ * /expenses/{id}:
  *   get:
- *     tags: [budgetItems]
- *     description: get detail budgetItems
+ *     tags: [expenses]
+ *     description: get detail expenses
+ *     security:
+ *       - BearerAuth: []
  *     produces:
  *       - application/json
  *     parameters:
  *       - name: id
  *         in: path
- *         description: budgetItems id
+ *         description: expenses id
  *         required: true
  *         type: string
  *     responses:
  *      200:
  *         description: OK
  *         schema:
- *           $ref: "#/definitions/BudgetItems"
+ *           $ref: "#/definitions/expenses"
  *      400:
  *        $ref: "#/responses/Error"
  *      401:
@@ -180,10 +184,10 @@ router.get("/:id", ExpensesController.findOne);
 /**
  * @swagger
  *
- * /budgetItems/{id}:
+ * /expenses/{id}:
  *   delete:
- *     tags: [budgetItems]
- *     description: delete a budgetItems
+ *     tags: [expenses]
+ *     description: delete a expenses
  *     security:
  *       - BearerAuth: []
  *     produces:
@@ -191,14 +195,14 @@ router.get("/:id", ExpensesController.findOne);
  *     parameters:
  *       - name: id
  *         in: path
- *         description: budgetItems id
+ *         description: expenses id
  *         required: true
  *         type: string
  *     responses:
  *      200:
  *         description: OK
  *         schema:
- *           $ref: "#/definitions/BudgetItems"
+ *           $ref: "#/definitions/expenses"
  *      400:
  *        $ref: "#/responses/Error"
  *      401:

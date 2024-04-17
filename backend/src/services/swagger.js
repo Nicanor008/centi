@@ -5,7 +5,7 @@ const swagger = () => {
   const swaggerDefinition = {
     // openapi: '3.0.0', // Specification (optional, defaults to swagger: '2.0')
     info: {
-      title: "private-phone-number", // Title (required)
+      title: "Centi", // Title (required)
       version: "1.0.0" // Version (required)
     },
     basePath: "/api/v1", // Base path (optional)
@@ -24,7 +24,7 @@ const swagger = () => {
 
   const options = {
     swaggerDefinition,
-    apis: ["src/api/**/*.js"] // <-- not in the definition, but in the options
+    apis: ["src/api/**/*.js", "src/api/**/**/*.js"] // <-- not in the definition, but in the options
   };
 
   const swaggerSpec = swaggerJSDoc(options);

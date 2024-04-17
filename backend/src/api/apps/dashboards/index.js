@@ -108,6 +108,8 @@ router.put(
  *   get:
  *     tags: [dashboards]
  *     description: get all dashboards
+ *     security:
+ *       - BearerAuth: []
  *     produces:
  *       - application/json
  *     parameters:
@@ -145,6 +147,8 @@ router.get("/", AuthService.required, dashboardController.analytics);
  *   get:
  *     tags: [dashboards]
  *     description: get detail dashboard
+ *     security:
+ *       - BearerAuth: []
  *     produces:
  *       - application/json
  *     parameters:
