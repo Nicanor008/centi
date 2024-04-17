@@ -1,8 +1,8 @@
 import Mailgun from "mailgun.js";
 import formData from "form-data";
 import config from "../config";
-// import { logger } from "../services";
 
+// TODO: Remove mailgun, doesn't work at the moment. I'll be using Nodemailer instead
 class MailgunConnect {
   constructor() {}
   static getInstance() {
@@ -12,7 +12,6 @@ class MailgunConnect {
         username: "api",
         key: config.mailgun.apiKey
       });
-      console.log(domain, ";;;;;;;;;;;;;;;;-----------------;;", mg);
       this.instance = mg;
     }
 
@@ -51,38 +50,15 @@ export const sendPasswordResetEmail = async (to, passcode) => {
 
 export const sendEmail = async options => {
   try {
-    // const mailOptions = {
-    //   from: fromEmail,
-    //   to: options.to,
-    //   subject: options.subject,
-    //   html: options.html
-    // };
-    // const mg = MailgunConnect.getInstance();
-    // const tt = await mg.messages.create("sandbox-123.mailgun.org", {
-    //   from: "Excited User <mailgun@sandbox-123.mailgun.org>",
-    //   to: ["test@example.com"],
-    //   subject: "Hello",
-    //   text: "Testing some Mailgun awesomeness!",
-    //   html: "<h1>Testing some Mailgun awesomeness!</h1>"
-    // });
-    // return tt;
-    const mailgun = new Mailgun(formData);
-    const mg = mailgun.client({
-      username: "NicKie",
-      key: "c83651752ad631f7783f7f852d1bcd15-4b670513-f1c036f3",
-      url: "https://api.eu.mailgun.net"
-    });
-
-    mg.messages
-      .create("centi.nicanor.me", {
-        from: "Excited User <mailgun@centi.nicanor.me>",
-        to: ["test@example.com"],
-        subject: "Hello",
-        text: "Testing some Mailgun awesomeness!",
-        html: "<h1>Testing some Mailgun awesomeness!</h1>"
-      })
-      .then(msg => console.log(msg)) // logs response data
-      .catch(err => console.log("MAIL---GUN Error;", err));
+    const mailOptions = {
+      from: fromEmail,
+      to: options.to,
+      subject: options.subject,
+      html: options.html
+    };
+    const mg = MailgunConnect.getInstance();
+    const tt = await mg.messages.create("sandbox-123.mailgun.org", mailOptions);
+    return tt;
   } catch (error) {
     console.log(error);
   }
