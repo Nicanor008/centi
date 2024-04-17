@@ -15,13 +15,15 @@ const router = express.Router();
  *   Category:
  *     type: object
  *     required:
- *       - field1
- *       - field2
+ *       - name
+ *       - userId
  *     properties:
- *       field1:
+ *       name:
  *         type: string
- *       field2:
+ *         required: true
+ *       userId:
  *         type: string
+ *         required: true 
  *
  *   ArrayOfCategories:
  *      type: array

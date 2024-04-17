@@ -16,13 +16,43 @@ const router = express.Router();
  *   Budget:
  *     type: object
  *     required:
- *       - field1
- *       - field2
+ *       - name
+ *       - userId
  *     properties:
- *       field1:
+ *       name:
  *         type: string
- *       field2:
+ *         required: true
+ *       description:
  *         type: string
+ *         required: false
+ *       plannedExpenses:
+ *         type: number
+ *         required: false
+ *       actualExpenses:
+ *         type: number
+ *         required: false
+ *       plannedIncome:
+ *         type: string
+ *         required: false
+ *       actualIncome:
+ *         type: string
+ *         required: false
+ *       isRecurring:
+ *         type: boolean
+ *         required: false
+ *       isActive:
+ *         type: string
+ *         required: true
+ *       category:
+ *         type: array
+ *         required: false
+ *       financialGoal:
+ *         type:  string
+ *         required: false
+ *       userId:
+ *         type:  string
+ *         required: true
+ * 
  *
  *   ArrayOfBudgets:
  *      type: array

@@ -16,13 +16,30 @@ const router = express.Router();
  *   FinancialGoals:
  *     type: object
  *     required:
- *       - field1
- *       - field2
+ *       - name
+ *       - userId
  *     properties:
- *       field1:
+ *       name:
  *         type: string
- *       field2:
+ *         required: true
+ *       targetAmount:
+ *         type: number
+ *         required: false
+ *       category:
+ *         type: array
+ *         required: false
+ *       description:
  *         type: string
+ *         required: false
+ *       from:
+ *         type: string
+ *         required: false
+ *       to:
+ *         type: string
+ *         required: false
+ *       name:
+ *         type: string
+ *         required: true
  *
  *   ArrayOfFinancialGoals:
  *      type: array
