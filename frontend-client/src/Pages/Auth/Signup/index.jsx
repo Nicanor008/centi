@@ -25,6 +25,7 @@ export default function Signup() {
   const { register, handleSubmit } = useForm();
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const [error, setError] = useState()
 
   // check user
   const user = localStorage.getItem("user");
@@ -35,11 +36,12 @@ export default function Signup() {
   }, []);
 
   const onSubmit = async (data) => {
+    setError("")
     try {
       const response = await axios.post(`${config.API_URL}/auth/signup`, data);
       navigate("/login", { state: response.data });
     } catch (error) {
-      console.error("Error:", error); // Handle error
+      setError(error?.response?.data?.error.message)
     }
   };
 
@@ -60,6 +62,7 @@ export default function Signup() {
           boxShadow={"lg"}
           p={8}
         >
+          <Text color="red.500" textAlign="center">{error}</Text>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={2}>
               <HStack>
