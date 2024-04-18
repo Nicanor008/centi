@@ -37,9 +37,6 @@ const router = express.Router();
  *       to:
  *         type: string
  *         required: false
- *       name:
- *         type: string
- *         required: true
  *
  *   ArrayOfFinancialGoals:
  *      type: array

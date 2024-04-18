@@ -29,6 +29,7 @@ export default function Login() {
       email: state?.success ? state.data?.email : "",
     },
   });
+  const [error, setError] = useState()
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -41,12 +42,13 @@ export default function Login() {
   }, []);
 
   const onSubmit = async (data) => {
+    setError("")
     try {
       const response = await axios.post(`${config.API_URL}/auth/login`, data);
       localStorage.setItem("user", JSON.stringify(response.data.data));
       navigate("/dashboard");
     } catch (error) {
-      console.error("Error:", error); // Handle error
+      setError(error?.response?.data?.error.message)
     }
   };
 
@@ -68,6 +70,7 @@ export default function Login() {
           p={8}
         >
           <Stack spacing={4}>
+            <Text color="red.500" textAlign="center">{error}</Text>
             <form onSubmit={handleSubmit(onSubmit)}>
               <FormControl id="email">
                 <FormLabel>Email address</FormLabel>

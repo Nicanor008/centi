@@ -11,13 +11,13 @@ export const createValidationSchema = Joi.object({
     .optional()
     .allow(""),
   plannedExpenses: Joi.number(),
-  actualExpenses: Joi.number().optional(),
-  plannedIncome: Joi.number().optional(),
-  actualIncome: Joi.number().optional(),
+  actualExpenses: Joi.number().optional().allow(0),
+  plannedIncome: Joi.number().optional().allow(0),
+  actualIncome: Joi.number().optional().allow(0),
   isRecurring: Joi.bool().optional(),
   isActive: Joi.bool().optional(),
   category: Joi.array().optional(),
-  financialGoal: Joi.string().optional()
+  financialGoal: Joi.string().optional().allow("")
 });
 
 export const updateValidationSchema = Joi.object({
