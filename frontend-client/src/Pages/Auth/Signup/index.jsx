@@ -26,6 +26,7 @@ export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const [error, setError] = useState()
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   // check user
   const user = localStorage.getItem("user");
@@ -37,11 +38,14 @@ export default function Signup() {
 
   const onSubmit = async (data) => {
     setError("")
+    setIsSubmitting(true)
     try {
       const response = await axios.post(`${config.API_URL}/auth/signup`, data);
-      navigate("/login", { state: response.data });
+    setIsSubmitting(false)
+    navigate("/login", { state: response.data });
     } catch (error) {
-      setError(error?.response?.data?.error.message)
+    setIsSubmitting(false)
+    setError(error?.response?.data?.error.message)
     }
   };
 
@@ -125,6 +129,8 @@ export default function Signup() {
                   _hover={{
                     bg: "blue.500",
                   }}
+                  isLoading={isSubmitting}
+                  loadingText='Submitting'
                 >
                   Sign up
                 </Button>

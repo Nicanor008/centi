@@ -29,6 +29,7 @@ export default function Login() {
       email: state?.success ? state.data?.email : "",
     },
   });
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState()
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -43,12 +44,15 @@ export default function Login() {
 
   const onSubmit = async (data) => {
     setError("")
+    setIsSubmitting(true)
     try {
       const response = await axios.post(`${config.API_URL}/auth/login`, data);
       localStorage.setItem("user", JSON.stringify(response.data.data));
-      navigate("/dashboard");
+    setIsSubmitting(false)
+    navigate("/dashboard");
     } catch (error) {
-      setError(error?.response?.data?.error.message)
+    setIsSubmitting(false)
+    setError(error?.response?.data?.error.message)
     }
   };
 
@@ -117,6 +121,8 @@ export default function Login() {
                   _hover={{
                     bg: "red.500",
                   }}
+                  isLoading={isSubmitting}
+                  loadingText='Submitting'
                 >
                   Sign in
                 </Button>
