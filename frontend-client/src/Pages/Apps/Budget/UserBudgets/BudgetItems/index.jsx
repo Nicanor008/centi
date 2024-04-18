@@ -144,20 +144,20 @@ function ViewUserBudgetItems() {
       >
         <Flex gap={2} alignItems="center">
           {(budgetItems?.data?.length === 0 && budgetItems?.search) ||
-          budgetItems?.data?.length > 0 ? (
-            !isLargerThan880 ? (
-              <FaSearch />
+            budgetItems?.data?.length > 0 ? (
+              !isLargerThan880 ? (
+                <FaSearch />
+              ) : (
+                <Input
+                  placeholder="Search Budget ..."
+                  value={searchText}
+                  onChange={(e) => handleSearchChange(e.target.value)}
+                  w="fit-content"
+                />
+              )
             ) : (
-              <Input
-                placeholder="Search Budget ..."
-                value={searchText}
-                onChange={(e) => handleSearchChange(e.target.value)}
-                w="fit-content"
-              />
-            )
-          ) : (
-            <></>
-          )}
+              <></>
+            )}
           <Button variant="ghost" onClick={() => navigate("/budget/view")}>
             {!isLargerThan880 ? <FaEye /> : "View All Budgets"}
           </Button>

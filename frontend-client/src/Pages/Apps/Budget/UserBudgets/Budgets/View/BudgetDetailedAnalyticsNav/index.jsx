@@ -2,9 +2,9 @@ import { Flex, Button, useMediaQuery, Text } from "@chakra-ui/react";
 import React from "react";
 import { formatNumberGroups } from "../../../../../../../helpers/formatNumberGroups";
 
-const BudgetDetailedAnalyticsNav = ({ data }) => {
+const BudgetDetailedAnalyticsNav = ({ data, totalExpenses }) => {
   const [isLargerThan880] = useMediaQuery("(min-width: 880px)");
-
+console.log('...........>>>>>.....', data)
   return (
     data?.length > 0 && (
       <Flex alignItems="center" justifyContent="space-between" mt={4}>
@@ -17,9 +17,7 @@ const BudgetDetailedAnalyticsNav = ({ data }) => {
           is{" "}
           <b>
             KES.{" "}
-            {formatNumberGroups(
-              data?.reduce((acc, item) => acc + item.plannedExpenses, 0)
-            )}
+            {formatNumberGroups(totalExpenses)}
           </b>
         </Text>
         {isLargerThan880 && (

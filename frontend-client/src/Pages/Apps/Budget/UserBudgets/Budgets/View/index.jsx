@@ -26,6 +26,7 @@ function ViewUserBudgets() {
     if (!budget) return null;
 
     return {
+      ...budget,
       total: budget.total,
       data: budget.data,
       filtered: false,
@@ -128,7 +129,7 @@ function ViewUserBudgets() {
 
           <Divider borderColor="gray.300" mt={2} />
 
-          <BudgetDetailedAnalyticsNav data={cachedBudget?.data} />
+          <BudgetDetailedAnalyticsNav data={cachedBudget?.data} totalExpenses={cachedBudget?.totalExpenses} />
 
           {/* data */}
           <BudgetDataTable data={cachedBudget?.data} />

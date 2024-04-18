@@ -1,6 +1,7 @@
 import { isValidObjectId } from "mongoose";
 import { Service } from "../../../helpers/common";
 import Budget from "./budget.model";
+import Expenses from "../expenses/expenses.model";
 
 class BudgetService extends Service {
   constructor(model) {
@@ -60,8 +61,15 @@ class BudgetService extends Service {
       }
     ]);
 
+    const userAllExpenses = await Expenses.find({
+      userId: user?._id
+    });
+
+    const totalUserAllExpenses = userAllExpenses.reduce((acc, curr) => acc + curr.actualExpenses, 0)
+
     const result = {
       total: response.length,
+      totalExpenses: totalUserAllExpenses,
       data: response
     };
     return result;

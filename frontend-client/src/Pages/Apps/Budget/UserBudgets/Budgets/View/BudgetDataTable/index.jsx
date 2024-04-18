@@ -67,16 +67,17 @@ const BudgetDataTable = ({ data }) => {
               handleSort={handleSort}
               sortOrder={sortOrder}
             />
-            <ColumnHeaderCellWithSort
+            {/* <ColumnHeaderCellWithSort
               name="Money Spent"
-              column="totalSpentExpenses"
+              column="totalExpenses"
               sortBy={sortBy}
               handleSort={handleSort}
               sortOrder={sortOrder}
-            />
+            /> */}
+            {/* <Th>Money Spent</Th> */}
             <ColumnHeaderCellWithSort
               column="budgetItemsCount"
-              name="Total No. of Expenses"
+              name="No. of Expenses"
               sortBy={sortBy}
               handleSort={handleSort}
               sortOrder={sortOrder}
@@ -112,7 +113,7 @@ const BudgetDataTable = ({ data }) => {
               <Td>{budget.name}</Td>
               <Td>{budget?.description}</Td>
               <Td>KES {formatNumberGroups(budget?.plannedExpenses)}</Td>
-              <Td>Calculate spent expenses from budget items</Td>
+              {/* <Td>{formatNumberGroups(budget?.totalExpenses)}</Td> */}
               <Td>{formatNumberGroups(budget?.budgetItemsCount)}</Td>
               <Td>KES {formatNumberGroups(budget?.plannedIncome)}</Td>
               <CategoryCell categories={budget?.category} />

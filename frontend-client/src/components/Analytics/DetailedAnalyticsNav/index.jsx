@@ -7,24 +7,21 @@ const DetailedAnalyticsNav = (data, plannedExpense) => {
   const [isLargerThan880] = useMediaQuery("(min-width: 880px)");
 
   return (
-    data?.length > 0 && (
-      <Flex justifyContent="space-between" alignItems="center">
+    data?.data?.length > 0 && (
+      <Flex justifyContent="space-between" alignItems="center" my={4}>
         <Flex gap={4}>
           <QuickBudgetAnalyticsNav
             title="Total Expenses"
-            amount={data?.reduce((acc, item) => acc + item.plannedExpenses, 0)}
+            amount={data?.data?.reduce((acc, item) => acc + item.actualExpenses, 0)}
           />
-          <QuickBudgetAnalyticsNav
+          {/* <QuickBudgetAnalyticsNav
             title="Total Planned Expenses"
-            amount={plannedExpense}
-          />
+            amount={data?.plannedExpense}
+          /> */}
         </Flex>
         {isLargerThan880 && (
           <Button
-            border="1px solid"
-            borderColor="gray.400"
-            color="gray.500"
-            fontWeight={500}
+            variant="secondary"
             onClick={() => navigate("/budget/analytics")}
           >
             Detailed analytics
