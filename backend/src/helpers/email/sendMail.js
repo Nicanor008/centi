@@ -15,7 +15,7 @@ async function sendEmail(to, subject, text) {
     from: `Centi <${config.MAIL_USERNAME}>`, // Sender name and email address
     to: to,
     subject: subject,
-    text: text
+    html: text
   };
 
   try {

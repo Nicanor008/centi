@@ -123,14 +123,7 @@ export default function Signup() {
                 <Button
                   type="submit"
                   loadingText="Submitting"
-                  size="lg"
-                  bg={"blue.400"}
-                  color={"white"}
-                  _hover={{
-                    bg: "blue.500",
-                  }}
                   isLoading={isSubmitting}
-                  loadingText='Submitting'
                 >
                   Sign up
                 </Button>
