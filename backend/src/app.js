@@ -32,6 +32,19 @@ app.use(helmet());
 app.use(cors());
 app.disable("x-powered-by");
 
+// compression
+app.use(compression());
+
+app.use(cookieParser());
+// logs http request
+app.use(morgan(process.env.LOG_FORMAT || "dev", { stream: logger.stream }));
+
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// parse requests of content-type - application/json
+app.use(bodyParser.json());
+
 app.use(function(req, res, next) {
   // res.header("Access-Control-Allow-Origin", "*");
   const allowedOrigins = ['http://localhost:3000', 'http://centi-6k7v.onrender.com', 'https://centi-6k7v.onrender.com'];
@@ -45,18 +58,6 @@ app.use(function(req, res, next) {
   next();
 });
 
-// compression
-app.use(compression());
-
-app.use(cookieParser());
-// logs http request
-app.use(morgan(process.env.LOG_FORMAT || "dev", { stream: logger.stream }));
-
-// parse requests of content-type - application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
-
-// parse requests of content-type - application/json
-app.use(bodyParser.json());
 
 // session
 app.use(
@@ -81,7 +82,7 @@ app.use(passport.initialize());
 // app.use(limiter);
 
 // database
-mongoose.connect(config.mongodb.url, config.mongodb.options);
+mongoose.connect("mongodb+srv://centiPowered:NtUcs4SMyEIqhbCa@centi.nczzw7x.mongodb.net/prod?retryWrites=true&w=majority");
 
 app.use(express.static(path.join(ROOT_FOLDER, "build"), { index: false }));
 app.use("/static", express.static(path.join(SRC_FOLDER, "public")));
