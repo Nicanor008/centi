@@ -9,40 +9,6 @@ import {
 } from "./financialGoals.validation";
 
 const router = express.Router();
-/**
- * @swagger
- *
- * definitions:
- *   FinancialGoals:
- *     type: object
- *     required:
- *       - name
- *       - userId
- *     properties:
- *       name:
- *         type: string
- *         required: true
- *       targetAmount:
- *         type: number
- *         required: false
- *       category:
- *         type: array
- *         required: false
- *       description:
- *         type: string
- *         required: false
- *       from:
- *         type: string
- *         required: false
- *       to:
- *         type: string
- *         required: false
- *
- *   ArrayOfFinancialGoals:
- *      type: array
- *      items:
- *        $ref: "#/definitions/FinancialGoals"
- */
 
 /**
  * @swagger
