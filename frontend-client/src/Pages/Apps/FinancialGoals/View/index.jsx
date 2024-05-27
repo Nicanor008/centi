@@ -2,19 +2,16 @@ import {
   Button,
   Flex,
   Text,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
   Th,
-  Td,
-  TableContainer,
   Box,
   Input,
   useMediaQuery,
   Link,
+  Tag,
+  Divider,
 } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
+import { AiOutlineDelete } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
@@ -23,12 +20,13 @@ import {
   FaSortAmountDown,
   FaSortAmountUp,
 } from "react-icons/fa";
+import { RiEdit2Line } from "react-icons/ri";
 import { formatNumberGroups } from "../../../../helpers/formatNumberGroups";
 import DataNotFound from "../../../../components/ErrorPages/DataNotFound";
 import { getUserToken } from "../../../../helpers/getToken";
 import { config } from "../../../../config";
-import CategoryCell from "../../../../components/Table/Cell/CategoryCell";
 import { DataLoader } from "../../../../components";
+import QuickBudgetAnalyticsNav from "../../../../components/Analytics/QuickBudgetAnalyticsNav";
 
 function ViewUserFinancialGoals() {
   const navigate = useNavigate();
@@ -188,46 +186,56 @@ function ViewUserFinancialGoals() {
           </Button>
         </Flex>
       </Flex>
+      <Flex flexDir="row" w="100%">
 
+{/* data */}
       {financialGoals?.loading ? (
         <DataLoader />
       ) : (
         <>
-          <TableContainer bg="gray.200" my={4}>
-            <Table variant="striped" colorScheme="red">
-              <Thead>
-                <Tr>
-                  <ColumnHeaderCell name="Financial goal" column="name" />
-                  <ColumnHeaderCell name="Target" column="targetAmount" />
-                  <ColumnHeaderCell column="description" name="Description" />
-                  <ColumnHeaderCell column="from" name="From" />
-                  <ColumnHeaderCell column="to" name="To" />
-                  <ColumnHeaderCell column="createdAt" name="Date Created" />
-                  <Th>Category</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {financialGoals?.data?.map((goal, idx) => (
-                  <Tr
-                    cursor="pointer"
-                    key={goal._id + idx}
-                    onClick={() =>
-                      navigate(`/financial-goals/${goal._id}`, { state: goal })
-                    }
-                  >
-                    <Td>{goal.name}</Td>
-                    <Td>KES {formatNumberGroups(goal.targetAmount)}</Td>
-                    <Td>{goal.description}</Td>
-                    <Td>{new Date(goal.from).toDateString()}</Td>
-                    <Td>{new Date(goal.to).toDateString()}</Td>
-                    <Td>{new Date(goal.createdAt).toDateString()}</Td>
-                    <CategoryCell categories={goal?.category} />
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
-          </TableContainer>
+        <Flex flexDir="column" w={["100%", "60%"]}>
+        {financialGoals?.data?.map((goal, idx) => (
+        
+          <Flex key={idx} flexDir="column" width="max-content" bg="white" w="80%" m={4} gap={3} p={4} borderRadius={6} boxShadow="lg">
+            {/* title */}
+            <Flex alignItems="center" justifyContent="space-between">
+              <Text fontWeight="bolder" fontSize="xl">{goal.name}</Text>
+              <Flex gap={3}><RiEdit2Line cursor="pointer" /><AiOutlineDelete cursor="pointer" /></Flex>
+            </Flex>
+            <Divider bg="grey" />
 
+            {/* body */}
+            <Flex flexDir="column">
+            <Flex justifyContent="space-between">
+              <Box>
+                <Text fontWeight={600}>Ksh. {formatNumberGroups(goal.targetAmount)}</Text>
+                <Text color="grey" fontSize="smaller">{new Date(goal.from).toDateString()}</Text>
+              </Box>
+
+              <Box ml={(2, 6)}>
+                <Text fontWeight="medium" fontSize="sm">Ends on</Text>
+                <Text color="grey" fontSize="smaller">{new Date(goal.to).toDateString()}</Text>
+              </Box>
+            </Flex>
+            <Text>{goal.description}</Text>
+            </Flex>
+            <Divider bg="grey" />
+
+            {/* footer/category tags */}
+            <Flex>
+              {goal.category?.map((category, idx) => (
+                <Tag
+                  mr={1}
+                  key={(category?._id || category?.value) + idx}
+                  bg="lightgrey"
+                >
+                  {category?.__isNew__ ? category?.label : category.name}
+                </Tag>
+              ))}
+            </Flex>
+          </Flex>
+        ))}
+        </Flex>
           {financialGoals?.data?.length < 1 ? (
             <Flex flexDir="column">
               <DataNotFound>
@@ -241,6 +249,19 @@ function ViewUserFinancialGoals() {
           )}
         </>
       )}
+      <Flex height="fit-content" gap={6}>
+      <QuickBudgetAnalyticsNav
+        title="Financial Goals"
+        amount={financialGoals?.data?.length}
+        hasCurrency={false}
+      />
+      <QuickBudgetAnalyticsNav
+        title="Total Target"
+        amount={financialGoals?.data?.reduce((acc, curr) => acc + curr.targetAmount, 0)}
+      />
+      </Flex>
+      </Flex>
+
     </Flex>
   );
 }

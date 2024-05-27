@@ -4,7 +4,6 @@ import { formatNumberGroups } from "../../../../../../../helpers/formatNumberGro
 
 const BudgetDetailedAnalyticsNav = ({ data, totalExpenses }) => {
   const [isLargerThan880] = useMediaQuery("(min-width: 880px)");
-console.log('...........>>>>>.....', data)
   return (
     data?.length > 0 && (
       <Flex alignItems="center" justifyContent="space-between" mt={4}>
