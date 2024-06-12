@@ -42,7 +42,8 @@ export default function Signup() {
     try {
       const response = await axios.post(`${config.API_URL}/auth/signup`, data);
     setIsSubmitting(false)
-    navigate("/login", { state: response.data });
+    localStorage.setItem("user-signup-897123", JSON.stringify(response?.data?.data));
+    navigate("/signup/verify-account", { state: response?.data });
     } catch (error) {
     setIsSubmitting(false)
     setError(error?.response?.data?.error.message)

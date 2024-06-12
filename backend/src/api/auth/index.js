@@ -174,6 +174,12 @@ router.post(
   authController.signup
 );
 
+// verify otp
+router.post(
+  "/verify-otp",
+  authController.verifyOTPOnSignup
+);
+
 /**
  * @swagger
  *
@@ -297,7 +303,7 @@ router.post("/check-username", authController.checkUsername);
  */
 router.post(
   "/forgot-password",
-  rateLimitByUser(5, 60),
+  // rateLimitByUser(5, 60),
   celebrate({ body: authValidation.forgotPasswordSchema }),
   authController.forgotPassword
 );
@@ -366,9 +372,9 @@ router.post(
  */
 router.post(
   "/reset-password",
-  rateLimitByUser(5, 60),
-  AuthService.required,
-  celebrate({ body: authValidation.resetPasswordSchema }),
+  // rateLimitByUser(5, 60),
+  // AuthService.required,
+  // celebrate({ body: authValidation.resetPasswordSchema }),
   authController.resetPassword
 );
 router.post(

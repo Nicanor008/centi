@@ -24,6 +24,7 @@ import {
   CentiDashboard,
   ViewOneUserFinancialGoals,
   PageNotFound,
+  SignupOTP,
 } from "../Pages";
 
 export const routes = createRoutesFromElements(
@@ -33,8 +34,9 @@ export const routes = createRoutesFromElements(
         <Route path="/" element={<Homepage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/signup/verify-account" element={<SignupOTP />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password/:email" element={<ResetPassword />} />
+        <Route path="/reset-password/:email/:otp" element={<ResetPassword />} />
       </Route>
     </Route>
 

@@ -15,9 +15,9 @@ export const signup = async (req, res, next) => {
 
 export const verifyOTPOnSignup = async (req, res, next) => {
   try {
-    const result = await authService.verifyOTPOnSignup(
-      req.params.user,
-      req.body,
+  const result = await authService.verifyOTPOnSignup(
+      req.body.user,
+      req.body.otp,
       req.ip
     );
     return Response.success(res, result, httpStatus.SUCCESS);
@@ -85,8 +85,8 @@ export const checkUsername = async (req, res, next) => {
 export const forgotPassword = async (req, res, next) => {
   const { email } = req.body;
   try {
-    await authService.forgotPassword(email);
-    return Response.success(res);
+    const result = await authService.forgotPassword(email);
+    return Response.success(res, result);
   } catch (exception) {
     next(exception);
   }
@@ -96,17 +96,17 @@ export const verifyCode = async (req, res, next) => {
   const data = req.body;
   try {
     const result = await authService.verifyCode(data);
-    return Response.success(res, result);
+    return Response.success(res, ...result);
   } catch (exception) {
     next(exception);
   }
 };
 
 export const resetPassword = async (req, res, next) => {
-  const { newPassword } = req.body;
-  const user = req.user;
+  const { email, otp, newPassword } = req.body;
+  const ipAddress = req.ip;
   try {
-    const result = await authService.resetPassword(user, newPassword);
+    const result = await authService.resetPassword(email, otp, newPassword, ipAddress);
     return Response.success(res, result);
   } catch (exception) {
     next(exception);

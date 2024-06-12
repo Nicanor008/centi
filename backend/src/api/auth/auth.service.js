@@ -19,15 +19,68 @@ const signup = async (data, ipAddress) => {
   const token = generateToken(user);
   const refreshToken = await generateRefreshToken(user, ipAddress);
 
-  const html = `<html>
+  const html = `
+  <html>
+    <head>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          background-color: #f4f4f4;
+          color: #333333;
+          margin: 0;
+          padding: 20px;
+        }
+        .container {
+          max-width: 600px;
+          margin: auto;
+          background-color: #ffffff;
+          padding: 20px;
+          border-radius: 8px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+          color: #2c3e50;
+        }
+        p {
+          font-size: 16px;
+          line-height: 1.6;
+        }
+        .otp {
+          font-size: 24px;
+          font-weight: bold;
+          color: #e74c3c;
+          margin: 20px 0;
+        }
+        .button {
+          display: inline-block;
+          padding: 10px 20px;
+          background-color: #e74c3c;
+          color: #ffffff !important;
+          text-decoration: none;
+          border-radius: 5px;
+          font-size: 16px;
+          margin-top: 20px;
+          font-weight: bolder;
+        }
+        .footer {
+          margin-top: 30px;
+          font-size: 12px;
+          color: #999999;
+        }
+      </style>
+    </head>
     <body>
-      <h2>Hi, ${user.firstName}</h2>
-      <p>Welcome onboard.<br /> This is a ship sailing towards financial independence city. To get all the benefits at hand, kindly enter the provided code below on the Centi platform to proceed to the next cabin</p>
-      <h3>${OTP}</h3>
-      <button>Login</button>
-      <p>If you didn't request this, you can ignore it</p>
+      <div class="container">
+        <h2>Hi, ${user.firstName}</h2>
+        <p>Welcome onboard.<br /><br />
+        This is a ship sailing towards financial independence city. To get all the benefits at hand, kindly enter the provided code below on the Centi platform to proceed to the next cabin.</p>
+        <div class="otp">${OTP}</div>
+        <a href="https://centi-platform.com/login" class="button">Login</a>
+        <p class="footer">If you didn't request this, you can ignore it.</p>
+      </div>
     </body>
-  </html>`;
+  </html>
+  `
 
   // send mail
   await sendEmail(user.email, "Centi: Financial Account Created", html);
@@ -71,8 +124,10 @@ const requestOtpLogin = async email => {
 };
 
 const verifyOTPOnSignup = async (user, otp, ipAddress) => {
-  const isValidOtp = await compareOtp(user.email, otp);
-  if (!isValidOtp) {
+  const currentUser = await User.findOne({ email: user?.email });
+
+  if(user?.otp !== currentUser?.otp) {
+    throw new Error("Invalid or Wrong OTP");
   }
 
   return login(user, ipAddress);
@@ -121,16 +176,98 @@ const forgotPassword = async email => {
   } else {
     const passcode = utils.randomVerifiedCode();
     user.resetPasswordToken = passcode;
+    user.otp = passcode
     user.resetPasswordExpires = Date.now() + 360000; // expires in 1 hour
     await user.save();
-    mailService.sendPasswordResetEmail(email, passcode);
+    
+    const html = `
+    <html>
+      <head>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333333;
+            margin: 0;
+            padding: 20px;
+          }
+          .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          }
+          h2 {
+            color: #2c3e50;
+          }
+          p {
+            font-size: 16px;
+            line-height: 1.6;
+          }
+          .otp {
+            font-size: 24px;
+            font-weight: bold;
+            color: #e74c3c;
+            margin: 20px 0;
+          }
+          .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #e74c3c;
+            color: #ffffff !important;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-top: 20px;
+            font-weight: bolder;
+          }
+          .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #999999;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <h2>Hi, ${user?.firstName}</h2>
+          <p>Welcome onboard.<br /><br />
+          This is a ship sailing towards financial independence city. To get all the benefits at hand, kindly enter the provided code below on the Centi platform to proceed to the next cabin.</p>
+          <div class="otp">${passcode}</div>
+          <a href="https://centi-platform.com/reset-password/${user?.email}/${passcode}" class="button">Reset Password</a>
+          <p class="footer">If you didn't request this, you can ignore it.</p>
+        </div>
+      </body>
+    </html>
+    `
+  
+    // send mail
+    await sendEmail(user?.email, "Centi: Password Reset Request", html);
+    return {
+      success: true,
+      otp: passcode
+    }
   }
 };
 
-const resetPassword = async (user, password) => {
-  user.password = password;
-  const result = await user.save();
-  return result;
+const resetPassword = async (email, otp, newPassword, ipAddress) => {
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new Error('Invalid credentials. Click the button on the email to get correct details')
+  }
+  // confirm otp
+  if(user?.otp !== otp) {
+    throw new Error('Invalid credentials. Click the button on the email to get correct details')
+  }
+
+  user.password = newPassword
+  await user.save();
+
+  const token = generateToken(user);
+  const refreshToken = await generateRefreshToken(user, ipAddress);
+  return { user, token, refreshToken: refreshToken.token };
 };
 
 const verifyCode = async data => {

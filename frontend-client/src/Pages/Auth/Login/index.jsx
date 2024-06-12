@@ -48,11 +48,11 @@ export default function Login() {
     try {
       const response = await axios.post(`${config.API_URL}/auth/login`, data);
       localStorage.setItem("user", JSON.stringify(response.data.data));
-    setIsSubmitting(false)
-    navigate("/dashboard");
+      setIsSubmitting(false)
+      navigate("/dashboard");
     } catch (error) {
-    setIsSubmitting(false)
-    setError(error?.response?.data?.error.message)
+      setIsSubmitting(false)
+      setError(error?.response?.data?.error.message)
     }
   };
 

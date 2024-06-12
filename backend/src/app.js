@@ -82,7 +82,7 @@ app.use(passport.initialize());
 // app.use(limiter);
 
 // database
-mongoose.connect("mongodb+srv://centiPowered:NtUcs4SMyEIqhbCa@centi.nczzw7x.mongodb.net/prod?retryWrites=true&w=majority");
+mongoose.connect("mongodb+srv://centiPowered:NtUcs4SMyEIqhbCa@centi.nczzw7x.mongodb.net/test?retryWrites=true&w=majority");
 
 app.use(express.static(path.join(ROOT_FOLDER, "build"), { index: false }));
 app.use("/static", express.static(path.join(SRC_FOLDER, "public")));
