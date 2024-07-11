@@ -94,13 +94,13 @@ const BudgetItemsDataTable = ({
                 sortOrder={sortOrder}
                 handleSort={handleSort}
               />
-              <ColumnHeaderCellWithSort
+              {/* <ColumnHeaderCellWithSort
                 name="Description"
                 column="description"
                 sortBy={sortBy}
                 sortOrder={sortOrder}
                 handleSort={handleSort}
-              />
+              /> */}
               {/* <ColumnHeaderCellWithSort
                 name="Expenses"
                 column="plannedExpenses"
@@ -138,7 +138,7 @@ const BudgetItemsDataTable = ({
               data?.map((item, idx) => (
                 <Tr cursor="pointer" key={idx}>
                   <Td>{item.name}</Td>
-                  <Td>{item?.description}</Td>
+                  {/* <Td>{item?.description}</Td> */}
                   {/* <Td>KES {formatNumberGroups(item?.plannedExpenses)}</Td> */}
                   <Td>KES {formatNumberGroups(item?.actualExpenses)}</Td>
                   <CategoryCell categories={item?.category} />
