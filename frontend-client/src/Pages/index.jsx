@@ -19,3 +19,6 @@ export * from "./Apps/Savings";
 export { default as CentiDashboard } from "./Apps/Dashboard";
 
 export * from "./ErrorPages";
+
+// ai
+export { default as AIGenerateBudget } from './Apps/AIGenerateBudget'

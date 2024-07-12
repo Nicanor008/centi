@@ -25,6 +25,7 @@ import {
   ViewOneUserFinancialGoals,
   PageNotFound,
   SignupOTP,
+  AIGenerateBudget
 } from "../Pages";
 
 export const routes = createRoutesFromElements(
@@ -65,6 +66,37 @@ export const routes = createRoutesFromElements(
           <Route path="add" element={<CreateSavingGoal />} />
           {/* <Route path="items/:budgetId" element={<ViewUserBudgetItems />} /> */}
         </Route>
+        <Route path="/user-generate-budget" element={<AIGenerateBudget />} />
+        <Route path="*" element={<PageNotFound />} />
+      </Route>
+    </Route>
+
+        <Route>
+      <Route element={<AuthLayout />}>
+        <Route path="dashboard">
+          <Route path="" element={<CentiDashboard />} />
+        </Route>
+        <Route path="user">
+          <Route path="profile" element={<UserProfile />} />
+        </Route>
+        <Route path="financial-goals">
+          <Route path="" element={<ViewUserFinancialGoals />} />
+          <Route path="add" element={<CreateFinancialGoal />} />
+          <Route path=":id" element={<ViewOneUserFinancialGoals />} />
+        </Route>
+        <Route path="budget">
+          <Route path="analytics" element={<BudgetDashboard />} />
+          <Route path="view" element={<ViewUserBudgets />} />
+          <Route path="add/:currentStep" element={<CreateUserBudgets />} />
+          <Route path="items/:budgetId" element={<ViewUserBudgetItems />} />
+        </Route>
+        <Route path="savings">
+          <Route path="analytics" element={<SavingsDashboard />} />
+          <Route path="view" element={<ViewAllSavings />} />
+          <Route path="add" element={<CreateSavingGoal />} />
+          {/* <Route path="items/:budgetId" element={<ViewUserBudgetItems />} /> */}
+        </Route>
+        <Route path="/generate-budget" element={<AIGenerateBudget />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </Route>
