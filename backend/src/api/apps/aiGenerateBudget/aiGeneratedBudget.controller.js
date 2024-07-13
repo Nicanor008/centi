@@ -16,8 +16,16 @@ class AIGeneratedBudgetController extends Controller {
     try {
       const data = { ...req.body };
       const result = await AIGeneratedBudgetService.createBudget(data);
-      console.log("====================================================")
-      console.log('.......result....', result)
+      return handleResponse.success(res, result, httpStatus.CREATED);
+    } catch (exception) {
+      next(exception);
+    }
+  }
+
+  // view
+  async viewAllGeneratedBudget(req, res, next) {
+    try {
+      const result = await AIGeneratedBudgetService.viewAllBudgets();
       return handleResponse.success(res, result, httpStatus.CREATED);
     } catch (exception) {
       next(exception);

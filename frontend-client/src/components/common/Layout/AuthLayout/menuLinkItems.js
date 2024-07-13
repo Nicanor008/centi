@@ -1,4 +1,5 @@
 import { FiHome, FiTrendingUp, FiCompass } from "react-icons/fi";
+import { TbArrowAutofitContentFilled } from "react-icons/tb";
 import { FaPiggyBank, FaCircleNodes } from "react-icons/fa6";
 import { FcDebt } from "react-icons/fc";
 import { useLocation } from "react-router-dom";
@@ -66,6 +67,12 @@ const defaultLinkItems = [
     icon: FiTrendingUp,
     url: "/budget/view",
     uniqueId: "budget",
+  },
+  {
+    name: "Generate Budget",
+    icon: TbArrowAutofitContentFilled,
+    url: "/generate-budget",
+    uniqueId: "generate-budget",
   },
   {
     name: "Savings",

@@ -44,6 +44,12 @@ router.post(
   AIGeneratedBudgetController.createBudget
 );
 
+router.get(
+  "/",
+  // AuthService.required,
+  AIGeneratedBudgetController.viewAllGeneratedBudget
+);
+
 router.patch(
   "/:id",
   // AuthService.required,

@@ -61,6 +61,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
 };
 
 const NavItem = ({ name, icon, url, active, children, ...rest }) => {
+  const isActive = location.pathname === url
   return (
     <Box
       as="a"
@@ -79,7 +80,7 @@ const NavItem = ({ name, icon, url, active, children, ...rest }) => {
           bg: "red.100",
           color: "white",
         }}
-        bg={active ? "red.100" : "none"}
+        bg={isActive ? "red.100" : "none"}
         {...rest}
       >
         {icon && (

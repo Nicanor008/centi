@@ -32,7 +32,7 @@ class AIGeneratedBudgetService extends Service {
     return await AIGeneratedBudget.findOneAndUpdate({ _id: id }, data);
   }
 
-  async viewAllBudgets({ sortBy }) {
+  async viewAllBudgets() {
     // async viewAllBudgets({ user, sortBy }) {
     const response = await AIGeneratedBudget.aggregate([
       // {
@@ -52,7 +52,7 @@ class AIGeneratedBudgetService extends Service {
       //   }
       // },
       {
-        $sort: { createdAt: sortBy ?? -1 }
+        $sort: { createdAt: -1 }
       }
     ]);
 

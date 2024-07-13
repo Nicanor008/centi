@@ -25,7 +25,7 @@ import {
   ViewOneUserFinancialGoals,
   PageNotFound,
   SignupOTP,
-  AIGenerateBudget
+  ViewAIGeneratedBudget
 } from "../Pages";
 
 export const routes = createRoutesFromElements(
@@ -66,7 +66,7 @@ export const routes = createRoutesFromElements(
           <Route path="add" element={<CreateSavingGoal />} />
           {/* <Route path="items/:budgetId" element={<ViewUserBudgetItems />} /> */}
         </Route>
-        <Route path="/user-generate-budget" element={<AIGenerateBudget />} />
+        <Route path="/user-generate-budget" element={<ViewAIGeneratedBudget />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </Route>
@@ -96,7 +96,7 @@ export const routes = createRoutesFromElements(
           <Route path="add" element={<CreateSavingGoal />} />
           {/* <Route path="items/:budgetId" element={<ViewUserBudgetItems />} /> */}
         </Route>
-        <Route path="/generate-budget" element={<AIGenerateBudget />} />
+        <Route path="/generate-budget" element={<ViewAIGeneratedBudget />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </Route>
