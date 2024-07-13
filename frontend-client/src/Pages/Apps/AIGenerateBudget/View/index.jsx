@@ -1,5 +1,6 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import DataHeader from "../../../../components/Table/DataHeader";
 import { DataLoader } from "../../../../components";
@@ -19,6 +20,7 @@ function ViewAIGeneratedBudget() {
       filtered: false,
     };
   }, [budget])
+  const navigate = useNavigate()
 
   useEffect(() => {
     async function makeRequest() {
@@ -65,8 +67,8 @@ function ViewAIGeneratedBudget() {
         title="AI Generated Budget"
         subtitle="This is your ai generated budget history"
       >
-        {/* <Flex alignItems="center" gap={2}>
-          {cachedBudget?.data?.length > 0 &&
+        <Flex alignItems="center" gap={2}>
+          {/* {cachedBudget?.data?.length > 0 &&
             (!isLargerThan880 ? (
               <FaSearch />
             ) : (
@@ -76,23 +78,22 @@ function ViewAIGeneratedBudget() {
                 onChange={(e) => handleSearchChange(e.target.value)}
                 w="fit-content"
               />
-            ))}
+            ))} */}
           <Button
-            variant={!isLargerThan880 ? "ghost" : "primary"}
-            onClick={() => navigate("/budget/add/1")}
-            px={!isLargerThan880 ? 0 : 4}
+            variant="primary"
+            onClick={() => navigate("/generate-budget/new")}
           >
-            {!isLargerThan880 ? <FaPlus /> : "Create Budget"}
+            Generate Budget
           </Button>
-          {cachedBudget?.data?.length > 0 && (
+          {/* {cachedBudget?.data?.length > 0 && (
             <BudgetFilterMenu
               setManualRefresh={setManualRefresh}
               isFilter={budget?.filtered}
               setBudget={setBudget}
               budgetData={budget?.data}
             />
-          )}
-        </Flex> */}
+          )} */}
+        </Flex>
       </DataHeader>
 
       {budget?.loading ? (
