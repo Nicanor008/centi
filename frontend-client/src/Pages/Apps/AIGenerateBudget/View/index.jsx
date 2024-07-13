@@ -1,4 +1,4 @@
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Button, Divider, Flex, Text } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -95,6 +95,8 @@ function ViewAIGeneratedBudget() {
           )} */}
         </Flex>
       </DataHeader>
+
+      <Divider my={4} />
 
       {budget?.loading ? (
         <DataLoader />

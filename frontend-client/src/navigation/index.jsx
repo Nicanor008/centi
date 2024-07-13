@@ -39,6 +39,7 @@ export const routes = createRoutesFromElements(
         <Route path="/signup/verify-account" element={<SignupOTP />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:email/:otp" element={<ResetPassword />} />
+        <Route path="/user-generate-budget" element={<ViewAIGeneratedBudget />} />
       </Route>
     </Route>
 
@@ -67,7 +68,6 @@ export const routes = createRoutesFromElements(
           <Route path="add" element={<CreateSavingGoal />} />
           {/* <Route path="items/:budgetId" element={<ViewUserBudgetItems />} /> */}
         </Route>
-        {/* <Route path="/user-generate-budget" element={<ViewAIGeneratedBudget />} /> */}
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </Route>

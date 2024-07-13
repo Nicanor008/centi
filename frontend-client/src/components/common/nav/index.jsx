@@ -362,4 +362,8 @@ const NAV_ITEMS = [
     label: "About",
     href: "#",
   },
+  {
+    label: "Generate budget",
+    href: "user-generate-budget",
+  },
 ];
