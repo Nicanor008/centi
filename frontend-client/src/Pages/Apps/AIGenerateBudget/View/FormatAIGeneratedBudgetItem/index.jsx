@@ -9,16 +9,16 @@ const parseBudgetData = (data) => {
   lines.forEach(line => {
     if (/^\d+\.\s/.test(line)) {
       if (currentSection.title) {
-        sections.push(currentSection);
+        sections?.push(currentSection);
       }
       currentSection = { title: line, items: [] };
     } else if (line.startsWith('- ')) {
-      currentSection.items.push(line);
+      currentSection?.items?.push(line);
     }
   });
 
   if (currentSection.title) {
-    sections.push(currentSection);
+    sections?.push(currentSection);
   }
 
   return { title, sections };

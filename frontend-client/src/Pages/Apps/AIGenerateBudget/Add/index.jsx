@@ -14,7 +14,8 @@ import {
   Divider
 } from "@chakra-ui/react";
 import { config } from '../../../../config';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import FormatAIGeneratedBudgetItem from '../View/FormatAIGeneratedBudgetItem';
 
 const AddAIGenerateBudget = () => {
   const [budget, setBudget] = useState('');
@@ -22,13 +23,15 @@ const AddAIGenerateBudget = () => {
   const [generatedBudget, setGeneratedBudget] = useState('');
   const toast = useToast();
   const navigate = useNavigate()
+  const { pathname } = useLocation()
+  const isHomepage = pathname === '/user-generate-budget'
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const response = await axios.post(`${config.API_URL}/generate-budget`, { userBudget: budget, userDescription: description })
-      setGeneratedBudget(response.data.budget);
+      setGeneratedBudget(response.data.data);
       toast({
         title: "Budget generated successfully.",
         status: "success",
@@ -47,12 +50,13 @@ const AddAIGenerateBudget = () => {
   };
 
   return (
-    <Flex direction="column" h="89vh">
-        <Flex
-            py={4}
+    <Flex direction="column" mx={isHomepage ? '6rem' : 2} minH="70vh" w="100%">
+      <Flex flexDir="column" overflow="scroll" align="center" justify="space-evenly" p={4} h="100%">
+      <Flex
             justifyContent="space-between"
             alignItems="center"
             mb={[1, 4]}
+            w="100%"
         >
         <Flex flexDir="column">
           <Text fontWeight={600} fontSize={16}>
@@ -63,50 +67,51 @@ const AddAIGenerateBudget = () => {
           </Text>
         </Flex>
 
-        <Flex mr={[0, 8]}>
-          <Button variant="secondary" onClick={() => navigate("/generate-budget")}>
-            Cancel
-          </Button>
-        </Flex>
+        {!isHomepage && (
+            <Flex mr={[0, 8]}>
+                <Button variant="secondary" onClick={() => navigate("/generate-budget")}>
+                    Cancel
+                </Button>
+            </Flex>
+        )}
       </Flex>
 
       <Divider />
 
-      <Flex align="center" justify="center" p={4} my={4} h="100%">
-        <Box w="100%" maxW="md" p={8} borderWidth={1} borderRadius="lg" boxShadow="lg">
+        <Box w="100%" maxW="md" p={8} borderWidth={1} borderRadius="lg" boxShadow="lg" mt={8}>
             <Text fontSize="xl" mb={6} fontWeight="Bolder" >Generate Budget Plan</Text>
             <form onSubmit={handleSubmit}>
             <FormControl id="budget" mb={4}>
                 <FormLabel>Budget</FormLabel>
                 <Input
-                type="input"
-                value={budget}
-                onChange={(e) => setBudget(e.target.value)}
-                required
-                placeholder="$50"
+                    type="input"
+                    value={budget}
+                    onChange={(e) => setBudget(e.target.value)}
+                    required
+                    placeholder="$50"
                 />
             </FormControl>
             <FormControl id="description" mb={4}>
                 <FormLabel>Description</FormLabel>
                 <Textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                required
-                bg="white"
-                placeholder='Generate budget for a new campus student joining a mid-level college in Michigan'
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    required
+                    bg="white"
+                    placeholder='Generate budget for a new campus student joining a mid-level college in Michigan'
                 />
             </FormControl>
             <Button type="submit" colorScheme="blue" width="full" mb={4}>
                 Generate Budget
             </Button>
             </form>
-            {generatedBudget && (
-            <Box mt={4} p={4} borderWidth={1} borderRadius="lg">
-                <Heading size="md" mb={2}>Generated Budget Plan</Heading>
-                <Text>{generatedBudget}</Text>
-            </Box>
-            )}
         </Box>
+            {generatedBudget && (
+                <Box mt={4} p={4} borderWidth={1} borderRadius="lg">
+                    <Heading size="md" mb={2} fontFamily="inherit">Generated Budget Plan</Heading>
+                    <FormatAIGeneratedBudgetItem data={generatedBudget.generatedBudget.message.content} />
+                </Box>
+            )}
       </Flex>
     </Flex>
   );

@@ -39,7 +39,7 @@ export const routes = createRoutesFromElements(
         <Route path="/signup/verify-account" element={<SignupOTP />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:email/:otp" element={<ResetPassword />} />
-        <Route path="/user-generate-budget" element={<ViewAIGeneratedBudget />} />
+        <Route path="/user-generate-budget" element={<AddAIGenerateBudget />} />
       </Route>
     </Route>
 
