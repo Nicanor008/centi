@@ -10,6 +10,9 @@ function Homepage() {
       {/* Hero */}
       <Hero />
 
+      {/* features */}
+      <HomepageFeatures />
+    
       <Image
         alt={"Hero Image"}
         fit={"cover"}
@@ -17,9 +20,6 @@ function Homepage() {
         src={InfoBanner}
         w="100vw"
       />
-
-      {/* features */}
-      <HomepageFeatures />
 
       {/* FAQ */}
       <FAQ />

@@ -199,7 +199,7 @@ function ViewUserBudgetItems() {
       {/* budget metadata/analytics */}
       <DetailedAnalyticsNav
         data={budgetItems?.data}
-        plannedExpense={budget?.plannedExpenses}
+        plannedExpense={budget?.plannedIncome}
       />
       <BudgetItemsDataTable
         data={budgetItems?.data}

@@ -206,6 +206,8 @@ const CreateBudget = () => {
               financialGoals={financialGoals}
               setSelectedFinancialGoal={setSelectedFinancialGoal}
             />
+            <br /><br />
+            Add another Expense
           </form>
         );
       default:

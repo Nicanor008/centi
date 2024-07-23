@@ -30,7 +30,7 @@ export default function HomepageFeatures() {
         gap={{ base: "8", sm: "12", md: "16" }}
       >
         <Feature
-          heading="Intuitive Budgeting"
+          heading="Smart Budgeting"
           icon={<GiReceiveMoney color="gray" />}
           text="Easily create and manage your budgets with our user-friendly interface. Track your expenses, set spending limits, and gain insights into your financial habits."
         />
@@ -45,9 +45,9 @@ export default function HomepageFeatures() {
           text="Set personalized savings goals and watch your progress in real-time. Our smart savings feature helps you stay on track and reach your targets faster."
         />
         <Feature
-          heading="Reports & Analytics"
+          heading="AI Generated Budgets"
           icon={<FaMoneyBillTrendUp color="gray" />}
-          text="Gain valuable insights into your financial health with customizable reports and visualizations. Analyze your trends, identify opportunities for improvement, and optimize your budgeting strategy"
+          text="Harness the power of generative AI to create optimized budgets tailored to your lifestyle and financial objectives."
         />
       </Grid>
     </Box>
