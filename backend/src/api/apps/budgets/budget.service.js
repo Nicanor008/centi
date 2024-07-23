@@ -23,7 +23,7 @@ class BudgetService extends Service {
       },
       {
         $lookup: {
-          from: "budgetitems",
+          from: "expenses",
           localField: "_id",
           foreignField: "budgetId",
           as: "budgetItems"

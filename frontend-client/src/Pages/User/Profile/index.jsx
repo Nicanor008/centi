@@ -2,7 +2,6 @@ import {
   Flex,
   FormControl,
   FormLabel,
-  Heading,
   Input,
   Stack,
 } from "@chakra-ui/react";
@@ -13,17 +12,19 @@ export default function UserProfile() {
   const { user } = JSON.parse(localStorage.getItem("user"));
 
   return (
-    <Flex align={"center"} justify={"center"}>
+    <Flex align="center" justify="center" h="100%">
       <Stack
         spacing={4}
-        w={"full"}
-        maxW={"md"}
-        rounded={"xl"}
-        boxShadow={"lg"}
+        w="full"
+        maxW="md"
+        rounded="xl"
+        boxShadow="lg"
         p={6}
         my={12}
+        h="100%"
+        bg="white"
       >
-        <Heading fontFamily="inherit">Profile</Heading>
+        {/* <Heading fontFamily="inherit">Profile</Heading> */}
         {/* <FormControl id="userName">
           <FormLabel>User Icon</FormLabel>
           <Stack direction={["column", "row"]} spacing={6} alignItems="center">
@@ -57,7 +58,7 @@ export default function UserProfile() {
           <FormLabel>Email address</FormLabel>
           <Input
             placeholder="your-email@example.com"
-            _placeholder={{ color: "gray.500" }}
+            _placeholder={{ color: "gray.900" }}
             type="email"
             value={user?.email}
             disabled
@@ -66,7 +67,7 @@ export default function UserProfile() {
         <FormControl id="email">
           <FormLabel>Member since</FormLabel>
           <Input
-            _placeholder={{ color: "gray.500" }}
+            _placeholder={{ color: "gray.900" }}
             value={new Date(user?.createdAt).toDateString()}
             disabled
           />

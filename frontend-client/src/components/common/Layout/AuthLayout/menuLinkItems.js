@@ -80,13 +80,13 @@ const defaultLinkItems = [
     url: "/savings/view",
     uniqueId: "saving",
   },
-  { name: "Debt", icon: FcDebt, url: "/debt", uniqueId: "debt" },
-  {
-    name: "Investments",
-    icon: FaCircleNodes,
-    url: "/investment",
-    uniqueId: "investment",
-  },
+  // { name: "Debt", icon: FcDebt, url: "/debt", uniqueId: "debt" },
+  // {
+  //   name: "Investments",
+  //   icon: FaCircleNodes,
+  //   url: "/investment",
+  //   uniqueId: "investment",
+  // },
 ];
 
 export const LinkItems = () => {
