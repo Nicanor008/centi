@@ -9,7 +9,6 @@ function Layout() {
       <Flex
         w={["100vw", "96vw"]}
         flexDir="column"
-        my={[0, 4]}
         marginInlineEnd={0}
         marginInlineStart={0}
       >

@@ -50,7 +50,7 @@ const faqData = [
 const FAQ = () => {
   return (
     <Flex p={8} w={["100%", "50%"]} alignSelf="center">
-      <Accordion allowMultiple defaultIndex={0}>
+      <Accordion defaultIndex={[0]} allowMultiple maxW={["100%", "80%"]}>
         <Text fontSize="2xl" fontWeight="bold" mb={4}>
           FAQs
         </Text>

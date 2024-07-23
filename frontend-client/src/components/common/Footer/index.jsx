@@ -1,14 +1,12 @@
 import {
   Box,
   chakra,
-  Stack,
   Text,
   VisuallyHidden,
   Flex,
   useColorModeValue,
   Heading,
 } from "@chakra-ui/react";
-import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 
 // const Logo = (props) => {
 //   return (
@@ -64,15 +62,15 @@ const SocialButton = ({ children, label, href }) => {
 
 export default function Footer() {
   return (
-    <Box bg="red.50" mt="80px" w="100vw">
-      <Flex flexDir="column" gap={2} alignItems="center" mt={[1, 4]}>
+    <Box bg="black" color="White" mt="80px" w="100vw" py={10}>
+      <Flex flexDir="column" gap={2} alignItems="center">
         <Box>
           <Heading as="h4" fontFamily="inherit">
             Centi
           </Heading>
         </Box>
         <Text fontSize={"sm"}>© 2024 Centi. All rights reserved</Text>
-        <Stack direction={"row"} spacing={6}>
+        {/* <Stack direction={"row"} spacing={6}>
           <SocialButton label={"Twitter"} href={"#"}>
             <FaTwitter />
           </SocialButton>
@@ -82,7 +80,7 @@ export default function Footer() {
           <SocialButton label={"Instagram"} href={"#"}>
             <FaInstagram />
           </SocialButton>
-        </Stack>
+        </Stack> */}
       </Flex>
       {/* <Stack align={"flex-start"}>
             <ListHeader>Company</ListHeader>
