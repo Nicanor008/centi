@@ -286,43 +286,45 @@ const MobileNavItem = ({ label, children, href }) => {
 const NAV_ITEMS = [
   {
     label: "Budget",
-    children: [
-      {
-        label: "Manage my Budget",
-        subLabel: "Track all your budget in one place",
-        href: "budget/view",
-      },
-      {
-        label: "Learn the magic of budgeting",
-        subLabel: "Just like magic, things will happen to you",
-        href: "#",
-      },
-      {
-        label: "Tips & Resources",
-        subLabel: "Things you need in your finger tips ",
-        href: "#",
-      },
-      {
-        label: "Community & Support",
-        subLabel: "Together we can achieve all we want in life",
-        href: "#",
-      },
-    ],
+    href: '/budget/view'
+    // children: [
+    //   {
+    //     label: "Manage my Budget",
+    //     subLabel: "Track all your budget in one place",
+    //     href: "budget/view",
+    //   },
+    //   {
+    //     label: "Learn the magic of budgeting",
+    //     subLabel: "Just like magic, things will happen to you",
+    //     href: "#",
+    //   },
+    //   {
+    //     label: "Tips & Resources",
+    //     subLabel: "Things you need in your finger tips ",
+    //     href: "#",
+    //   },
+    //   {
+    //     label: "Community & Support",
+    //     subLabel: "Together we can achieve all we want in life",
+    //     href: "#",
+    //   },
+    // ],
   },
   {
     label: "Savings",
-    children: [
-      {
-        label: "Manage my Savings",
-        subLabel: "Track all your Savings",
-        href: "savings/view",
-      },
-      {
-        label: "Savings Tips",
-        subLabel: "Things you need in your finger tips",
-        href: "#",
-      },
-    ],
+    href: '/savings/view'
+    // children: [
+    //   {
+    //     label: "Manage my Savings",
+    //     subLabel: "Track all your Savings",
+    //     href: "savings/view",
+    //   },
+    //   {
+    //     label: "Savings Tips",
+    //     subLabel: "Things you need in your finger tips",
+    //     href: "#",
+    //   },
+    // ],
   },
   // {
   //   label: "Debt",
@@ -354,14 +356,18 @@ const NAV_ITEMS = [
   //     },
   //   ],
   // },
-  {
-    label: "Learn",
-    href: "#",
-  },
-  {
-    label: "About",
-    href: "#",
-  },
+  // {
+  //   label: "Learn",
+  //   href: "#",
+  // },
+  // {
+  //   label: "About",
+  //   href: "#",
+  // },
+{
+  label: "Financial Goals",
+  href: '/financial-goals'
+},
   {
     label: "Generate budget",
     href: "user-generate-budget",
