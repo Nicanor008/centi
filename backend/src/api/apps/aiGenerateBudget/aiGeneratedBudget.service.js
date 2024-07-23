@@ -23,6 +23,7 @@ class AIGeneratedBudgetService extends Service {
   async createBudget(data) {
     const generatedBudget = await this.generateBudget(data.userBudget, data.userDescription);
     data.generatedBudget = generatedBudget;
+    // data.generatedBudget = generatedBudget;
     return await AIGeneratedBudget.create(data);
   }
 
@@ -32,12 +33,12 @@ class AIGeneratedBudgetService extends Service {
     return await AIGeneratedBudget.findOneAndUpdate({ _id: id }, data);
   }
 
-  async viewAllBudgets() {
+  async viewAllBudgets({ user }) {
     // async viewAllBudgets({ user, sortBy }) {
     const response = await AIGeneratedBudget.aggregate([
-      // {
-      //   $match: { userId: user?._id }
-      // },
+      {
+        $match: { userId: user?._id }
+      },
       // {
       //   $lookup: {
       //     from: "budgetitems",

@@ -16,6 +16,7 @@ import {
 import { config } from '../../../../config';
 import { useLocation, useNavigate } from 'react-router-dom';
 import FormatAIGeneratedBudgetItem from '../View/FormatAIGeneratedBudgetItem';
+import { getUserToken } from '../../../../helpers/getToken';
 
 const AddAIGenerateBudget = () => {
   const [budget, setBudget] = useState('');
@@ -25,12 +26,13 @@ const AddAIGenerateBudget = () => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const isHomepage = pathname === '/user-generate-budget'
+  const userToken = getUserToken();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`${config.API_URL}/generate-budget`, { userBudget: budget, userDescription: description })
+      const response = await axios.post(`${config.API_URL}/generate-budget`, { userBudget: budget, userDescription: description }, { headers: { Authorization: `Bearer ${userToken}` } })
       setGeneratedBudget(response.data.data);
       toast({
         title: "Budget generated successfully.",

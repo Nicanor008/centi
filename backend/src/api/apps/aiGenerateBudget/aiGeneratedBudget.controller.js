@@ -14,7 +14,7 @@ class AIGeneratedBudgetController extends Controller {
   // Create a budget
   async createBudget(req, res, next) {
     try {
-      const data = { ...req.body };
+      const data = { ...req.body, userId: req.user?._id };
       const result = await AIGeneratedBudgetService.createBudget(data);
       return handleResponse.success(res, result, httpStatus.CREATED);
     } catch (exception) {
@@ -25,7 +25,7 @@ class AIGeneratedBudgetController extends Controller {
   // view
   async viewAllGeneratedBudget(req, res, next) {
     try {
-      const result = await AIGeneratedBudgetService.viewAllBudgets();
+      const result = await AIGeneratedBudgetService.viewAllBudgets({ user: req?.user });
       return handleResponse.success(res, result, httpStatus.CREATED);
     } catch (exception) {
       next(exception);

@@ -7,6 +7,7 @@ import { DataLoader } from "../../../../components";
 import DataNotFound from "../../../../components/ErrorPages/DataNotFound";
 import { config } from "../../../../config";
 import FormatAIGeneratedBudgetItem from "./FormatAIGeneratedBudgetItem";
+import { getUserToken } from "../../../../helpers/getToken";
 
 function ViewAIGeneratedBudget() {
   const [budget, setBudget] = useState({ filtered: false, loading: true });
@@ -21,11 +22,14 @@ function ViewAIGeneratedBudget() {
     };
   }, [budget])
   const navigate = useNavigate()
+  const userToken = getUserToken();
 
   useEffect(() => {
     async function makeRequest() {
       try {
-        const response = await axios.get(`${config.API_URL}/generate-budget`);
+        const response = await axios.get(`${config.API_URL}/generate-budget`, {
+          headers: { Authorization: `Bearer ${userToken}` },
+        });
 
         setBudget({ budget: response.data.data, loading: false });
       } catch (error) {

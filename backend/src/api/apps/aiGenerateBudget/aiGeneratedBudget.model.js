@@ -4,7 +4,7 @@ import mongoose, { Schema } from "mongoose";
 
 const AIGeneratedBudgetSchema = new Schema(
   {
-    // userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    userId: { type: Schema.Types.ObjectId, ref: "User", required: false },
     userBudget: { type: String, required: true },
     userDescription: { type: String, required: true },
     generatedBudget: { type: Object, required: true },
