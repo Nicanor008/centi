@@ -82,10 +82,10 @@ function ChatInterface() {
                   borderRadius={6}
                   boxShadow="lg"
                 >
-                  <Text fontSize="md">
+                  <Text fontSize="sm">
                     <b>Budget: Ksh. </b>{message?.userBudget}
                   </Text>
-                  <Text fontSize="md">
+                  <Text fontSize="sm">
                     <b>Budget Description: </b>{message?.userDescription}
                   </Text>
                   <Text fontSize="xs" color="gray.500" textAlign="end">
@@ -108,7 +108,7 @@ function ChatInterface() {
                 >
                   <Box my={2}>
                     <Text fontWeight={800}>Generated Budget Response</Text>
-                    <Text fontSize="md" my={1}>
+                    <Text fontSize="sm" my={1}>
                       <FormatAIGeneratedBudgetItem data={message.generatedBudget.message.content} />
                     </Text>
                   </Box>

@@ -10,12 +10,14 @@ import {
   Button,
   useToast,
   Center,
-  IconButton
+  IconButton,
+  useDisclosure
 } from "@chakra-ui/react";
 import { CloseIcon } from "@chakra-ui/icons";
 import { config } from '../../../../config';
 import { getUserToken } from '../../../../helpers/getToken';
 import SubmitInputLoader from '../SubmitInputLoader';
+import { CancelInputModal } from '../../../../components';
 
 const AddAIGenerateBudget = ({ setMessageSent }) => {
   const [budget, setBudget] = useState('');
@@ -24,6 +26,7 @@ const AddAIGenerateBudget = ({ setMessageSent }) => {
   const userToken = getUserToken();
   const [createAIBudget, setCreateAIBudget] = useState(false)
   const [submittingMessage, setSubmittingMessage] = useState(false)
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,26 +62,32 @@ const AddAIGenerateBudget = ({ setMessageSent }) => {
     }
   };
   const isDescriptionActive = description.length < 1;
+  const isBudgetActive = budget.length < 1;
 
   return (
     <Box w="100%" position="relative">
-      <IconButton
-        aria-label="Close"
-        icon={<CloseIcon />}
-        position="absolute"
-        top="4px"
-        right="4px"
-        size="xs"
-        bg="red.200"
-        onClick={() => setCreateAIBudget(false)}
-      />
       {!createAIBudget ? (
         <Center>
-          <Button onClick={() => setCreateAIBudget(true)}>Generate New Budget</Button>
+          <Button onClick={() => setCreateAIBudget(true)}>
+            Generate New Budget
+          </Button>
         </Center>
       ) : (
         submittingMessage ? <SubmitInputLoader /> : (
           <form onSubmit={handleSubmit}>
+             <IconButton
+              aria-label="Close"
+              icon={<CloseIcon />}
+              position="absolute"
+              top="4px"
+              right="4px"
+              size="xs"
+              bg="red.300"
+              boxShadow="lg"
+              onClick={
+                () => (isDescriptionActive && isBudgetActive) ? setCreateAIBudget(false) : onOpen()
+              }
+            />
             <Flex flexDir="column">
               <FormControl id="budget" mb={1} w="fit-content">
                 <FormLabel>What's your Budget amount</FormLabel>
@@ -101,7 +110,13 @@ const AddAIGenerateBudget = ({ setMessageSent }) => {
                 />
               </FormControl>
               <Flex gap={4} mt={3} alignItems="center">
-                <Button type="submit" variant="ghost" width="full" onClick={() => setCreateAIBudget(false)}>
+                <Button
+                  variant="ghost"
+                  width="full"
+                  onClick={
+                    () => (isDescriptionActive && isBudgetActive) ? setCreateAIBudget(false) : onOpen()
+                  }
+                >
                   Cancel
                 </Button>
                 <Button
@@ -120,6 +135,13 @@ const AddAIGenerateBudget = ({ setMessageSent }) => {
               </Flex>
           </form>
       ))}
+      <CancelInputModal
+        isOpen={isOpen}
+        onClose={onClose}
+        setCreateAIBudget={setCreateAIBudget}
+        setBudget={setBudget}
+        setDescription={setDescription}
+      />
     </Box>
   );
 };
