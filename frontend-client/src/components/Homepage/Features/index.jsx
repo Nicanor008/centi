@@ -20,7 +20,7 @@ const Feature = ({ heading, text, icon }) => {
 
 export default function HomepageFeatures() {
   return (
-    <Box as={Container} maxW="7xl" mt={14} p={4}>
+    <Box as={Container} maxW="7xl" my={14} p={4}>
       <Grid
         templateColumns={{
           base: "repeat(1, 1fr)",

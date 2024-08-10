@@ -66,6 +66,11 @@ function CentiDashboard() {
                   amount={analytics?.budget.totalNumberofBudgetItems}
                   hasCurrency={false}
                 />
+                <QuickBudgetAnalyticsNav
+                  title="No. of Expenses this month"
+                  amount={analytics?.budget.totalNumberofBudgetThisMonth}
+                  hasCurrency={false}
+                />
               </Flex>
             </DashboardSectionWrapper>
             <DashboardSectionWrapper title="Savings" titleUri="savings/add">
@@ -87,15 +92,15 @@ function CentiDashboard() {
             >
               <Flex justifyContent="left" flexWrap="wrap" gap={6}>
                 <QuickBudgetAnalyticsNav
-                  title="No. of Goals"
-                  amount={analytics?.financialGoal.total}
-                  hasCurrency={false}
-                />
-                <QuickBudgetAnalyticsNav
                   title="Total Target Goal"
                   amount={
                     analytics?.financialGoal.totalFinancialGoalTargetAmount
                   }
+                />
+                <QuickBudgetAnalyticsNav
+                  title="No. of Goals"
+                  amount={analytics?.financialGoal.total}
+                  hasCurrency={false}
                 />
               </Flex>
             </DashboardSectionWrapper>

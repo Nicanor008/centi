@@ -30,18 +30,15 @@ class DashboardService extends Service {
     // Filter budget items created in the current month
     const budgetItemsThisMonth = budget?.data?.filter(budgetItem => {
       const createdAt = new Date(budgetItem.createdAt);
-      const itemMonth = createdAt.getMonth() + 1;
+      const itemMonth = createdAt.getMonth() + 2;
       const itemYear = createdAt.getFullYear();
       return itemMonth === currentMonth && itemYear === currentYear;
     });
 
-    // Calculate total planned expenses for the current month
-    const totalPlannedExpensesThisMonth = budgetItemsThisMonth.reduce(
-      (total, budgetItem) => {
-        return total + budgetItem.plannedExpenses;
-      },
-      0
-    );
+    const totalPlannedExpensesThisMonth = budgetItemsThisMonth.reduce((total, budget) => {
+      const budgetItemsTotal = budget.budgetItems.reduce((sum, item) => sum + item.actualExpenses, 0);
+      return total + budgetItemsTotal;
+    }, 0);
 
     // category counts
     const categoryCount = {};
