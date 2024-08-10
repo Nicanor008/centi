@@ -53,7 +53,7 @@ class AIGeneratedBudgetService extends Service {
       //   }
       // },
       {
-        $sort: { createdAt: -1 }
+        $sort: { createdAt: 1 }
       }
     ]);
 
