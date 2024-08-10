@@ -370,6 +370,6 @@ const NAV_ITEMS = [
 },
   {
     label: "Generate budget",
-    href: "user-generate-budget",
+    href: "generate-budget",
   },
 ];
