@@ -8,40 +8,48 @@ import {
   Input,
   Textarea,
   Button,
-  Heading,
-  Text,
   useToast,
-  Divider
+  Center,
+  IconButton
 } from "@chakra-ui/react";
+import { CloseIcon } from "@chakra-ui/icons";
 import { config } from '../../../../config';
-import { useLocation, useNavigate } from 'react-router-dom';
-import FormatAIGeneratedBudgetItem from '../View/FormatAIGeneratedBudgetItem';
 import { getUserToken } from '../../../../helpers/getToken';
+import SubmitInputLoader from '../SubmitInputLoader';
 
-const AddAIGenerateBudget = () => {
+const AddAIGenerateBudget = ({ setMessageSent }) => {
   const [budget, setBudget] = useState('');
   const [description, setDescription] = useState('');
-  const [generatedBudget, setGeneratedBudget] = useState('');
   const toast = useToast();
-  const navigate = useNavigate()
-  const { pathname } = useLocation()
-  const isHomepage = pathname === '/user-generate-budget'
   const userToken = getUserToken();
+  const [createAIBudget, setCreateAIBudget] = useState(false)
+  const [submittingMessage, setSubmittingMessage] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmittingMessage(true)
 
     try {
-      const response = await axios.post(`${config.API_URL}/generate-budget`, { userBudget: budget, userDescription: description }, { headers: { Authorization: `Bearer ${userToken}` } })
-      setGeneratedBudget(response.data.data);
+      await axios.post(
+        `${config.API_URL}/generate-budget`, 
+        { userBudget: budget, userDescription: description }, 
+        { headers: { Authorization: `Bearer ${userToken}` }}
+      )
+      setSubmittingMessage(false)
+      setMessageSent(true)
       toast({
         title: "Budget generated successfully.",
         status: "success",
         duration: 5000,
         isClosable: true,
       });
+      setBudget("")
+      setDescription("")
+      setCreateAIBudget(false)
     } catch (error) {
       console.error('Error generating budget:', error);
+      setSubmittingMessage(false)
+      setCreateAIBudget(false)
       toast({
         title: "Error generating budget.",
         status: "error",
@@ -50,72 +58,69 @@ const AddAIGenerateBudget = () => {
       });
     }
   };
+  const isDescriptionActive = description.length < 1;
 
   return (
-    <Flex direction="column" mx={isHomepage ? '6rem' : 2} minH="70vh" w="100%">
-      <Flex flexDir="column" overflow="scroll" align="center" justify="space-evenly" p={4} h="100%">
-      <Flex
-            justifyContent="space-between"
-            alignItems="center"
-            mb={[1, 4]}
-            w="100%"
-        >
-        <Flex flexDir="column">
-          <Text fontWeight={600} fontSize={16}>
-            AI Generated Budget
-          </Text>
-          <Text color="gray.500" fontSize={12} fontWeight={400}>
-            This uses generative ai to generate for you ai according to the budget and description you want
-          </Text>
-        </Flex>
-
-        {!isHomepage && (
-            <Flex mr={[0, 8]}>
-                <Button variant="secondary" onClick={() => navigate("/generate-budget")}>
-                    Cancel
-                </Button>
-            </Flex>
-        )}
-      </Flex>
-
-      <Divider />
-
-        <Box w="100%" maxW="md" p={8} borderWidth={1} borderRadius="lg" boxShadow="lg" mt={8}>
-            <Text fontSize="xl" mb={6} fontWeight="Bolder" >Generate Budget Plan</Text>
-            <form onSubmit={handleSubmit}>
-            <FormControl id="budget" mb={4}>
-                <FormLabel>Budget</FormLabel>
+    <Box w="100%" position="relative">
+      <IconButton
+        aria-label="Close"
+        icon={<CloseIcon />}
+        position="absolute"
+        top="4px"
+        right="4px"
+        size="xs"
+        bg="red.200"
+        onClick={() => setCreateAIBudget(false)}
+      />
+      {!createAIBudget ? (
+        <Center>
+          <Button onClick={() => setCreateAIBudget(true)}>Generate New Budget</Button>
+        </Center>
+      ) : (
+        submittingMessage ? <SubmitInputLoader /> : (
+          <form onSubmit={handleSubmit}>
+            <Flex flexDir="column">
+              <FormControl id="budget" mb={1} w="fit-content">
+                <FormLabel>What's your Budget amount</FormLabel>
                 <Input
                     type="input"
                     value={budget}
                     onChange={(e) => setBudget(e.target.value)}
-                    required
                     placeholder="$50"
                 />
-            </FormControl>
-            <FormControl id="description" mb={4}>
-                <FormLabel>Description</FormLabel>
+              </FormControl>
+              <FormControl id="description" mb={1}>
+                <FormLabel>Describe what you want to achieve</FormLabel>
                 <Textarea
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     required
                     bg="white"
+                    w="100%"
                     placeholder='Generate budget for a new campus student joining a mid-level college in Michigan'
                 />
-            </FormControl>
-            <Button type="submit" colorScheme="blue" width="full" mb={4}>
-                Generate Budget
-            </Button>
-            </form>
-        </Box>
-            {generatedBudget && (
-                <Box mt={4} p={4} borderWidth={1} borderRadius="lg">
-                    <Heading size="md" mb={2} fontFamily="inherit">Generated Budget Plan</Heading>
-                    <FormatAIGeneratedBudgetItem data={generatedBudget.generatedBudget.message.content} />
-                </Box>
-            )}
-      </Flex>
-    </Flex>
+              </FormControl>
+              <Flex gap={4} mt={3} alignItems="center">
+                <Button type="submit" variant="ghost" width="full" onClick={() => setCreateAIBudget(false)}>
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  width="full"
+                  isLoading={submittingMessage}
+                  isDisabled={description.length < 1}
+                  bg={isDescriptionActive ? 'gray.300' : 'red.400'}
+                  _hover={{
+                    bg: isDescriptionActive ? 'gray.300' : 'red.400'
+                  }}
+                >
+                  Generate Budget
+                </Button>
+              </Flex>
+              </Flex>
+          </form>
+      ))}
+    </Box>
   );
 };
 

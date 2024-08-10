@@ -1,6 +1,5 @@
-import { Button, Divider, Flex, Text, Input, Box } from "@chakra-ui/react";
+import { Divider, Flex, Text, Box } from "@chakra-ui/react";
 import { useEffect, useMemo, useState, Fragment, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import DataHeader from "../../../../components/Table/DataHeader";
 import { DataLoader } from "../../../../components";
@@ -8,12 +7,12 @@ import DataNotFound from "../../../../components/ErrorPages/DataNotFound";
 import { config } from "../../../../config";
 import { getUserToken } from "../../../../helpers/getToken";
 import FormatAIGeneratedBudgetItem from "./FormatAIGeneratedBudgetItem";
+import AddAIGenerateBudget from "../Add";
 
 function ChatInterface() {
-  const [messages, setMessages] = useState([]);
-  const [inputMessage, setInputMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [budget, setBudget] = useState({ filtered: false, loading: true });
+  const [messageSent, setMessageSent] = useState(false)
 
   const cachedBudget = useMemo(() => {
     if (!budget) return null;
@@ -25,7 +24,6 @@ function ChatInterface() {
     };
   }, [budget]);
 
-  const navigate = useNavigate();
   const userToken = getUserToken();
   const messagesEndRef = useRef(null); // Ref to keep track of the last message
 
@@ -46,32 +44,14 @@ function ChatInterface() {
     }
 
     makeRequest();
-  }, [userToken]);
-
-  const handleSendMessage = async () => {
-    if (inputMessage.trim() === "") return;
-
-    try {
-      const response = await axios.post(
-        `${config.API_URL}/send-message`,
-        { message: inputMessage },
-        {
-          headers: { Authorization: `Bearer ${userToken}` },
-        }
-      );
-      setMessages((prevMessages) => [...prevMessages, response.data.data]);
-      setInputMessage("");
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  }, [userToken, messageSent]);
 
   // Automatically scroll to the last message
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages, cachedBudget?.budget?.data]);
+  }, [cachedBudget?.budget?.data]);
 
   return (
     <Flex flexDir="column" h="88vh">
@@ -80,11 +60,7 @@ function ChatInterface() {
         count={cachedBudget?.total}
         title="Chat"
         subtitle="This is your chat history with ai generated budget"
-      >
-        <Button variant="primary" onClick={() => navigate("/some-path")}>
-          Go Back
-        </Button>
-      </DataHeader>
+      />
 
       <Divider my={4} />
 
@@ -154,15 +130,7 @@ function ChatInterface() {
       </Flex>
 
       <Flex p={4} bg="white" boxShadow="md">
-        <Input
-          placeholder="Type a message..."
-          value={inputMessage}
-          onChange={(e) => setInputMessage(e.target.value)}
-          mr={2}
-        />
-        <Button onClick={handleSendMessage} disabled={inputMessage.length < 1}>
-          Send
-        </Button>
+        <AddAIGenerateBudget setMessageSent={setMessageSent} />
       </Flex>
     </Flex>
   );

@@ -22,10 +22,10 @@ const primary = {
   bg: "red.400",
   color: "white",
   _active: {
-    bg: "red.500",
+    bg: "red.400",
   },
   _disabled: {
-    bg: "gray.500",
+    bg: "gray.300",
     _hover: {
       color: "black.500",
     },
