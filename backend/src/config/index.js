@@ -62,6 +62,10 @@ export default {
   mailgun: {
     apiKey: process.env.MAILGUN_API_KEY,
     domain: process.env.MAILGUN_DOMAIN
+  },
+
+  openai: {
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY
   }
   // profileUrl: {
   //   google_access_token: process.env.GOOGLE_USER_PROFILE_URL_ACCESS_TOKEN,

@@ -1,9 +1,12 @@
+import config from "../../../config";
 import { Service } from "../../../helpers/common";
 import AIGeneratedBudget from "./aiGeneratedBudget.model";
 
 import OpenAI from "openai";
 
-const openai = new OpenAI();
+const client = new OpenAI({
+  apiKey: config.openai.OPENAI_API_KEY,
+});
 
 class AIGeneratedBudgetService extends Service {
   constructor(model) {
@@ -13,7 +16,7 @@ class AIGeneratedBudgetService extends Service {
 
   async generateBudget(budget, description) {
     const prompt = `Generate a budget plan for a user with a budget of ${budget} and the following requirements: ${description}`;
-    const completion = await openai.chat.completions.create({
+    const completion = await client.chat.completions.create({
       messages: [{ role: "system", content: prompt }],
       model: "gpt-3.5-turbo",
     });
