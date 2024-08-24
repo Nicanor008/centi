@@ -5,7 +5,7 @@ import AIGeneratedBudgetController from "./aiGeneratedBudget.controller";
 //   updateValidationSchema,
 //   customPaginateValidateSchema
 // } from "./budget.validation";
-// import AuthService from "../../../middlewares/auth";
+import AuthService from "../../../middlewares/auth";
 
 const router = express.Router();
 
@@ -40,19 +40,19 @@ const router = express.Router();
 
 router.post(
   "/",
-  // AuthService.required,
+  AuthService.required,
   AIGeneratedBudgetController.createBudget
 );
 
 router.get(
   "/",
-  // AuthService.required,
+  AuthService.required,
   AIGeneratedBudgetController.viewAllGeneratedBudget
 );
 
 router.patch(
   "/:id",
-  // AuthService.required,
+  AuthService.required,
   AIGeneratedBudgetController.updateBudget
 );
 
