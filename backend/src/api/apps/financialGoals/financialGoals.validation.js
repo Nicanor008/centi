@@ -9,7 +9,7 @@ export const createValidationSchema = Joi.object({
   name: Joi.string().required(),
   targetAmount: Joi.number().optional(),
   category: Joi.array().optional(),
-  description: Joi.string().optional(),
+  description: Joi.string().optional().allow(""),
   from: Joi.string().optional(),
   to: Joi.string().optional()
 });

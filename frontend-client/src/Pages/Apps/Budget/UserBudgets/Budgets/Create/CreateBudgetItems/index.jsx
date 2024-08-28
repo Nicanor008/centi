@@ -2,6 +2,8 @@ import { VStack, Flex, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import React from "react";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
+import { Controller } from "react-hook-form";
+import { NumericFormat } from "react-number-format";
 
 const CreateBudgetItemForm = ({
   methods,
@@ -32,12 +34,19 @@ const CreateBudgetItemForm = ({
         </FormControl>
         <FormControl id="actualExpenses">
           <FormLabel htmlFor="actualExpenses">Expense Spent</FormLabel>
-          <Input
-            placeholder="Budget Spent Expense"
-            bg="white"
-            {...methods.register("actualExpenses")}
-            type="number"
-          />
+          <Controller
+              control={methods.control}
+              name="actualExpenses"
+              render={( { field } ) => (
+                <NumericFormat
+                  prefix="KES "
+                  placeholder="Budget Planned Expense"
+                  thousandSeparator
+                  customInput={Input}
+                  onValueChange={(v) => field.onChange(v.value)}
+                />
+              )}
+            />
         </FormControl>
       </Flex>
       <Flex gap={4} flexDir={["solumn", "row"]}>

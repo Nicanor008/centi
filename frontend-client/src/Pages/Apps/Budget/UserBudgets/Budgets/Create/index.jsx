@@ -88,8 +88,8 @@ const CreateBudget = () => {
       ...getValues(),
       category: selectedCategory,
       financialGoal: selectedFinancialGoal,
-      plannedExpenses: Number(getValues()?.plannedExpenses) ?? 0,
-      plannedIncome: Number(getValues()?.plannedIncome) ?? 0,
+      plannedExpenses: getValues()?.plannedExpenses ?? "",
+      plannedIncome: getValues()?.plannedIncome ?? "",
     };
 
     let config2 = {
@@ -138,9 +138,9 @@ const CreateBudget = () => {
       category: selectedCategory,
       financialGoal: selectedFinancialGoal,
       plannedExpenses: getValues()?.plannedExpenses
-        ? Number(getValues()?.plannedExpenses)
-        : 0,
-      actualExpenses: Number(getValues()?.actualExpenses) ?? 0,
+        ? getValues()?.plannedExpenses.toString()
+        : "",
+      actualExpenses: getValues()?.actualExpenses.toString() ?? "",
       budgetId: budget?._id,
     };
 

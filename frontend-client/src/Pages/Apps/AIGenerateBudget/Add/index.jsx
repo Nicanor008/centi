@@ -18,6 +18,8 @@ import { config } from '../../../../config';
 import { getUserToken } from '../../../../helpers/getToken';
 import SubmitInputLoader from '../SubmitInputLoader';
 import { CancelInputModal } from '../../../../components';
+import { Controller } from 'react-hook-form';
+import { NumericFormat } from 'react-number-format';
 
 const AddAIGenerateBudget = ({ setMessageSent }) => {
   const [budget, setBudget] = useState('');
@@ -91,12 +93,13 @@ const AddAIGenerateBudget = ({ setMessageSent }) => {
             <Flex flexDir="column">
               <FormControl id="budget" mb={1} w="fit-content">
                 <FormLabel>What's your Budget amount</FormLabel>
-                <Input
-                    type="input"
-                    value={budget}
-                    onChange={(e) => setBudget(e.target.value)}
-                    placeholder="$50"
-                />
+                    <NumericFormat
+                      prefix="KES "
+                      placeholder="Budget"
+                      thousandSeparator
+                      customInput={Input}
+                      onValueChange={(v) => setBudget(v.value)}
+                    />
               </FormControl>
               <FormControl id="description" mb={1}>
                 <FormLabel>Describe what you want to achieve</FormLabel>

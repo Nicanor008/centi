@@ -16,7 +16,7 @@ const DetailedAnalyticsNav = ({ data, plannedExpense }) => {
           />
           <QuickBudgetAnalyticsNav
             title="Total Expenses"
-            amount={data?.reduce((acc, item) => acc + item.actualExpenses, 0)}
+            amount={data?.reduce((acc, item) => Number(acc) + Number(item.actualExpenses), 0)}
           />
           {/* <QuickBudgetAnalyticsNav
             title="Total Planned Expenses"

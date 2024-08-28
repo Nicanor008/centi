@@ -10,8 +10,8 @@ export const createValidationSchema = Joi.object({
   description: Joi.string()
     .optional()
     .allow(""),
-  plannedExpenses: Joi.number().optional(),
-  actualExpenses: Joi.number().optional(),
+  plannedExpenses: Joi.string().optional().allow(""),
+  actualExpenses: Joi.string().optional().allow(""),
   budgetId: Joi.string(),
   isRecurring: Joi.bool(),
   isActive: Joi.bool(),
@@ -20,5 +20,5 @@ export const createValidationSchema = Joi.object({
 });
 
 export const updateValidationSchema = Joi.object({
-  actualExpenses: Joi.number().optional()
+  actualExpenses: Joi.string().optional().allow("")
 }).unknown(true);

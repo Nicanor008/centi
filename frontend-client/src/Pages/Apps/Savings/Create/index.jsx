@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider, Controller } from "react-hook-form";
 import {
   Flex,
   Text,
@@ -14,6 +14,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import CreatableSelect from "react-select/creatable";
 import Select from "react-select";
+import { NumericFormat } from "react-number-format";
 import { config } from "../../../../config";
 import { getUserToken } from "../../../../helpers/getToken";
 
@@ -156,19 +157,35 @@ const CreateSavingGoal = () => {
             </FormControl>
             <FormControl id="targetAmount" required>
               <FormLabel htmlFor="targetAmount">Target</FormLabel>
-              <Input
-                placeholder="Savings Goal Target amount"
-                {...methods.register("targetAmount")}
-                type="number"
-              />
+              <Controller
+              control={methods.control}
+              name="targetAmount"
+              render={( { field } ) => (
+                <NumericFormat
+                  prefix="KES "
+                  placeholder="Savings Goal Target amount"
+                  thousandSeparator
+                  customInput={Input}
+                  onValueChange={(v) => field.onChange(v.value)}
+                />
+              )}
+            />
             </FormControl>
             <FormControl id="currentAmount">
               <FormLabel htmlFor="currentAmount">Current Savings</FormLabel>
-              <Input
-                placeholder="Currently saved amount"
-                {...methods.register("currentAmount")}
-                type="number"
-              />
+              <Controller
+              control={methods.control}
+              name="currentAmount"
+              render={( { field } ) => (
+                <NumericFormat
+                  prefix="KES "
+                  placeholder="Currently saved amount"
+                  thousandSeparator
+                  customInput={Input}
+                  onValueChange={(v) => field.onChange(v.value)}
+                />
+              )}
+            />
             </FormControl>
           </Flex>
           <Flex gap={4} flexDir={["solumn", "row"]}>

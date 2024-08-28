@@ -12,7 +12,8 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
+import { NumericFormat } from "react-number-format";
 import { config } from "../../../../../../config";
 import { getUserToken } from "../../../../../../helpers/getToken";
 
@@ -62,10 +63,18 @@ function UpdateExpense({ selectedItem, isOpen, onClose, setManualRefresh }) {
             </FormControl>
             <FormControl>
               <FormLabel>Expense</FormLabel>
-              <Input
-                {...methods.register("actualExpenses")}
-                type="number"
-                autoFocus
+              <Controller
+                control={methods.control}
+                name="actualExpenses"
+                render={( { field } ) => (
+                  <NumericFormat
+                    prefix="KES "
+                    thousandSeparator
+                    customInput={Input}
+                    onValueChange={(v) => field.onChange(v.value)}
+                    autoFocus
+                  />
+                )}
               />
             </FormControl>
           </ModalBody>

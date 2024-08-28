@@ -65,8 +65,7 @@ class BudgetService extends Service {
       userId: user?._id
     });
 
-    const totalUserAllExpenses = userAllExpenses.reduce((acc, curr) => acc + curr.actualExpenses, 0)
-
+    const totalUserAllExpenses = userAllExpenses.reduce((acc, curr) => Number(acc) + Number(curr.actualExpenses), 0)
     const result = {
       total: response.length,
       totalExpenses: totalUserAllExpenses,

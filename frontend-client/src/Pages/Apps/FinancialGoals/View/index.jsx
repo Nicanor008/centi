@@ -270,7 +270,7 @@ function ViewUserFinancialGoals() {
               />
               <QuickBudgetAnalyticsNav
                 title="Total Target"
-                amount={financialGoals?.data?.reduce((acc, curr) => acc + curr.targetAmount, 0)}
+                amount={financialGoals?.data?.reduce((acc, curr) => Number(acc) + Number(curr.targetAmount), 0)}
               />
               </Flex>
               </Flex>

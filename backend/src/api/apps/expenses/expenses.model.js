@@ -13,11 +13,11 @@ const ExpensesSchema = new Schema(
       required: false
     },
     plannedExpenses: {
-      type: Number,
+      type: String,
       required: false
     },
     actualExpenses: {
-      type: Number,
+      type: String,
       required: false
     },
     isRecurring: {

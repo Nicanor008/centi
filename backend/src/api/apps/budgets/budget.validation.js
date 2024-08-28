@@ -10,10 +10,10 @@ export const createValidationSchema = Joi.object({
   description: Joi.string()
     .optional()
     .allow(""),
-  plannedExpenses: Joi.number(),
-  actualExpenses: Joi.number().optional().allow(0),
-  plannedIncome: Joi.number().optional().allow(0),
-  actualIncome: Joi.number().optional().allow(0),
+  plannedExpenses: Joi.string(),
+  actualExpenses: Joi.string().optional().allow(""),
+  plannedIncome: Joi.string().optional().allow(""),
+  actualIncome: Joi.string().optional().allow(""),
   isRecurring: Joi.bool().optional(),
   isActive: Joi.bool().optional(),
   category: Joi.array().optional(),

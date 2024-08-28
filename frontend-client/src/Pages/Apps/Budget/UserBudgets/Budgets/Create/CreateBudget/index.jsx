@@ -2,6 +2,8 @@ import { VStack, Flex, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import React from "react";
 import CreatableSelect from "react-select/creatable";
 import Select from "react-select";
+import { Controller } from "react-hook-form";
+import { NumericFormat } from "react-number-format";
 
 const CreateBudgetForm = ({
   methods,
@@ -33,30 +35,38 @@ const CreateBudgetForm = ({
           </FormControl>
         </Flex>
         <Flex gap={4} flexDir={["column", "row"]}>
-          <FormControl id="plannedIncome">
-            <FormLabel htmlFor="plannedIncome">
-              Planned Income for this budget
-            </FormLabel>
-            <Input
-              placeholder="Budget Planned Income"
-              bg="white"
-              _placeholder={{
-                color: "gray.500",
-              }}
-              {...methods.register("plannedIncome")}
-              type="number"
+            <Controller
+              control={methods.control}
+              name="plannedIncome"
+              render={( {field} ) => (
+                <FormControl id="plannedIncome">
+                  <FormLabel htmlFor="plannedIncome">
+                    Planned Income for this budget
+                  </FormLabel>
+                  <NumericFormat
+                    prefix="KES "
+                    placeholder="Budget Planned Income"
+                    thousandSeparator
+                    customInput={Input}
+                    onValueChange={(v) => field.onChange(v.value)}
+                  />
+                </FormControl>
+              )}
             />
-          </FormControl>
           <FormControl id="plannedExpenses">
             <FormLabel htmlFor="plannedExpenses">Expense</FormLabel>
-            <Input
-              placeholder="Budget Planned Expenses"
-              bg={"white"}
-              _placeholder={{
-                color: "gray.500",
-              }}
-              {...methods.register("plannedExpenses")}
-              type="number"
+            <Controller
+              control={methods.control}
+              name="plannedExpenses"
+              render={( { field } ) => (
+                <NumericFormat
+                  prefix="KES "
+                  placeholder="Budget Planned Expenses"
+                  thousandSeparator
+                  customInput={Input}
+                  onValueChange={(v) => field.onChange(v.value)}
+                />
+              )}
             />
           </FormControl>
         </Flex>

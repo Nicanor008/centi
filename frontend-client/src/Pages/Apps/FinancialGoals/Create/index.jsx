@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider, Controller } from "react-hook-form";
 import {
   Flex,
   Text,
@@ -15,6 +15,7 @@ import CreatableSelect from "react-select/creatable";
 import { getUserToken } from "../../../../helpers/getToken";
 import { config } from "../../../../config";
 import { useState } from "react";
+import { NumericFormat } from "react-number-format";
 
 const CreateFinancialGoal = () => {
   const navigate = useNavigate();
@@ -157,11 +158,19 @@ const CreateFinancialGoal = () => {
           <Flex w="100%" gap={4} flexDir={["column", "row"]}>
             <FormControl id="targetAmount">
               <FormLabel htmlFor="targetAmount">Target Amount</FormLabel>
-              <Input
-                placeholder="Target Amount"
-                {...methods.register("targetAmount")}
-                type="number"
-              />
+              <Controller
+              control={methods.control}
+              name="targetAmount"
+              render={( { field } ) => (
+                <NumericFormat
+                  prefix="KES "
+                  placeholder="Target Amount"
+                  thousandSeparator
+                  customInput={Input}
+                  onValueChange={(v) => field.onChange(v.value)}
+                />
+              )}
+            />
             </FormControl>
             <FormControl id="from">
               <FormLabel htmlFor="from">Starting Date</FormLabel>

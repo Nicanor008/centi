@@ -13,19 +13,19 @@ const BudgetSchema = new Schema(
       required: false
     },
     plannedExpenses: {
-      type: Number,
+      type: String,
       required: false
     },
     actualExpenses: {
-      type: Number,
+      type: String,
       required: false
     },
     plannedIncome: {
-      type: Number,
+      type: String,
       required: false
     },
     actualIncome: {
-      type: Number,
+      type: String,
       required: false
     },
     isRecurring: {
