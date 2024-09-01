@@ -6,7 +6,11 @@ class ExpensesService extends Service {
     super(Expenses);
   }
   async createBudgetItems(data) {
-    return await Expenses.create(data);
+    if(Array.isArray(data)) {
+      return await Expenses.insertMany(data);
+    } else {
+      return await Expenses.create(data);
+    }
   }
 
   async updateBudget(id, data) {

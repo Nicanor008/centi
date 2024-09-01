@@ -8,9 +8,9 @@
     "test": "NODE_ENV=test mocha --require @babel/register --exit ./src/api/**/*.test.js",
     "start": "NODE_ENV=development DEBUG=app:* nodemon --exec babel-node src/server.js",
     "debug": "nodemon --inspect-brk=0.0.0.0:9229 --nolazy --exec babel-node src/server.js",
-    "build": "npm install && npm run clean && babel src --copy-files --out-dir dist",
+    "build": "npm install && npm run clean && npx babel src --copy-files --out-dir dist",
     "serve": "NODE_ENV=production node dist/server.js",
-    "clean": "rimraf dist",
+    "clean": "npx rimraf dist",
     "lint": "eslint './src/**/*.{js,jsx}'",
     "lint:fix": "eslint './src/**/*.{js,jsx}' --fix",
     "db": "babel-node src/db_seed"
